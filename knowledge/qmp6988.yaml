@@ -17,6 +17,9 @@ registers:
     reset: "52DC0DA7F4820DDC0CD201E6FC86F9C9FAA2F72B0CBB03D8BB"
     per_specimen: true
     evidence: [qmp6988-modes__i2c-100k__1a0394b27a6f2312]
+    notes: |
+      The bench's ENV III env3; the oep-bench ledger names the unit by this value. Read the same in qmp6988-modes and
+      m5unit-env-u001c-basic, at 100 and 400 kHz.
   - addr: "0xD1"
     width: 1
     name: CHIP_ID

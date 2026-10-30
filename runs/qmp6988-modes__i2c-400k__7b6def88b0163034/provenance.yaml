@@ -2,7 +2,7 @@ schema_version: 1
 case: qmp6988-modes
 date: 2026-10-30
 targets:
-  - {chip: qmp6988, product: m5stack-u001-c, bus: i2c, addr: "0x70"}
+  - {chip: qmp6988, product: m5stack-u001-c, bus: i2c, addr: "0x70", bench: {name: env3, position: "3-3 / 3-4"}}
 bus:
   kind: i2c
   hz: 400000

@@ -411,7 +411,8 @@ def check_targets(report, path, data, chips_by_key, products_by_key, where="targ
     for index, target in enumerate(targets):
         at = f"{where}[{index}]"
         check_fields(report, path, target, required={"chip", "bus", "addr"},
-                     optional={"product"}, where=at)
+                     optional={"product", "bench"}, where=at)
+        check_bench(report, path, f"{at}.bench", target.get("bench"))
         chip = chips_by_key.get(target.get("chip"))
         if chip is None:
             report.add(path, f"{at}: unknown chip: {target.get('chip')!r}")

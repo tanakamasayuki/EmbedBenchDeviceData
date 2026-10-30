@@ -87,7 +87,7 @@ runs/<run-id>/
 | --- | --- | --- |
 | case | ○ | cases のキー |
 | date | ○ | `YYYY-MM-DD` |
-| targets | ○ | ケースと同じ形。空なら notes |
+| targets | ○ | ケースと同じ形に `bench?` を足せる。空なら notes |
 | bus | ○ | `{kind: i2c, hz, pins?, pullups?}` |
 | dut | ○ | `{board, id?, bench?, core: {name, version}, controller}`。LibraryTest で probe 自身が DUT なら `id` は probe と同じ |
 | library | library のケースで | `{key, version, commit?}`。key はケースのライブラリ |
@@ -102,6 +102,7 @@ runs/<run-id>/
 - `bench` は OEP の常駐ベンチ（`oep-bench` の hosts/native-linux/README.ja.md の「略称」）の機材のとき:
   `{name, position}`。`name` は台帳の略称で、位置ではなく個体に付いている。`position` は **その run を取った日の** 位置で
   （機材は動く）、分からなければ `unknown`。`id` が同じ dut と probe は同じ `name` を持つ（validate が検査する）。
+  targets の部品にも付ける。ENV III（`env3`）は QMP6988 の COE で個体を見分ける（台帳に COE を載せてある）。
 - 生のキャプチャをリポジトリに置かないときは `stored: false` にし、notes に場所を書く。
 
 OEP の run は `c0001.analysis.json`（wireskein decode の `wireskein-analysis/1`。版・指定・未解釈の区間・lost / gap を含む）も

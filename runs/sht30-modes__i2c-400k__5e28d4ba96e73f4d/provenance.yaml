@@ -2,7 +2,7 @@ schema_version: 1
 case: sht30-modes
 date: 2026-10-30
 targets:
-  - {chip: sht30, product: m5stack-u001-c, bus: i2c, addr: "0x44"}
+  - {chip: sht30, product: m5stack-u001-c, bus: i2c, addr: "0x44", bench: {name: env3, position: "3-3 / 3-4"}}
 bus:
   kind: i2c
   hz: 400000
