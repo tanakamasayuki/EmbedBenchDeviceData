@@ -471,6 +471,19 @@ def check_version(report, path, where, value):
         report.add(path, f"{where}: state the version, or {UNKNOWN}")
 
 
+def check_bench(report, path, where, bench):
+    """The bench's name for the unit, and where it stood on the day of the run.
+
+    Names belong to units, not positions (the oep-bench ledger), so a unit
+    keeps its name when it moves; the position is a record of that day.
+    """
+    if bench is None:
+        return
+    check_fields(report, path, bench, required={"name", "position"}, optional=set(), where=where)
+    if not re.fullmatch(r"[a-z0-9-]+", str(bench.get("name"))):
+        report.add(path, f"{where}.name must be [a-z0-9-], found {bench.get('name')!r}")
+
+
 def validate_provenance(report, path, data, cases, chips_by_key, products_by_key, libraries_by_key):
     check_no_comments(report, path)
     check_fields(report, path, data,
@@ -493,12 +506,18 @@ def validate_provenance(report, path, data, cases, chips_by_key, products_by_key
     if not isinstance(bus.get("hz"), int) or bus.get("hz", 0) <= 0:
         report.add(path, f"bus.hz must be a positive integer, found {bus.get('hz')!r}")
     dut = data.get("dut") or {}
-    check_fields(report, path, dut, required={"board", "core", "controller"}, optional={"id"}, where="dut")
+    check_fields(report, path, dut, required={"board", "core", "controller"}, optional={"id", "bench"}, where="dut")
+    check_bench(report, path, "dut.bench", dut.get("bench"))
     core = dut.get("core") or {}
     check_fields(report, path, core, required={"name", "version"}, optional=set(), where="dut.core")
     check_version(report, path, "dut.core.version", core.get("version"))
     probe = data.get("probe") or {}
-    check_fields(report, path, probe, required={"id", "firmware", "version"}, optional=set(), where="probe")
+    check_fields(report, path, probe, required={"id", "firmware", "version"}, optional={"bench"},
+                 where="probe")
+    check_bench(report, path, "probe.bench", probe.get("bench"))
+    if dut.get("id") is not None and dut.get("id") == probe.get("id") \
+            and (dut.get("bench") or {}).get("name") != (probe.get("bench") or {}).get("name"):
+        report.add(path, "dut and probe are one unit (same id) but have different bench names")
     check_version(report, path, "probe.version", probe.get("version"))
     skein = data.get("wireskein") or {}
     check_fields(report, path, skein, required={"version"}, optional=set(), where="wireskein")

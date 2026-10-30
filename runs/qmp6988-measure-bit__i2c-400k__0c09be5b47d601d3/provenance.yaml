@@ -11,14 +11,16 @@ bus:
     SCL: 15
   pullups: unknown (only Unit ENV III on the Grove; none added on the board side)
 dut:
-  board: ESP32-P4X (oep-bench resident position 3-3 / 3-4, Unit ENV III on its Grove GPIO14 / 15)
+  board: ESP32-P4X (Unit ENV III on its Grove GPIO14 / 15)
   id: usb:80f1b2d719c5
+  bench: {name: p4x-grove, position: "3-3 / 3-4"}
   core:
     name: arduino-esp32
     version: 3.3.12
   controller: esp32p4
 probe:
   id: usb:80f1b2d719c5
+  bench: {name: p4x-grove, position: "3-3 / 3-4"}
   firmware: oep-probe-arduino
   version: 3feb4e2
 wireskein:

@@ -12,12 +12,14 @@ bus:
 dut:
   board: ESP32-P4 (P4X)
   id: usb:e8f60ae84e28
+  bench: {name: oep-4e28, position: unknown}
   core:
     name: arduino-esp32
     version: unknown
   controller: esp32p4
 probe:
   id: usb:e8f60ae84e28
+  bench: {name: oep-4e28, position: unknown}
   firmware: oep-probe-arduino
   version: unknown
 wireskein:
