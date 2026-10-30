@@ -32,5 +32,8 @@ captures:
       start_ns: 99744744500
 notes: |
   Normal mode: the data changes about every 10 ms after the first 20 ms.
+  After the soft reset (0xE6 to 0xE0) the wire shows the register byte ACKed and a STOP, then a START with 0xE6 as
+  the address (0x73, NACK), then nothing for 60 ms; the IIR read that followed returned 0 bytes with nothing on the
+  wire. Whether the part or the controller made the extra frame is not separated here.
   c0001.analysis.json is the same capture decoded by wireskein decode (wireskein-analysis/1); c0001.i2c.json is its
   transactions. The DUT is the probe itself (EnvCases.cpp beside the OEP firmware).

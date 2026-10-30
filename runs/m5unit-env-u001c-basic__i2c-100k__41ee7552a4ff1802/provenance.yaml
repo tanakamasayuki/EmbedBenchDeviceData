@@ -36,5 +36,7 @@ captures:
       start_ns: 122500964000
 notes: |
   Captured at 1 MHz (the case runs 1.2 s). SHT3X::update takes about 250 ms each time.
+  In QMP6988::begin the soft reset (0xE0 0xE6, both ACKed) is followed by a frame with 0xE6 as the address (0x73,
+  NACK) and 70 ms with nothing on the wire, as in qmp6988-modes.
   c0001.analysis.json is the same capture decoded by wireskein decode (wireskein-analysis/1); c0001.i2c.json is its
   transactions. The DUT is the probe itself (EnvCases.cpp beside the OEP firmware).
