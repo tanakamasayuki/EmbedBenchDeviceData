@@ -1,0 +1,28 @@
+schema_version: 1
+key: sht30
+name: SHT30
+manufacturer: Sensirion
+tags:
+- temperature
+- humidity
+interfaces:
+- bus: i2c
+  addresses:
+  - addr: '0x44'
+    note: ADDR=GND
+  - addr: '0x45'
+    note: ADDR=VDD
+datasheets:
+- source: manufacturer
+  url: https://sensirion.com/media/documents/213E6A3B/63A5A569/Datasheet_SHT3x_DIS.pdf
+  revision: '7'
+  date: 2022-12
+- source: vendor
+  vendor: m5stack
+  url: https://m5stack.oss-cn-shenzhen.aliyuncs.com/resource/docs/datasheet/unit/SHT3x_Datasheet_digital.pdf
+  revision: '6'
+  date: 2019-02
+notes: |
+  The ADDR pin selects 0x44 (GND) or 0x45 (VDD) and must not float.
+  SHT30 is the entry accuracy grade of the SHT3x-DIS family (SHT31 / SHT35 are tighter).
+  M5Stack ENV-II and ENV-III both use SHT30 at 0x44.

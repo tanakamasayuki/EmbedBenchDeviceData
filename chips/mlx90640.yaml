@@ -1,0 +1,23 @@
+schema_version: 1
+key: mlx90640
+name: MLX90640
+manufacturer: Melexis
+tags:
+- temperature
+- thermal
+- infrared
+interfaces:
+- bus: i2c
+  addresses:
+  - addr: '0x33'
+    note: default; programmable
+datasheets:
+- source: manufacturer
+  url: https://www.melexis.com/-/media/files/documents/datasheets/mlx90640-datasheet-melexis.pdf
+  revision: '12'
+  date: 2019-12
+notes: |
+  32x24 thermal array, two subpages (chess or interleaved), 0.5-64 Hz, driven via the Melexis
+  MLX90640 API. Default slave address 0x33, programmable (avoid 0x00); 8-bit wire form 0x66 write
+  / 0x67 read. Factory calibration in EEPROM (0x2400..0x273F) is read once after power-on to
+  compute per-pixel temperatures. Used in Unit Thermal and Thermal2 at 0x33.

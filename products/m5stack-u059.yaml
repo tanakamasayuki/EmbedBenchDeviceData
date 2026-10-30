@@ -1,0 +1,12 @@
+schema_version: 1
+key: m5stack-u059
+name: Unit Vibrator
+vendor: m5stack
+sku: U059
+connector: HY2.0-4P (Grove)
+url: https://docs.m5stack.com/en/unit/vibrator
+interfaces:
+- gpio
+components: []
+notes: |
+  N20 motor with an eccentric weight, switched by a digital level (DIN).

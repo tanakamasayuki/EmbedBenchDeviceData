@@ -1,0 +1,30 @@
+schema_version: 1
+key: m5stack-mcu-u182
+name: Unit Roller485 controller
+manufacturer: M5Stack
+tags:
+- motor
+- bldc
+- servo
+- encoder
+interfaces:
+- bus: i2c
+  addresses:
+  - addr: '0x64'
+datasheets:
+- source: vendor
+  vendor: m5stack
+  url: https://m5stack.oss-cn-shenzhen.aliyuncs.com/resource/docs/products/unit/Unit-Roller485/Unit_Roller485_I2C_Protocol_V1_20240905.pdf
+  kind: protocol
+  revision: unstated
+  date: '2024-06-03'
+  note: register map for firmware version V1
+notes: |
+  Firmware-defined I2C slave: the I2C endpoint is an on-board STM32G431CBU6 running M5Stack
+  firmware (not a fixed-function IC), so the register map is product-specific. The map recorded in
+  profiles/ was recovered from the vendor Arduino library source and is marked inferred /
+  tentative; a capture is what confirms it. Modeled per-unit. Silicon: STM32G431CBU6.
+  Integrated BLDC servo: a DRV8311H driver and a TLI5012BE1000 magnetic angle sensor sit
+  behind this MCU. RS485 and I2C are selectable host interfaces onto the same control
+  registers, so an I2C capture describes only the I2C path.
+  Used in M5Stack Unit Roller485 (U182) and Unit Roller485-Lite (U182-Lite) at 0x64.

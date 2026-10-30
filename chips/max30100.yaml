@@ -1,0 +1,21 @@
+schema_version: 1
+key: max30100
+name: MAX30100
+manufacturer: Maxim Integrated
+tags:
+- heart-rate
+- spo2
+- pulse-oximeter
+- optical
+interfaces:
+- bus: i2c
+  addresses:
+  - addr: '0x57'
+datasheets:
+- source: manufacturer
+  url: https://www.analog.com/media/en/technical-documentation/data-sheets/MAX30100.pdf
+  revision: '0'
+  date: 2014-09
+notes: |
+  Pulse-oximeter / heart-rate sensor with a sample FIFO. Fixed I2C address 0x57. Superseded by
+  the MAX30102 (different register map). M5Stack Unit Heart uses it at 0x57.

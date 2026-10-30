@@ -1,0 +1,21 @@
+schema_version: 1
+key: mlx90614
+name: MLX90614
+manufacturer: Melexis
+tags:
+- temperature
+- infrared
+- non-contact
+interfaces:
+- bus: i2c
+  addresses:
+  - addr: '0x5a'
+    note: default; programmable in EEPROM (0x2E)
+datasheets:
+- source: manufacturer
+  url: https://www.melexis.com/-/media/files/documents/datasheets/mlx90614-datasheet-melexis.pdf
+  revision: '021'
+  date: '2026-06-02'
+notes: |
+  Non-contact infrared thermometer. RAM temperature is returned in 0.02 K units. The slave
+  address is stored in EEPROM at 0x2E (default 0x5a). M5Stack Unit NCIR / NCIR2 use it at 0x5a.

@@ -1,0 +1,26 @@
+schema_version: 1
+key: m5stack-mcu-u026
+name: Unit 16-Key Capacitive Touch controller
+manufacturer: M5Stack
+tags:
+- touch
+- keypad
+- input
+interfaces:
+- bus: i2c
+  addresses:
+  - addr: '0x51'
+datasheets:
+- source: vendor
+  vendor: m5stack
+  url: https://docs.m5stack.com/en/unit/makey
+  kind: product-page
+  revision: unstated
+notes: |
+  Firmware-defined I2C slave: the I2C endpoint is an on-board ATmega328P running M5Stack
+  firmware (not a fixed-function IC), so the register map is product-specific and has no
+  datasheet. No vendor library covers this unit, so the map has to come from a capture. Modeled per-unit. Silicon: ATmega328P.
+  Also sold under the name Unit Makey. No I2C protocol document is published, so the
+  register map is known only from the vendor example code and must be confirmed from
+  captures.
+  Used in M5Stack Unit 16-Key Capacitive Touch (U026) at 0x51.

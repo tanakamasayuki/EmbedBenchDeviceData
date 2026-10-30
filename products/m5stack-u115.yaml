@@ -1,0 +1,12 @@
+schema_version: 1
+key: m5stack-u115
+name: Unit LoRaWAN915
+vendor: m5stack
+sku: U115
+connector: HY2.0-4P (Grove)
+url: https://docs.m5stack.com/en/unit/lorawan915
+interfaces:
+- uart
+components: []
+notes: |
+  915 MHz LoRaWAN module driven by AT commands on Grove Port C.

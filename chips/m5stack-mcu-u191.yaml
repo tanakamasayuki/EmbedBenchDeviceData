@@ -1,0 +1,27 @@
+schema_version: 1
+key: m5stack-mcu-u191
+name: Unit ByteSwitch controller
+manufacturer: M5Stack
+tags:
+- switch
+- rgb-led
+- input
+interfaces:
+- bus: i2c
+  addresses:
+  - addr: '0x46'
+datasheets:
+- source: vendor
+  vendor: m5stack
+  url: https://m5stack-doc.oss-cn-shenzhen.aliyuncs.com/820/Byte_Switch_protocol.pdf
+  kind: protocol
+  revision: unstated
+  date: '2024-06-19'
+  note: register map for firmware version V1
+notes: |
+  Firmware-defined I2C slave: the I2C endpoint is an on-board STM32G031G8U6 running M5Stack
+  firmware (not a fixed-function IC), so the register map is product-specific. The map recorded in
+  profiles/ was recovered from the vendor Arduino library source and is marked inferred /
+  tentative; a capture is what confirms it. Modeled per-unit. Silicon: STM32G031G8U6.
+  Eight toggle switches with per-switch RGB LEDs sit behind the firmware register map.
+  Used in M5Stack Unit ByteSwitch (U191) at 0x46.

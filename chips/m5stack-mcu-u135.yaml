@@ -1,0 +1,24 @@
+schema_version: 1
+key: m5stack-mcu-u135
+name: Unit Encoder controller
+manufacturer: M5Stack
+tags:
+- encoder
+- input
+interfaces:
+- bus: i2c
+  addresses:
+  - addr: '0x40'
+datasheets:
+- source: vendor
+  vendor: m5stack
+  url: https://m5stack-doc.oss-cn-shenzhen.aliyuncs.com/801/Unit-Encoder_Protocol.pdf
+  kind: protocol
+  revision: unstated
+  date: '2022-05-13'
+  note: register map for firmware version V1
+notes: |
+  Firmware-defined I2C slave: the I2C endpoint is an on-board STM32F030 running M5Stack
+  firmware (not a fixed-function IC), so the register map is product-specific. The map recorded in
+  profiles/ was recovered from the vendor Arduino library source and is marked inferred /
+  tentative; a capture is what confirms it. Modeled per-unit. Silicon: STM32F030. Used in M5Stack Unit Encoder (U135) at 0x40.

@@ -1,0 +1,25 @@
+schema_version: 1
+key: scd41
+name: SCD41
+manufacturer: Sensirion
+tags:
+- co2
+- temperature
+- humidity
+interfaces:
+- bus: i2c
+  addresses:
+  - addr: '0x62'
+datasheets:
+- source: manufacturer
+  url: https://sensirion.com/media/documents/48C4B7FB/67FE0194/CD_DS_SCD4x_Datasheet_D1.pdf
+  revision: '1.7'
+  date: 2025-04
+- source: vendor
+  vendor: m5stack
+  url: https://m5stack.oss-cn-shenzhen.aliyuncs.com/resource/docs/datasheet/unit/co2/SCD41.pdf
+  revision: '1.1'
+  date: 2021-04
+notes: |
+  One datasheet covers SCD40/SCD41/SCD43. SCD41 adds single-shot operation and a 400-5000 ppm
+  range vs SCD40's 400-2000 ppm. M5Stack Unit CO2L uses the SCD41 at 0x62.

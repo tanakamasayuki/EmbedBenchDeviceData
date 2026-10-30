@@ -1,0 +1,27 @@
+schema_version: 1
+key: paj7620u2
+name: PAJ7620U2
+manufacturer: PixArt Imaging
+tags:
+- gesture
+- proximity
+- optical
+interfaces:
+- bus: i2c
+  addresses:
+  - addr: '0x73'
+datasheets:
+- source: vendor
+  vendor: m5stack
+  url: https://m5stack.oss-cn-shenzhen.aliyuncs.com/resource/docs/datasheet/unit/gesture/paj7620u2_datasheet.pdf
+  revision: '1.2'
+  date: 2016-02
+- source: reseller
+  url: https://files.seeedstudio.com/wiki/Grove_Gesture_V_1.0/res/PAJ7620U2_DS_v1.5_05012022_Confidential.pdf
+  revision: '1.5'
+  date: '2022-05-01'
+notes: |
+  Gesture sensor at the fixed I2C address 0x73. PixArt publishes no public datasheet; the
+  Seeed-hosted rev 1.5 copy is marked Confidential and DRM-encrypted (a public rev 0.8 also
+  exists). Register facts were cross-checked against the Seeed Grove and RevEng_PAJ7620 drivers.
+  Used in M5Stack Unit Gesture.

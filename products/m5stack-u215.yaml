@@ -1,0 +1,17 @@
+schema_version: 1
+key: m5stack-u215
+name: Unit CardKB2
+vendor: m5stack
+sku: U215
+connector: HY2.0-4P (Grove)
+url: https://docs.m5stack.com/en/unit/Unit_CardKB2
+interfaces:
+- i2c
+- uart
+components:
+- chip: m5stack-mcu-u215
+  bus: i2c
+  addr: '0x5f'
+notes: |
+  The HY2.0-4P port carries either I2C or UART; the firmware also offers BLE HID and ESP-NOW,
+  which do not use the port at all.

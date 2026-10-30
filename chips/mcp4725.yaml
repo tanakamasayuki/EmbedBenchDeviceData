@@ -1,0 +1,40 @@
+schema_version: 1
+key: mcp4725
+name: MCP4725
+manufacturer: Microchip
+tags:
+- dac
+- analog-output
+interfaces:
+- bus: i2c
+  addresses:
+  - addr: '0x60'
+    note: A2A1=factory 00 (MCP4725A0), A0 pin=low
+  - addr: '0x61'
+    note: A2A1=factory 00 (MCP4725A0), A0 pin=high
+  - addr: '0x62'
+    note: A2A1=factory 01 (MCP4725A1), A0 pin=low
+  - addr: '0x63'
+    note: A2A1=factory 01 (MCP4725A1), A0 pin=high
+  - addr: '0x64'
+    note: A2A1=factory 10 (MCP4725A2), A0 pin=low
+  - addr: '0x65'
+    note: A2A1=factory 10 (MCP4725A2), A0 pin=high
+  - addr: '0x66'
+    note: A2A1=factory 11 (MCP4725A3), A0 pin=low
+  - addr: '0x67'
+    note: A2A1=factory 11 (MCP4725A3), A0 pin=high
+datasheets:
+- source: manufacturer
+  url: https://ww1.microchip.com/downloads/aemDocuments/documents/MSLD/ProductDocuments/DataSheets/MCP4725-Data-Sheet-20002039E.pdf
+  revision: E
+  date: '2022'
+- source: vendor
+  vendor: m5stack
+  url: https://m5stack.oss-cn-shenzhen.aliyuncs.com/resource/docs/datasheet/unit/MCP4725_en.pdf
+  revision: C
+  date: 2007-11
+notes: |
+  Single-channel 12-bit DAC with an on-board EEPROM holding the power-on default. Device code is
+  fixed 1100, followed by A2/A1 (factory-programmed per orderable variant) and A0 (pin).
+  M5Stack Unit DAC uses 0x60 (0-3.3 V).

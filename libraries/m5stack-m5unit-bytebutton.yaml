@@ -1,0 +1,9 @@
+schema_version: 1
+key: m5stack-m5unit-bytebutton
+name: M5Unit-ByteButton
+repo: https://github.com/m5stack/M5Unit-ByteButton
+supports:
+  chips: [m5stack-mcu-u191, m5stack-mcu-u192]
+notes: |
+  One library covers both Unit ByteButton (U192) and Unit ByteSwitch (U191); the two products
+  answer at different addresses with their own register maps.

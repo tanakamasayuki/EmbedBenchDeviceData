@@ -1,0 +1,12 @@
+schema_version: 1
+key: m5stack-u084
+name: Unit Hall
+vendor: m5stack
+sku: U084
+connector: HY2.0-4P (Grove)
+url: https://docs.m5stack.com/en/unit/hall
+interfaces:
+- gpio
+components: []
+notes: |
+  Hall-effect switch; the output is a digital level.

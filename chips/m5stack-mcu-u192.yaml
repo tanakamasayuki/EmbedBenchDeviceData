@@ -1,0 +1,28 @@
+schema_version: 1
+key: m5stack-mcu-u192
+name: Unit ByteButton controller
+manufacturer: M5Stack
+tags:
+- button
+- rgb-led
+- input
+interfaces:
+- bus: i2c
+  addresses:
+  - addr: '0x47'
+datasheets:
+- source: vendor
+  vendor: m5stack
+  url: https://m5stack.oss-cn-shenzhen.aliyuncs.com/resource/docs/products/unit/Unit%20ByteButton/Byte_Button%20Protocol.pdf
+  kind: protocol
+  revision: unstated
+  date: '2024-06-19'
+  note: register map for firmware version V1
+notes: |
+  Firmware-defined I2C slave: the I2C endpoint is an on-board STM32G031G8U6 running M5Stack
+  firmware (not a fixed-function IC), so the register map is product-specific. The map recorded in
+  profiles/ was recovered from the vendor Arduino library source and is marked inferred /
+  tentative; a capture is what confirms it. Modeled per-unit. Silicon: STM32G031G8U6.
+  Eight buttons with per-button RGB LEDs sit behind the firmware register map. Shares the
+  M5Unit-ByteButton library with Unit ByteSwitch but has its own address and register map.
+  Used in M5Stack Unit ByteButton (U192) at 0x47.

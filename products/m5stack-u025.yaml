@@ -1,0 +1,12 @@
+schema_version: 1
+key: m5stack-u025
+name: Unit Dual Button
+vendor: m5stack
+sku: U025
+connector: HY2.0-4P (Grove)
+url: https://docs.m5stack.com/en/unit/dual_button
+interfaces:
+- gpio
+components: []
+notes: |
+  Two momentary buttons, one digital line each, on Grove Port B.

@@ -1,0 +1,6 @@
+schema_version: 1
+key: m5stack-m5unit-timerpwr
+name: M5Unit-TimerPWR
+repo: https://github.com/m5stack/M5Unit-TimerPWR
+supports:
+  chips: [m5stack-mcu-u189]

@@ -1,0 +1,35 @@
+schema_version: 1
+key: tca9548a
+name: TCA9548A
+manufacturer: Texas Instruments
+tags:
+- i2c-mux
+- i2c-switch
+interfaces:
+- bus: i2c
+  addresses:
+  - addr: '0x70'
+    note: A2=GND A1=GND A0=GND (base)
+  - addr: '0x71'
+    note: A2=GND A1=GND A0=VCC
+  - addr: '0x72'
+    note: A2=GND A1=VCC A0=GND
+  - addr: '0x73'
+    note: A2=GND A1=VCC A0=VCC
+  - addr: '0x74'
+    note: A2=VCC A1=GND A0=GND
+  - addr: '0x75'
+    note: A2=VCC A1=GND A0=VCC
+  - addr: '0x76'
+    note: A2=VCC A1=VCC A0=GND
+  - addr: '0x77'
+    note: A2=VCC A1=VCC A0=VCC
+datasheets:
+- source: manufacturer
+  url: https://www.ti.com/lit/ds/symlink/tca9548a.pdf
+  revision: H
+  date: 2024-09
+notes: |
+  8-channel bidirectional I2C switch with reset. No register map: a single control byte selects
+  which downstream channels are connected (one bit per channel). The address is 1110 followed by the A2/A1/A0 pin
+  levels.

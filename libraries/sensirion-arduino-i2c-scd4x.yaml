@@ -1,0 +1,12 @@
+schema_version: 1
+key: sensirion-arduino-i2c-scd4x
+name: Sensirion I2C SCD4x
+repo: https://github.com/Sensirion/arduino-i2c-scd4x
+supports:
+  chips: [scd40, scd41]
+notes: |
+  Sensirion's own generated Arduino driver for the SCD4x family. Registered as the
+  independent implementation to diff against M5Unit-ENV for SCD40: M5Stack wraps the sensor
+  in the ENV-family API while this one exposes the raw command set, so the two should differ
+  in which commands they issue at init and how they wait for a measurement, and agree on the
+  wire framing of each command.

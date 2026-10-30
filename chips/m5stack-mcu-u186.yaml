@@ -1,0 +1,29 @@
+schema_version: 1
+key: m5stack-mcu-u186
+name: Unit Scroll controller
+manufacturer: M5Stack
+tags:
+- encoder
+- button
+- rgb-led
+- input
+interfaces:
+- bus: i2c
+  addresses:
+  - addr: '0x40'
+datasheets:
+- source: vendor
+  vendor: m5stack
+  url: https://raw.githubusercontent.com/m5stack/M5Unit-Scroll/main/docs/Unit_Scroll_Protocol.pdf
+  kind: protocol
+  revision: unstated
+  date: '2024-02-29'
+  note: register map for firmware version V1
+notes: |
+  Firmware-defined I2C slave: the I2C endpoint is an on-board STM32F030F4P6 running M5Stack
+  firmware (not a fixed-function IC), so the register map is product-specific. The map recorded in
+  profiles/ was recovered from the vendor Arduino library source and is marked inferred /
+  tentative; a capture is what confirms it. Modeled per-unit. Silicon: STM32F030F4P6.
+  An EC10E rotary encoder with push switch and a WS2812C RGB LED sit behind the firmware
+  register map.
+  Used in M5Stack Unit Scroll (U186) at 0x40.

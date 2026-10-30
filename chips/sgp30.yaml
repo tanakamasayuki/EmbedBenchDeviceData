@@ -1,0 +1,27 @@
+schema_version: 1
+key: sgp30
+name: SGP30
+manufacturer: Sensirion
+tags:
+- tvoc
+- eco2
+- gas
+- voc
+interfaces:
+- bus: i2c
+  addresses:
+  - addr: '0x58'
+datasheets:
+- source: manufacturer
+  url: https://sensirion.com/media/documents/984E0DD5/61644B8B/Sensirion_Gas_Sensors_Datasheet_SGP30.pdf
+  revision: '1.0'
+  date: 2020-05
+- source: vendor
+  vendor: m5stack
+  url: https://m5stack.oss-cn-shenzhen.aliyuncs.com/resource/docs/datasheet/unit/Sensirion_Gas_Sensors_SGP30_Datasheet.pdf
+  revision: '0.9'
+  date: 2017-08
+notes: |
+  Outputs eCO2 (ppm) then TVOC (ppb). After iaq_init the first ~15 s returns fixed defaults
+  (400 ppm / 0 ppb); measure_air_quality must be called at 1 s intervals to maintain the baseline
+  algorithm. Fixed address 0x58. M5Stack Unit Mini TVOC/eCO2 uses it at 0x58.

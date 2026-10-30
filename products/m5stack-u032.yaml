@@ -1,0 +1,12 @@
+schema_version: 1
+key: m5stack-u032
+name: Unit GPS
+vendor: m5stack
+sku: U032
+connector: HY2.0-4P (Grove)
+url: https://docs.m5stack.com/en/unit/gps
+interfaces:
+- uart
+components: []
+notes: |
+  GNSS receiver emitting NMEA sentences on Grove Port C.

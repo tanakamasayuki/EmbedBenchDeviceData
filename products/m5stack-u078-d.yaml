@@ -1,0 +1,13 @@
+schema_version: 1
+key: m5stack-u078-d
+name: UnitV2
+vendor: m5stack
+sku: U078-D
+connector: USB Type-C
+url: https://docs.m5stack.com/en/unit/unitv2
+interfaces:
+- host
+components: []
+notes: |
+  SigmaStar SSD202D Linux AI camera. It talks to a PC as a USB network device; there is no Grove
+  target on it.

@@ -1,0 +1,12 @@
+schema_version: 1
+key: m5stack-u184-us915
+name: Unit LoRaWAN-US915
+vendor: m5stack
+sku: U184-US915
+connector: HY2.0-4P (Grove)
+url: https://docs.m5stack.com/en/unit/Unit%20LoRaWAN-US915
+interfaces:
+- uart
+components: []
+notes: |
+  US915-band LoRaWAN module driven by AT commands on Grove Port C.

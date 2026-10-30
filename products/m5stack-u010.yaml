@@ -1,0 +1,13 @@
+schema_version: 1
+key: m5stack-u010
+name: Unit ToF
+vendor: m5stack
+sku: U010
+connector: HY2.0-4P (Grove)
+url: https://docs.m5stack.com/en/unit/tof
+interfaces:
+- i2c
+components:
+- chip: vl53l0x
+  bus: i2c
+  addr: '0x29'

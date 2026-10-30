@@ -1,0 +1,12 @@
+schema_version: 1
+key: m5stack-u004
+name: Unit PIR
+vendor: m5stack
+sku: U004
+connector: HY2.0-4P (Grove)
+url: https://docs.m5stack.com/en/unit/PIR
+interfaces:
+- gpio
+components: []
+notes: |
+  Pyroelectric motion detector; the output is a digital level on Grove Port B.

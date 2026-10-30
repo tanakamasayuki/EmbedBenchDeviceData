@@ -1,0 +1,13 @@
+schema_version: 1
+key: m5stack-u096
+name: Unit MIC
+vendor: m5stack
+sku: U096
+connector: HY2.0-4P (Grove)
+url: https://docs.m5stack.com/en/unit/mic
+interfaces:
+- gpio
+- analog
+components: []
+notes: |
+  Electret microphone with an envelope digital output and the raw analog voltage.

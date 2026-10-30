@@ -1,0 +1,22 @@
+schema_version: 1
+key: vl53l1x
+name: VL53L1X
+manufacturer: STMicroelectronics
+tags:
+- distance
+- tof
+- proximity
+interfaces:
+- bus: i2c
+  addresses:
+  - addr: '0x29'
+    note: default; software-reprogrammable via register 0x0001
+datasheets:
+- source: manufacturer
+  url: https://www.st.com/resource/en/datasheet/vl53l1x.pdf
+  revision: '8'
+  date: '2024-08-09'
+notes: |
+  Longer-range (~4 m) successor to the VL53L0X, with a different register set and API. ST
+  distributes a C API/ULD rather than a full register map. Default address 0x29, reprogrammable.
+  Distinct chip from [[vl53l0x]]. M5Stack Unit ToF4M uses it at 0x29.

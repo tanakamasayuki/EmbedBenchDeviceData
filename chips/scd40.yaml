@@ -1,0 +1,28 @@
+schema_version: 1
+key: scd40
+name: SCD40
+manufacturer: Sensirion
+tags:
+- co2
+- temperature
+- humidity
+interfaces:
+- bus: i2c
+  addresses:
+  - addr: '0x62'
+datasheets:
+- source: manufacturer
+  url: https://sensirion.com/media/documents/48C4B7FB/67FE0194/CD_DS_SCD4x_Datasheet_D1.pdf
+  revision: '1.7'
+  date: 2025-04
+- source: vendor
+  vendor: m5stack
+  url: https://m5stack.oss-cn-shenzhen.aliyuncs.com/resource/docs/datasheet/unit/co2/SCD40.pdf
+  revision: '1.2'
+  date: 2022-05
+notes: |
+  Photoacoustic CO2 sensor covered by the same datasheet and command set as the SCD41:
+  16-bit commands MSB first, 16-bit data words each followed by a CRC-8 byte (poly 0x31,
+  init 0xFF). Registered separately from SCD41 because the parts behave differently: SCD40
+  covers 400-2000 ppm and has no single-shot command (0x219D), which SCD41 adds. The I2C
+  address is fixed at 0x62.

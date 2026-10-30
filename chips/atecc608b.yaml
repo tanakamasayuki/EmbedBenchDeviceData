@@ -1,0 +1,27 @@
+schema_version: 1
+key: atecc608b
+name: ATECC608B
+manufacturer: Microchip
+tags:
+- security
+- crypto
+- secure-element
+interfaces:
+- bus: i2c
+  addresses:
+  - addr: '0x35'
+    note: TNGTLS pre-provisioned variant (M5Stack); generic default 0x60, reprogrammable via UpdateExtra
+datasheets:
+- source: manufacturer
+  url: https://ww1.microchip.com/downloads/en/DeviceDoc/ATECC608B-CryptoAuthentication-Device-Summary-Data-Sheet-DS40002239A.pdf
+  revision: DS40002239A
+  date: '2020'
+- source: manufacturer
+  url: https://ww1.microchip.com/downloads/en/DeviceDoc/ATECC608B-TNGTLS-CryptoAuthentication-Data-Sheet-DS40002250A.pdf
+  revision: DS40002250A
+  date: '2020'
+notes: |
+  CryptoAuthentication secure element (ECC P-256, ECDSA/ECDH, AES-128, SHA-256, 16-key EEPROM).
+  Only a summary datasheet is public (full datasheet under NDA). M5Stack Unit ID uses the
+  ATECC608B-TNGTLS (pre-provisioned) at 0x35; the address is changeable via the UpdateExtra
+  command.

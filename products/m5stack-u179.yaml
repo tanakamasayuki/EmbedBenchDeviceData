@@ -1,0 +1,13 @@
+schema_version: 1
+key: m5stack-u179
+name: Unit Mini CAN
+vendor: m5stack
+sku: U179
+connector: HY2.0-4P (Grove)
+url: https://docs.m5stack.com/en/unit/Unit-Mini%20CAN
+interfaces:
+- can
+components: []
+notes: |
+  TJA1051T CAN transceiver. The host side is a CAN_TX / CAN_RX pair and needs a CAN controller,
+  not an I2C master.

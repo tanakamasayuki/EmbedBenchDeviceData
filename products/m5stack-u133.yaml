@@ -1,0 +1,13 @@
+schema_version: 1
+key: m5stack-u133
+name: Unit KMeter
+vendor: m5stack
+sku: U133
+connector: HY2.0-4P (Grove)
+url: https://docs.m5stack.com/en/unit/kmeter
+interfaces:
+- i2c
+components:
+- chip: m5stack-mcu-u133
+  bus: i2c
+  addr: '0x66'

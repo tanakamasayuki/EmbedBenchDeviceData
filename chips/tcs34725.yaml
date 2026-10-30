@@ -1,0 +1,25 @@
+schema_version: 1
+key: tcs34725
+name: TCS34725
+manufacturer: ams-OSRAM
+tags:
+- color
+- light
+- rgb
+interfaces:
+- bus: i2c
+  addresses:
+  - addr: '0x29'
+datasheets:
+- source: manufacturer
+  url: https://look.ams-osram.com/m/7ec5bcc3e40679be/original/TCS3472-DS000390.pdf
+  revision: v1-04
+  date: 2020-04
+- source: vendor
+  vendor: m5stack
+  url: https://m5stack.oss-cn-shenzhen.aliyuncs.com/resource/docs/datasheet/unit/TCS3472_en.pdf
+  revision: v1-03
+  date: 2018-03
+notes: |
+  RGBC colour sensor at the fixed I2C address 0x29 (not selectable). The datasheet covers the
+  TCS3472 family (TCS34721/23/25/27); M5Stack Unit Color uses the TCS34725.

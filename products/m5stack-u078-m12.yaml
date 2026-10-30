@@ -1,0 +1,13 @@
+schema_version: 1
+key: m5stack-u078-m12
+name: UnitV2-M12
+vendor: m5stack
+sku: U078-M12
+connector: USB Type-C
+url: https://docs.m5stack.com/en/unit/unitv2_m12
+interfaces:
+- host
+components: []
+notes: |
+  SigmaStar SSD202D Linux AI camera with M12 lenses. It talks to a PC as a USB network device;
+  there is no Grove target on it.

@@ -1,0 +1,23 @@
+schema_version: 1
+key: st25r3916
+name: ST25R3916
+manufacturer: STMicroelectronics
+tags:
+- nfc
+- rfid
+interfaces:
+- bus: i2c
+  addresses:
+  - addr: '0x50'
+datasheets:
+- source: vendor
+  vendor: m5stack
+  url: https://m5stack-doc.oss-cn-shenzhen.aliyuncs.com/1229/st25r3916_datasheet.pdf
+  revision: DS12484 Rev 8
+  date: 2023-05
+notes: |
+  NFC reader / writer front end with an integrated 1.4 W driver, covering ISO 14443 A/B,
+  ISO 15693, FeliCa and NFC-A/B/F peer-to-peer. SPI or I2C host interface is selectable; on
+  I2C the 7-bit address is 0x50 at 100 or 400 kHz. The register space is split into space A
+  and space B reached through a space-B select command, so a generated driver has to model
+  the space switch instead of a flat register map.

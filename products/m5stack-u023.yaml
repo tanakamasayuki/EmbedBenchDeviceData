@@ -1,0 +1,12 @@
+schema_version: 1
+key: m5stack-u023
+name: Unit Relay
+vendor: m5stack
+sku: U023
+connector: HY2.0-4P (Grove)
+url: https://docs.m5stack.com/en/unit/relay
+interfaces:
+- gpio
+components: []
+notes: |
+  Single relay switched by a digital level (DIN) on Grove Port B.

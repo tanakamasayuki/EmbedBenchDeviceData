@@ -1,0 +1,28 @@
+schema_version: 1
+key: m5stack-mcu-u146
+name: Unit DigiClock controller
+manufacturer: M5Stack
+tags:
+- display
+- clock
+- led
+interfaces:
+- bus: i2c
+  addresses:
+  - addr: '0x30'
+datasheets:
+- source: vendor
+  vendor: m5stack
+  url: https://docs.m5stack.com/en/unit/digi_clock
+  kind: product-page
+  revision: unstated
+notes: |
+  Firmware-defined I2C slave: the I2C endpoint is an on-board STM32F030 running M5Stack
+  firmware (not a fixed-function IC), so the register map is product-specific. The map recorded in
+  profiles/ was recovered from the vendor Arduino library source and is marked inferred /
+  tentative; a capture is what confirms it. Modeled per-unit. Silicon: STM32F030. The MCU drives a
+  TM1637 LED display (2-wire, not standard I2C). No I2C protocol PDF exists (the M5Unit-DigiClock
+  repo has no docs/ folder); the docs page shows the register/character-map tables only as images:
+  https://static-cdn.m5stack.com/resource/docs/products/unit/digi_clock/digi_clock_sch_02.webp and
+  https://static-cdn.m5stack.com/resource/docs/products/unit/digi_clock/digi_clock_sch_03.webp
+  Used in M5Stack Unit DigiClock (U146) at 0x30.

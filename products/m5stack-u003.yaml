@@ -1,0 +1,12 @@
+schema_version: 1
+key: m5stack-u003
+name: Unit RGB
+vendor: m5stack
+sku: U003
+connector: HY2.0-4P (Grove)
+url: https://docs.m5stack.com/en/unit/rgb
+interfaces:
+- gpio
+components: []
+notes: |
+  Three SK6812 addressable LEDs driven by one timed data line on Grove Port B.

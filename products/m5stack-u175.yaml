@@ -1,0 +1,13 @@
+schema_version: 1
+key: m5stack-u175
+name: Unit Reflective IR
+vendor: m5stack
+sku: U175
+connector: HY2.0-4P (Grove)
+url: https://docs.m5stack.com/en/unit/Unit-Reflective%20IR
+interfaces:
+- gpio
+- analog
+components: []
+notes: |
+  Reflective IR sensor exposing both a threshold digital output and the raw analog voltage.

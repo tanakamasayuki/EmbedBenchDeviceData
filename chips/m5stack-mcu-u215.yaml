@@ -1,0 +1,28 @@
+schema_version: 1
+key: m5stack-mcu-u215
+name: Unit CardKB2 controller
+manufacturer: M5Stack
+tags:
+- keyboard
+- input
+interfaces:
+- bus: i2c
+  addresses:
+  - addr: '0x5f'
+datasheets:
+- source: vendor
+  vendor: m5stack
+  url: https://m5stack-doc.oss-cn-shenzhen.aliyuncs.com/1225/Unit_CardKB2_User_Manual_EN.pdf
+  kind: manual
+  revision: unstated
+notes: |
+  Firmware-defined I2C slave: the I2C endpoint is an on-board ESP32-C61 running M5Stack
+  firmware (not a fixed-function IC), so the register map is product-specific. The map recorded in
+  profiles/ was recovered from the vendor Arduino library source and is marked inferred /
+  tentative; a capture is what confirms it. Modeled per-unit. Silicon: ESP32-C61HF4.
+  Four host modes are selectable from the keyboard (I2C is the factory default, then UART,
+  BLE HID and ESP-NOW), so I2C data exists only while the unit is in I2C mode. The user manual
+  documents the key-to-ASCII mapping and, in its keypad data register section, states the
+  address 0x5f, the 100kHz bus rate and the firmware-version register 0xf1; the vendor library
+  (M5Unit-KEYBOARD, UnitCardKB2 DEFAULT_ADDRESS) agrees. Not yet confirmed on a bus.
+  Used in M5Stack Unit CardKB2 (U215) at 0x5f.

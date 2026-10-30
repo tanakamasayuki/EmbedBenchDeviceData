@@ -1,0 +1,25 @@
+schema_version: 1
+key: m5stack-mcu-u164
+name: Unit AC Measure controller
+manufacturer: M5Stack
+tags:
+- power
+- ac
+- metering
+interfaces:
+- bus: i2c
+  addresses:
+  - addr: '0x42'
+datasheets:
+- source: vendor
+  vendor: m5stack
+  url: https://m5stack-doc.oss-cn-shenzhen.aliyuncs.com/744/UnitACMeasure.pdf
+  kind: protocol
+  revision: unstated
+  date: '2023-03-24'
+  note: register map for firmware version V1
+notes: |
+  Firmware-defined I2C slave: the I2C endpoint is an on-board STM32G030 running M5Stack
+  firmware (not a fixed-function IC), so the register map is product-specific. The map recorded in
+  profiles/ was recovered from the vendor Arduino library source and is marked inferred /
+  tentative; a capture is what confirms it. Modeled per-unit. Silicon: STM32G030. The MCU reads an HLW8032 energy-metering chip (UART, not on the I2C bus). Used in M5Stack Unit AC Measure (U164) at 0x42.

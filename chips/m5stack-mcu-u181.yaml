@@ -1,0 +1,25 @@
+schema_version: 1
+key: m5stack-mcu-u181
+name: Unit BLDC Driver controller
+manufacturer: M5Stack
+tags:
+- motor
+- bldc
+- actuator
+interfaces:
+- bus: i2c
+  addresses:
+  - addr: '0x65'
+datasheets:
+- source: vendor
+  vendor: m5stack
+  url: https://m5stack-doc.oss-cn-shenzhen.aliyuncs.com/772/Unit_BLDC_I2C_Protocol.pdf
+  kind: protocol
+  revision: unstated
+  date: '2023-12-05'
+  note: register map for firmware version V1
+notes: |
+  Firmware-defined I2C slave: the I2C endpoint is an on-board STM32G030 running M5Stack
+  firmware (not a fixed-function IC), so the register map is product-specific. The map recorded in
+  profiles/ was recovered from the vendor Arduino library source and is marked inferred /
+  tentative; a capture is what confirms it. Modeled per-unit. Silicon: STM32G030. The MCU drives a DRV11873 3-phase BLDC gate driver (not on the I2C bus). Used in M5Stack Unit BLDC Driver (U181) at 0x65.

@@ -1,0 +1,30 @@
+schema_version: 1
+key: bh1750
+name: BH1750FVI
+manufacturer: ROHM
+tags:
+- light
+- illuminance
+- lux
+interfaces:
+- bus: i2c
+  addresses:
+  - addr: '0x23'
+    note: ADDR=GND (low)
+  - addr: '0x5c'
+    note: ADDR=VDD (high)
+datasheets:
+- source: reseller
+  url: https://www.mouser.com/datasheet/2/348/bh1750fvi-e-186247.pdf
+  revision: D
+  date: 2011-11
+- source: reseller
+  url: https://cdn.velleman.eu/downloads/29/infosheets/bh1750fvi-e_datasheet.pdf
+  revision: C
+  date: 2010-04
+notes: |
+  Ambient light sensor; illuminance = raw / 1.2 lx. The ADDR pin selects 0x23 (low) or 0x5c
+  (high). Measurement time ~120 ms (H-res) / ~16 ms (L-res). M5Stack Unit DLight uses it at 0x23.
+  ROHM has discontinued the part and removed the datasheet from its own site
+  (fscdn.rohm.com/.../bh1750fvi-e.pdf now 404s), so only reseller-hosted copies remain: Mouser
+  carries Rev.D (2011.11) and Velleman an older Rev.C (2010.04).

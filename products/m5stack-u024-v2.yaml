@@ -1,0 +1,13 @@
+schema_version: 1
+key: m5stack-u024-v2
+name: Unit Joystick2
+vendor: m5stack
+sku: U024-V2
+connector: HY2.0-4P (Grove)
+url: https://docs.m5stack.com/en/unit/Unit-JoyStick2
+interfaces:
+- i2c
+components:
+- chip: m5stack-mcu-u024-v2
+  bus: i2c
+  addr: '0x63'

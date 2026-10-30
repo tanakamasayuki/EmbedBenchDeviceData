@@ -1,0 +1,14 @@
+schema_version: 1
+key: m5stack-u212
+name: Unit ChainBus
+vendor: m5stack
+sku: U212
+connector: HY2.0-4P (Grove)
+url: https://docs.m5stack.com/en/unit/Unit_ChainBus
+interfaces:
+- uart
+- host
+components: []
+notes: |
+  Chain-protocol converter: the host talks to it over the UART daisy chain (PORT.IN / PORT.OUT).
+  The SDA / SCL on its expansion port is the unit's own master side, not a target.

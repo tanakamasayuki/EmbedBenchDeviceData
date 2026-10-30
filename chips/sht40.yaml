@@ -1,0 +1,31 @@
+schema_version: 1
+key: sht40
+name: SHT40
+manufacturer: Sensirion
+tags:
+- temperature
+- humidity
+interfaces:
+- bus: i2c
+  addresses:
+  - addr: '0x44'
+    note: SHT40-AD1B (default grade; ENV-IV variant)
+  - addr: '0x45'
+    note: SHT40-BD1B
+  - addr: '0x46'
+    note: SHT40-CD1B
+datasheets:
+- source: manufacturer
+  url: https://sensirion.com/media/documents/33FD6951/6555C40E/Sensirion_Datasheet_SHT4x.pdf
+  revision: '6.4'
+  date: 2023-11
+- source: vendor
+  vendor: m5stack
+  url: https://m5stack.oss-cn-shenzhen.aliyuncs.com/resource/docs/products/unit/ENV%E2%85%A3%20Unit/SHT40.pdf
+  revision: '2'
+  date: 2021-07
+notes: |
+  The I2C address is factory-fixed per ordering variant (0x44 / 0x45 / 0x46), not pin-selectable.
+  SHT40 is the base accuracy grade of the SHT4x family (SHT41 / SHT45 are tighter, sharing the
+  command set). The Sensirion resource permalink (sensirion.com/resource/datasheet/sht4x) always
+  serves the latest revision. M5Stack Unit ENV-IV uses SHT40-AD1B at 0x44 (product marked EOL).

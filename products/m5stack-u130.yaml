@@ -1,0 +1,12 @@
+schema_version: 1
+key: m5stack-u130
+name: Unit Tube Pressure
+vendor: m5stack
+sku: U130
+connector: HY2.0-4P (Grove)
+url: https://docs.m5stack.com/en/unit/tube_pressure
+interfaces:
+- analog
+components: []
+notes: |
+  -100 to 200 kPa pressure gauge; the output is an analog voltage.

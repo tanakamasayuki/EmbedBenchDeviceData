@@ -1,0 +1,13 @@
+schema_version: 1
+key: m5stack-u151
+name: Unit TypeC to Grove
+vendor: m5stack
+sku: U151
+connector: HY2.0-4P (Grove)
+url: https://docs.m5stack.com/en/unit/typec2grove
+interfaces:
+- none
+components: []
+notes: |
+  Passive Grove splitter with USB Type-C power injection; the two signal lines pass through
+  unchanged.

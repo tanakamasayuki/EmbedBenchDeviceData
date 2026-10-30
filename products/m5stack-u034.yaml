@@ -1,0 +1,13 @@
+schema_version: 1
+key: m5stack-u034
+name: Unit RS485
+vendor: m5stack
+sku: U034
+connector: HY2.0-4P (Grove)
+url: https://docs.m5stack.com/en/unit/rs485
+interfaces:
+- uart
+components: []
+notes: |
+  TTL-to-RS485 level converter. The host side is plain UART on Grove Port C; the unit itself
+  holds no addressable device.

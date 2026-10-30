@@ -1,0 +1,14 @@
+schema_version: 1
+key: m5stack-u019
+name: Unit Earth
+vendor: m5stack
+sku: U019
+connector: HY2.0-4P (Grove)
+url: https://docs.m5stack.com/en/unit/earth
+interfaces:
+- gpio
+- analog
+components: []
+notes: |
+  Resistive soil-moisture probe with both a comparator digital output and the raw analog
+  voltage.

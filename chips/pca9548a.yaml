@@ -1,0 +1,34 @@
+schema_version: 1
+key: pca9548a
+name: PCA9548A
+manufacturer: NXP
+tags:
+- i2c-mux
+- i2c-switch
+interfaces:
+- bus: i2c
+  addresses:
+  - addr: '0x70'
+    note: A2=GND A1=GND A0=GND (base)
+  - addr: '0x71'
+    note: A2=GND A1=GND A0=VDD
+  - addr: '0x72'
+    note: A2=GND A1=VDD A0=GND
+  - addr: '0x73'
+    note: A2=GND A1=VDD A0=VDD
+  - addr: '0x74'
+    note: A2=VDD A1=GND A0=GND
+  - addr: '0x75'
+    note: A2=VDD A1=GND A0=VDD
+  - addr: '0x76'
+    note: A2=VDD A1=VDD A0=GND
+  - addr: '0x77'
+    note: A2=VDD A1=VDD A0=VDD
+datasheets:
+- source: manufacturer
+  url: https://www.nxp.com/docs/en/data-sheet/PCA9548A.pdf
+  revision: '5.1'
+  date: '2015-10-01'
+notes: |
+  8-channel bidirectional I2C switch. No register map: a single control byte selects which of the
+  8 downstream channels are connected (one bit per channel; multiple may be enabled). The address is 1110 followed by the A2/A1/A0 pin levels.

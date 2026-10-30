@@ -1,0 +1,13 @@
+schema_version: 1
+key: m5stack-u113
+name: Unit RF433R
+vendor: m5stack
+sku: U113
+connector: HY2.0-4P (Grove)
+url: https://docs.m5stack.com/en/unit/rf433_r
+interfaces:
+- gpio
+components: []
+notes: |
+  SYN531R 433.92 MHz ASK receiver; the demodulated bitstream comes out on one line (RF_RX) and
+  is decoded in host software.

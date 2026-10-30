@@ -1,0 +1,21 @@
+schema_version: 1
+key: adxl345
+name: ADXL345
+manufacturer: Analog Devices
+tags:
+- accelerometer
+- motion
+interfaces:
+- bus: i2c
+  addresses:
+  - addr: '0x53'
+    note: SDO/ALT ADDRESS=GND
+  - addr: '0x1d'
+    note: SDO/ALT ADDRESS=VDD
+datasheets:
+- source: manufacturer
+  url: https://www.analog.com/media/en/technical-documentation/data-sheets/ADXL345.pdf
+  revision: G
+  date: 2022-05
+notes: |
+  The SDO/ALT ADDRESS pin selects 0x53 (GND) or 0x1d (VDD). M5Stack Unit Accel uses it at 0x53.

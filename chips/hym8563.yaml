@@ -1,0 +1,19 @@
+schema_version: 1
+key: hym8563
+name: HYM8563
+manufacturer: Haoyu Microelectronics
+tags:
+- rtc
+- clock
+interfaces:
+- bus: i2c
+  addresses:
+  - addr: '0x51'
+datasheets:
+- source: reseller
+  url: https://www.alldatasheet.com/datasheet-pdf/pdf/1775197/HAOYU/HYM8563.html
+  revision: unstated
+notes: |
+  Real-time clock/calendar, register- and address-compatible with the NXP PCF8563 (fixed address
+  0x51). No stable manufacturer-hosted datasheet URL; behaviour follows the PCF8563. M5Stack Unit
+  RTC uses the HYM8563 at 0x51 (M5Stack's older RTCs use the equivalent BM8563).

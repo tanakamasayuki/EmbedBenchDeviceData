@@ -1,0 +1,13 @@
+schema_version: 1
+key: m5stack-u123
+name: Unit Fader
+vendor: m5stack
+sku: U123
+connector: HY2.0-4P (Grove)
+url: https://docs.m5stack.com/en/unit/fader
+interfaces:
+- gpio
+- analog
+components: []
+notes: |
+  35 mm slide potentiometer on the analog line, with 14 SK6812 LEDs on the other line.

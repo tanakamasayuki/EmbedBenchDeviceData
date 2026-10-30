@@ -1,0 +1,13 @@
+schema_version: 1
+key: m5stack-u196
+name: Unit Mini ToF-90°
+vendor: m5stack
+sku: U196
+connector: HY2.0-4P (Grove)
+url: https://docs.m5stack.com/en/unit/Unit%20Mini%20ToF-90
+interfaces:
+- i2c
+components:
+- chip: vl53l0x
+  bus: i2c
+  addr: '0x29'

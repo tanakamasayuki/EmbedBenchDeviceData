@@ -1,0 +1,12 @@
+schema_version: 1
+key: m5stack-u125
+name: Unit Power
+vendor: m5stack
+sku: U125
+connector: HY2.0-4P (Grove)
+url: https://docs.m5stack.com/en/unit/power
+interfaces:
+- none
+components: []
+notes: |
+  ME3116AM6G DC-DC buck supply (6-24 V in, 5 V out) feeding a Grove port; power only.

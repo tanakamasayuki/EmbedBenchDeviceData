@@ -1,0 +1,13 @@
+schema_version: 1
+key: m5stack-u178
+name: Unit Synth
+vendor: m5stack
+sku: U178
+connector: HY2.0-4P (Grove)
+url: https://docs.m5stack.com/en/unit/Unit-Synth
+interfaces:
+- uart
+components: []
+notes: |
+  SAM2695 MIDI synthesiser; the host sends MIDI bytes on the Port C TX line (RX only from the
+  unit's side).

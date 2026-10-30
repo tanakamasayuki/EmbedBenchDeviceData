@@ -1,0 +1,13 @@
+schema_version: 1
+key: m5stack-u098-b1
+name: Unit Ultrasonic-I2C
+vendor: m5stack
+sku: U098-B1
+connector: HY2.0-4P (Grove)
+url: https://docs.m5stack.com/en/unit/ULTRASONIC%20I2C
+interfaces:
+- i2c
+components:
+- chip: rcwl-9620
+  bus: i2c
+  addr: '0x57'

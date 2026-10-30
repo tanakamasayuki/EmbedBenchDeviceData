@@ -1,0 +1,22 @@
+schema_version: 1
+key: sths34pf80
+name: STHS34PF80
+manufacturer: STMicroelectronics
+tags:
+- presence
+- motion
+- infrared
+- temperature
+interfaces:
+- bus: i2c
+  addresses:
+  - addr: '0x5a'
+datasheets:
+- source: manufacturer
+  url: https://www.st.com/resource/en/datasheet/sths34pf80.pdf
+  revision: '2'
+  date: '2023-07-05'
+notes: |
+  TMOS infrared sensor for presence and motion detection. Fixed I2C address 0x5a.
+  Presence/motion are computed by embedded functions (configured via a function-register block).
+  M5Stack Unit TMOS PIR uses it at 0x5a.

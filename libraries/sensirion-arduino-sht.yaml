@@ -1,0 +1,10 @@
+schema_version: 1
+key: sensirion-arduino-sht
+name: arduino-sht
+repo: https://github.com/Sensirion/arduino-sht
+supports:
+  chips: [sht30]
+notes: |
+  Sensirion's own Arduino driver for the SHT3x / SHT4x families. Used as the independent
+  implementation to diff against M5Unit-ENV for SHT30: it exposes the repeatability axis as
+  SHTAccuracy, so the same three measurement grades can be compared transaction by transaction.

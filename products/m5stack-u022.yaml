@@ -1,0 +1,12 @@
+schema_version: 1
+key: m5stack-u022
+name: Unit Proto
+vendor: m5stack
+sku: U022
+connector: HY2.0-4P (Grove)
+url: https://docs.m5stack.com/en/unit/proto
+interfaces:
+- none
+components: []
+notes: |
+  77-hole prototyping board with a Grove port; whatever it carries is the user's own circuit.

@@ -1,0 +1,51 @@
+schema_version: 1
+key: ina226
+name: INA226
+manufacturer: Texas Instruments
+tags:
+- current
+- voltage
+- power
+interfaces:
+- bus: i2c
+  addresses:
+  - addr: '0x40'
+    note: A1=GND A0=GND (default)
+  - addr: '0x41'
+    note: A1=GND A0=VS
+  - addr: '0x42'
+    note: A1=GND A0=SDA
+  - addr: '0x43'
+    note: A1=GND A0=SCL
+  - addr: '0x44'
+    note: A1=VS A0=GND
+  - addr: '0x45'
+    note: A1=VS A0=VS
+  - addr: '0x46'
+    note: A1=VS A0=SDA
+  - addr: '0x47'
+    note: A1=VS A0=SCL
+  - addr: '0x48'
+    note: A1=SDA A0=GND
+  - addr: '0x49'
+    note: A1=SDA A0=VS
+  - addr: '0x4a'
+    note: A1=SDA A0=SDA
+  - addr: '0x4b'
+    note: A1=SDA A0=SCL
+  - addr: '0x4c'
+    note: A1=SCL A0=GND
+  - addr: '0x4d'
+    note: A1=SCL A0=VS
+  - addr: '0x4e'
+    note: A1=SCL A0=SDA
+  - addr: '0x4f'
+    note: A1=SCL A0=SCL
+datasheets:
+- source: manufacturer
+  url: https://www.ti.com/lit/ds/symlink/ina226.pdf
+  revision: SBOS547C
+  date: 2026-08
+notes: |
+  A0 and A1 each take four levels (GND, VS, SDA, SCL), so the 16 addresses 0x40-0x4f are all
+  reachable (datasheet Table 6-2). M5Stack Unit INA226-10A / INA226-1A use it at 0x41.

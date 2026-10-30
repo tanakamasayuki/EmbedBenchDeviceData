@@ -1,0 +1,12 @@
+schema_version: 1
+key: m5stack-u102
+name: Unit Catch
+vendor: m5stack
+sku: U102
+connector: 3-pin servo lead (HY2.0-4P adapter included)
+url: https://docs.m5stack.com/en/unit/catch
+interfaces:
+- gpio
+components: []
+notes: |
+  SG92R servo gripper driven by a 50 Hz PWM pulse (0.5-1 ms for the usable 0-45 degree range).

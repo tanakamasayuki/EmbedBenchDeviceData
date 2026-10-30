@@ -1,0 +1,12 @@
+schema_version: 1
+key: m5stack-u020
+name: Unit 3.96
+vendor: m5stack
+sku: U020
+connector: HY2.0-4P (Grove)
+url: https://docs.m5stack.com/en/unit/396port
+interfaces:
+- none
+components: []
+notes: |
+  Passive HY2.0-4P to HT3.96 terminal adapter.

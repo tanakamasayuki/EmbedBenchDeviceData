@@ -1,0 +1,12 @@
+schema_version: 1
+key: m5stack-u193
+name: Unit Puzzle
+vendor: m5stack
+sku: U193
+connector: HY2.0-4P (Grove)
+url: https://docs.m5stack.com/en/unit/Unit-Puzzle
+interfaces:
+- gpio
+components: []
+notes: |
+  8x8 array of 64 WS2812E LEDs on one timed data line.

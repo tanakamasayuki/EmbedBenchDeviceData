@@ -1,0 +1,6 @@
+schema_version: 1
+key: m5stack-m5unit-nfc
+name: M5Unit-NFC
+repo: https://github.com/m5stack/M5Unit-NFC
+supports:
+  chips: [st25r3916]

@@ -1,0 +1,20 @@
+schema_version: 1
+key: mfrc522
+name: MFRC522
+manufacturer: NXP
+tags:
+- rfid
+- nfc
+interfaces:
+- bus: i2c
+  addresses:
+  - addr: '0x28'
+    note: I2C mode; address set by ADR0-ADR5 pins
+datasheets:
+- source: manufacturer
+  url: https://www.nxp.com/docs/en/data-sheet/MFRC522.pdf
+  revision: '3.9'
+  date: '2016-04-27'
+notes: |
+  13.56 MHz RFID/NFC reader. Supports SPI/I2C/UART selected by pins; in I2C mode the address is
+  set by the ADR0-ADR5 pins. M5Stack Unit RFID uses it at 0x28.

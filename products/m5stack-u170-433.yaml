@@ -1,0 +1,12 @@
+schema_version: 1
+key: m5stack-u170-433
+name: Unit LoRaE220-433
+vendor: m5stack
+sku: U170-433
+connector: HY2.0-4P (Grove)
+url: https://docs.m5stack.com/en/unit/Unit%20LoRaE220-433
+interfaces:
+- uart
+components: []
+notes: |
+  LLCC68 433 MHz LoRa module on Grove Port C.

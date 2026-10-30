@@ -1,0 +1,13 @@
+schema_version: 1
+key: m5stack-u006
+name: Unit Hub
+vendor: m5stack
+sku: U006
+connector: HY2.0-4P (Grove)
+url: https://docs.m5stack.com/en/unit/hub
+interfaces:
+- none
+components: []
+notes: |
+  Passive 1-to-3 HY2.0-4P splitter; the three ports are wired in parallel, so it carries no
+  device of its own.

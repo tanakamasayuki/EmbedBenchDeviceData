@@ -1,0 +1,17 @@
+schema_version: 1
+key: m5stack-u188-lite
+name: Unit RollerCAN-Lite
+vendor: m5stack
+sku: U188-Lite
+connector: HY2.0-4P (Grove)
+url: https://docs.m5stack.com/en/unit/Unit-RollerCAN%20Lite
+interfaces:
+- i2c
+- can
+components:
+- chip: m5stack-mcu-u188
+  bus: i2c
+  addr: '0x64'
+notes: |
+  Controllable over I2C on the Grove port or over CAN on the XT30 PwrCAN port; the two have
+  separate protocol documents.

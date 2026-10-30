@@ -1,0 +1,27 @@
+schema_version: 1
+key: mpu6886
+name: MPU6886
+manufacturer: TDK InvenSense
+tags:
+- imu
+- accelerometer
+- gyroscope
+interfaces:
+- bus: i2c
+  addresses:
+  - addr: '0x68'
+    note: AD0=GND (low)
+  - addr: '0x69'
+    note: AD0=VDD (high)
+datasheets:
+- source: vendor
+  vendor: m5stack
+  url: https://m5stack.oss-cn-shenzhen.aliyuncs.com/resource/docs/datasheet/core/MPU-6886-000193%2Bv1.1_GHIC_en.pdf
+  revision: '1.1'
+  date: '2017-03-29'
+  note: InvenSense document DS-000193
+notes: |
+  The AD0 pin selects address 0x68 (low) or 0x69 (high). M5Stack Unit Mini IMU uses it at 0x68.
+  TDK InvenSense no longer publishes an MPU-6886 product page or datasheet (the part is retired
+  and every invensense.tdk.com URL for it now 404s), so the M5Stack-hosted copy of InvenSense
+  document DS-000193 rev 1.1 is the best available source.

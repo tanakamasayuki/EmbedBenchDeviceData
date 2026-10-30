@@ -1,0 +1,9 @@
+schema_version: 1
+key: m5stack-m5unit-roller
+name: M5Unit-Roller
+repo: https://github.com/m5stack/M5Unit-Roller
+supports:
+  chips: [m5stack-mcu-u182, m5stack-mcu-u188]
+notes: |
+  Covers the RS485 and the CAN variant of the Roller servo. Only the I2C path is in scope
+  here; the same library also speaks RS485 / CAN, which this project does not capture.

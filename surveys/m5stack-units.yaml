@@ -1,0 +1,52 @@
+schema_version: 1
+key: m5stack-units
+vendor: m5stack
+line: Unit
+sku_pattern: "^U[0-9]{3}"
+method: tools/survey_m5stack.py
+source: https://docs.m5stack.com/sitemap.xml
+out_of_line:
+  - sku: A035/A035-B/A035-C/A035-D/A035-E
+    page: neopixel
+    reason: Unit RGB LED, an SK6812 strip sold under the accessory line (A prefix)
+  - sku: A041-B
+    page: butterfly
+    reason: Butterfly Launcher, a MEGA328 toy launcher sold under the accessory line (A prefix)
+  - sku: A042
+    page: neoflash
+    reason: >-
+      Unit NeoFlash, a 24x8 RGB panel sold under the accessory line (A prefix); it carries
+      pass-through I2C expansion ports but is itself driven by a single-wire LED bus
+  - sku: A043
+    page: catear
+    reason: CatEar, a 118-LED headband sold under the accessory line (A prefix)
+  - sku: A045
+    page: hex
+    reason: Unit HEX, a 37-LED hexagonal board sold under the accessory line (A prefix)
+  - sku: A045-B
+    page: neohex
+    reason: Unit NeoHEX, a 37-LED hexagonal panel sold under the accessory line (A prefix)
+  - sku: A048
+    page: trace
+    reason: Unit Trace, a 4-channel IR line follower sold under the accessory line (A prefix)
+  - sku: A051
+    page: m5-bit
+    reason: Unit M5Bit, a micro:bit serial adapter sold under the accessory line (A prefix)
+  - sku: A093/A093-B/A093-C/A093-D
+    page: rgb_led_strip
+    reason: Unit RGB LED Strip, an SK6812 strip sold under the accessory line (A prefix)
+pending:
+  []
+notes: |
+  products/ holds every SKU of this line, whether or not it carries an I2C device; each entry
+  says with interfaces what its unit actually speaks. So this file no longer records exclusions.
+  What it still records is the sweep itself: where the line was enumerated from, and which pages
+  under that URL space belong to a different line, so that a later sweep does not triage them
+  again and "absent from products/" stays unambiguous.
+  pending is for a SKU of this line that has been found but not yet classified. It is empty.
+  Evidence for a classification is the product page's pin map, which names UART_RX / UART_TX,
+  CAN_TX / CAN_RX, an analog output or a plain digital signal where there is no I2C bus. Two
+  traps are worth remembering: M5Stack labels Grove Port A pins SDA / SCL even when a Unit
+  drives them as plain GPIO (Unit Ultrasonic-IO), and an ESP32-based board exposes SDA / SCL as
+  a master, which makes it a host rather than a target.
+  page is the slug under https://docs.m5stack.com/en/unit/ (slugs may contain spaces).

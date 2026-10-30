@@ -1,0 +1,25 @@
+schema_version: 1
+key: m5stack-mcu-u041-b
+name: Unit PbHub v1.1 controller
+manufacturer: M5Stack
+tags:
+- gpio
+- hub
+- expander
+interfaces:
+- bus: i2c
+  addresses:
+  - addr: '0x61'
+datasheets:
+- source: vendor
+  vendor: m5stack
+  url: https://raw.githubusercontent.com/m5stack/M5Unit-PbHub/main/docs/V2/PbHub_V2_I2C_Protocol.pdf
+  kind: protocol
+  revision: unstated
+  date: '2025-03-11'
+  note: register map for firmware version V1
+notes: |
+  Firmware-defined I2C slave: the I2C endpoint is an on-board STM32F030 running M5Stack
+  firmware (not a fixed-function IC), so the register map is product-specific. The map recorded in
+  profiles/ was recovered from the vendor Arduino library source and is marked inferred /
+  tentative; a capture is what confirms it. Modeled per-unit. Silicon: STM32F030. Used in M5Stack Unit PbHub v1.1 (U041-B) at 0x61.

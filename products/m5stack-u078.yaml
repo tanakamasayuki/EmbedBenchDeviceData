@@ -1,0 +1,12 @@
+schema_version: 1
+key: m5stack-u078
+name: UnitV-OV2640
+vendor: m5stack
+sku: U078
+connector: HY2.0-4P (Grove)
+url: https://docs.m5stack.com/en/unit/unitv
+interfaces:
+- host
+components: []
+notes: |
+  Kendryte K210 AI camera (OV2640). The Grove pins belong to the K210, which is the master.

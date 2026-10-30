@@ -1,0 +1,14 @@
+schema_version: 1
+key: m5stack-u098-b2
+name: Unit Ultrasonic-IO
+vendor: m5stack
+sku: U098-B2
+connector: HY2.0-4P (Grove)
+url: https://docs.m5stack.com/en/unit/UNIT%20SONIC%20IO
+interfaces:
+- gpio
+components: []
+notes: |
+  RCWL-9620 ultrasonic ranger wired for trigger / echo pulses. The pin map labels the port SDA /
+  SCL because M5Stack labels Grove Port A that way, but the unit is not on a bus; the I2C
+  variant is U098-B1.

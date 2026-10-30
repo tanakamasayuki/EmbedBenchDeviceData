@@ -1,0 +1,12 @@
+schema_version: 1
+key: m5stack-u082
+name: TimerCamera
+vendor: m5stack
+sku: U082
+connector: HY2.0-4P (Grove)
+url: https://docs.m5stack.com/en/unit/timercam
+interfaces:
+- host
+components: []
+notes: |
+  ESP32 + OV3660 timer camera. The Grove pins are the on-board ESP32's own master-side signals.

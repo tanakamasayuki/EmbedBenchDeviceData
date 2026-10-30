@@ -1,0 +1,27 @@
+schema_version: 1
+key: ads1115
+name: ADS1115
+manufacturer: Texas Instruments
+tags:
+- adc
+- analog-input
+interfaces:
+- bus: i2c
+  addresses:
+  - addr: '0x48'
+    note: ADDR=GND
+  - addr: '0x49'
+    note: ADDR=VDD
+  - addr: '0x4a'
+    note: ADDR=SDA
+  - addr: '0x4b'
+    note: ADDR=SCL
+datasheets:
+- source: manufacturer
+  url: https://www.ti.com/lit/ds/symlink/ads1115.pdf
+  revision: SBAS444E
+  date: 2024-12
+notes: |
+  The ADDR pin gives a 4-way address select (GND=0x48, VDD=0x49, SDA=0x4a, SCL=0x4b).
+  Same register map as ADS1113/ADS1114/ADS1115. M5Stack Unit AMeter uses it at 0x48,
+  Unit VMeter at 0x49.

@@ -1,0 +1,9 @@
+schema_version: 1
+key: adafruit-bmp280-library
+name: Adafruit BMP280 Library
+repo: https://github.com/adafruit/Adafruit_BMP280_Library
+supports:
+  chips: [bmp280]
+notes: |
+  The library name is the one library.properties declares (and the Arduino Library
+  Manager lists); the repository is Adafruit_BMP280_Library, which the key records.

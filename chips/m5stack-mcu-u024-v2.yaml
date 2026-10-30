@@ -1,0 +1,25 @@
+schema_version: 1
+key: m5stack-mcu-u024-v2
+name: Unit Joystick2 controller
+manufacturer: M5Stack
+tags:
+- joystick
+- input
+interfaces:
+- bus: i2c
+  addresses:
+  - addr: '0x63'
+datasheets:
+- source: vendor
+  vendor: m5stack
+  url: https://docs.m5stack.com/en/unit/Unit-JoyStick2
+  kind: product-page
+  revision: unstated
+notes: |
+  Firmware-defined I2C slave: the I2C endpoint is an on-board STM32G030 running M5Stack
+  firmware (not a fixed-function IC), so the register map is product-specific. The map recorded in
+  profiles/ was recovered from the vendor Arduino library source and is marked inferred /
+  tentative; a capture is what confirms it. Modeled per-unit. Silicon: STM32G030. The I2C protocol on
+  the docs page is only an inline image, not a PDF:
+  https://m5stack.oss-cn-shenzhen.aliyuncs.com/resource/docs/products/unit/Unit-JoyStick2/5c89a128c77c6e9b7b13f85a8abdb91.png
+  Used in M5Stack Unit Joystick2 (U024-V2) at 0x63.

@@ -1,0 +1,25 @@
+schema_version: 1
+key: m5stack-mcu-u180
+name: Unit Weight-I2C controller
+manufacturer: M5Stack
+tags:
+- weight
+- loadcell
+- adc
+interfaces:
+- bus: i2c
+  addresses:
+  - addr: '0x26'
+datasheets:
+- source: vendor
+  vendor: m5stack
+  url: https://raw.githubusercontent.com/m5stack/M5Unit-WeightI2C/main/docs/Unit_Weight_I2C_Protocol.pdf
+  kind: protocol
+  revision: unstated
+  date: '2023-12-11'
+  note: register map for firmware version V1
+notes: |
+  Firmware-defined I2C slave: the I2C endpoint is an on-board STM32F030 running M5Stack
+  firmware (not a fixed-function IC), so the register map is product-specific. The map recorded in
+  profiles/ was recovered from the vendor Arduino library source and is marked inferred /
+  tentative; a capture is what confirms it. Modeled per-unit. Silicon: STM32F030. The MCU reads an HX711 load-cell ADC (not on the I2C bus). Used in M5Stack Unit Weight-I2C (U180) at 0x26.

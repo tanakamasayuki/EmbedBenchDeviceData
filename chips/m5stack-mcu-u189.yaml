@@ -1,0 +1,29 @@
+schema_version: 1
+key: m5stack-mcu-u189
+name: Unit TimerPWR controller
+manufacturer: M5Stack
+tags:
+- power
+- current
+- voltage
+- timer
+interfaces:
+- bus: i2c
+  addresses:
+  - addr: '0x56'
+datasheets:
+- source: vendor
+  vendor: m5stack
+  url: https://m5stack.oss-cn-shenzhen.aliyuncs.com/resource/docs/products/unit/Unit-TimerPWR/U189_UnitTimerPwr_I2C_Protocol_V1_20241018.pdf
+  kind: protocol
+  revision: unstated
+  date: '2024-03-11'
+  note: register map for firmware version V1
+notes: |
+  Firmware-defined I2C slave: the I2C endpoint is an on-board STM32G031G8U6 running M5Stack
+  firmware (not a fixed-function IC), so the register map is product-specific. The map recorded in
+  profiles/ was recovered from the vendor Arduino library source and is marked inferred /
+  tentative; a capture is what confirms it. Modeled per-unit. Silicon: STM32G031G8U6.
+  An INA3221 measures current and voltage on an internal I2C bus behind this MCU, so it is
+  not addressable from the Grove port and is not part of the product bill of materials.
+  Used in M5Stack Unit TimerPWR (U189) at 0x56.

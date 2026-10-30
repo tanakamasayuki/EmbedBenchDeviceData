@@ -1,0 +1,26 @@
+schema_version: 1
+key: qmp6988
+name: QMP6988
+manufacturer: QST Corporation
+tags:
+- pressure
+- temperature
+interfaces:
+- bus: i2c
+  addresses:
+  - addr: '0x70'
+    note: SDO=GND
+  - addr: '0x56'
+    note: SDO=VDDIO
+datasheets:
+- source: vendor
+  vendor: m5stack
+  url: https://m5stack.oss-cn-shenzhen.aliyuncs.com/resource/docs/datasheet/unit/enviii/QMP6988%20Datasheet.pdf
+  revision: C
+  date: 2020-11
+notes: |
+  The SDO pin selects 0x70 (GND) or 0x56 (VDDIO).
+  Manufacturer is QST Corporation (Shanghai); the commonly repeated "Yamaha original design"
+  attribution is not confirmed in the official datasheet. No working QST-hosted datasheet URL
+  is published (product page 404s); the M5Stack-hosted copy is the genuine QST document
+  (Doc# 13-52-13, Rev C). Used in Unit ENV-III at 0x70 and Unit Mini BPS v1.1 at 0x56.

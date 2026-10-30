@@ -1,0 +1,13 @@
+schema_version: 1
+key: m5stack-u038
+name: M5Camera-X
+vendor: m5stack
+sku: U038
+connector: HY2.0-4P (Grove)
+url: https://docs.m5stack.com/en/unit/m5camera_x
+interfaces:
+- host
+components: []
+notes: |
+  ESP32 + OV2640 camera board. The Grove pins are the on-board ESP32's own master-side
+  signals.

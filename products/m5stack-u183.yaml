@@ -1,0 +1,12 @@
+schema_version: 1
+key: m5stack-u183
+name: Unit DMX
+vendor: m5stack
+sku: U183
+connector: HY2.0-4P (Grove)
+url: https://docs.m5stack.com/en/unit/Unit-DMX
+interfaces:
+- uart
+components: []
+notes: |
+  DMX-512 transceiver; the host side is UART on Grove Port C.

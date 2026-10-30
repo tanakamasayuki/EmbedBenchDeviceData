@@ -1,0 +1,24 @@
+schema_version: 1
+key: bmi270
+name: BMI270
+manufacturer: Bosch Sensortec
+tags:
+- imu
+- accelerometer
+- gyroscope
+interfaces:
+- bus: i2c
+  addresses:
+  - addr: '0x68'
+    note: SDO=GND
+  - addr: '0x69'
+    note: SDO=VDD
+datasheets:
+- source: manufacturer
+  url: https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bmi270-ds000.pdf
+  revision: '1.6'
+  date: 2026-03
+notes: |
+  SDO selects 0x68/0x69. Requires a ~8 KB configuration file to be uploaded via
+  init_ctrl/INIT_DATA after power-on before normal operation. M5Stack Unit Mini IMU-Pro uses it
+  at 0x68.

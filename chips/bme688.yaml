@@ -1,0 +1,25 @@
+schema_version: 1
+key: bme688
+name: BME688
+manufacturer: Bosch Sensortec
+tags:
+- gas
+- temperature
+- humidity
+- pressure
+interfaces:
+- bus: i2c
+  addresses:
+  - addr: '0x76'
+    note: SDO=GND
+  - addr: '0x77'
+    note: SDO=VDD
+datasheets:
+- source: manufacturer
+  url: https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bme688-ds000.pdf
+  revision: '1.3'
+  date: 2024-02
+notes: |
+  Register map similar to the BME680, with an added AI gas-scanning capability (BME688).
+  SDO selects 0x76/0x77. Gas sensing uses a programmable heater profile (res_heat/gas_wait).
+  M5Stack Unit ENV-Pro uses it at 0x77.

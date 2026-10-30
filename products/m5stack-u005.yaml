@@ -1,0 +1,12 @@
+schema_version: 1
+key: m5stack-u005
+name: Unit Angle
+vendor: m5stack
+sku: U005
+connector: HY2.0-4P (Grove)
+url: https://docs.m5stack.com/en/unit/angle
+interfaces:
+- analog
+components: []
+notes: |
+  10 kohm potentiometer knob; the wiper voltage is read by the host ADC.

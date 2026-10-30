@@ -1,0 +1,12 @@
+schema_version: 1
+key: m5stack-u144
+name: Unit Key
+vendor: m5stack
+sku: U144
+connector: HY2.0-4P (Grove)
+url: https://docs.m5stack.com/en/unit/key
+interfaces:
+- gpio
+components: []
+notes: |
+  Mechanical key switch plus an addressable RGB LED, one line each.

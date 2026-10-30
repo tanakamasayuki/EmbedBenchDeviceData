@@ -1,0 +1,27 @@
+schema_version: 1
+key: m5stack-mcu-u154
+name: Unit 8Angle controller
+manufacturer: M5Stack
+tags:
+- potentiometer
+- adc
+- input
+interfaces:
+- bus: i2c
+  addresses:
+  - addr: '0x43'
+datasheets:
+- source: vendor
+  vendor: m5stack
+  url: https://raw.githubusercontent.com/m5stack/M5Unit-8Angle/main/docs/8Angle_I2C_Protocol.pdf
+  kind: protocol
+  revision: unstated
+  date: '2022-11-10'
+  note: register map for firmware version V1
+notes: |
+  Firmware-defined I2C slave: the I2C endpoint is an on-board STM32F030 running M5Stack
+  firmware (not a fixed-function IC), so the register map is product-specific. The map recorded in
+  profiles/ was recovered from the vendor Arduino library source and is marked inferred /
+  tentative; a capture is what confirms it. Modeled per-unit. Silicon: STM32F030. The docs.m5stack.com
+  page only shows the protocol as an inline image; the linked PDF is the same table exported to PDF
+  by the M5Unit-8Angle library repo. Used in M5Stack Unit 8Angle (U154) at 0x43.

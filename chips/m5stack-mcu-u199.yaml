@@ -1,0 +1,24 @@
+schema_version: 1
+key: m5stack-mcu-u199
+name: Unit MQ controller
+manufacturer: M5Stack
+tags:
+- gas
+- air-quality
+interfaces:
+- bus: i2c
+  addresses:
+  - addr: '0x11'
+datasheets:
+- source: vendor
+  vendor: m5stack
+  url: https://m5stack-doc.oss-cn-shenzhen.aliyuncs.com/1168/MQ_I2C_Protocol_EN.pdf
+  kind: protocol
+  revision: unstated
+  date: '2025-05-08'
+  note: register map for firmware version V1
+notes: |
+  Firmware-defined I2C slave: the I2C endpoint is an on-board STM32G030 running M5Stack
+  firmware (not a fixed-function IC), so the register map is product-specific. The map recorded in
+  profiles/ was recovered from the vendor Arduino library source and is marked inferred /
+  tentative; a capture is what confirms it. Modeled per-unit. Silicon: STM32G030. The MCU reads an analog MQ-5 gas sensor via its ADC (not on the I2C bus). Used in M5Stack Unit MQ (U199) at 0x11.

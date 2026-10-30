@@ -1,0 +1,41 @@
+schema_version: 1
+key: gp8413
+name: GP8413
+manufacturer: Guestgood
+tags:
+- dac
+- analog-output
+interfaces:
+- bus: i2c
+  addresses:
+  - addr: '0x58'
+    note: A2=low A1=low A0=low (base)
+  - addr: '0x59'
+    note: A2=low A1=low A0=high
+  - addr: '0x5a'
+    note: A2=low A1=high A0=low
+  - addr: '0x5b'
+    note: A2=low A1=high A0=high
+  - addr: '0x5c'
+    note: A2=high A1=low A0=low
+  - addr: '0x5d'
+    note: A2=high A1=low A0=high
+  - addr: '0x5e'
+    note: A2=high A1=high A0=low
+  - addr: '0x5f'
+    note: A2=high A1=high A0=high
+datasheets:
+- source: vendor
+  vendor: m5stack
+  url: https://m5stack.oss-cn-shenzhen.aliyuncs.com/resource/docs/products/unit/Unit-DAC2/GP8413.pdf
+  revision: FN1601-79.2a
+  date: '2022-06-06'
+- source: reseller
+  url: https://wiki.dfrobot.com/dfr1073/docs/18826
+  kind: product-page
+  revision: unstated
+notes: |
+  2-channel 15-bit I2C DAC (0-5 V / 0-10 V output). The 7-bit address is 10110 followed by the
+  A2/A1/A0 pin levels, so eight parts share one bus. Guestgood does not host the datasheet on its
+  own site; the M5Stack-hosted copy above (doc FN1601-79.2a) is Guestgood's own PDF mirrored by
+  M5Stack. M5Stack Unit DAC2 uses it at 0x59.

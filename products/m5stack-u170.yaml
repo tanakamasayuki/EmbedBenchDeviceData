@@ -1,0 +1,12 @@
+schema_version: 1
+key: m5stack-u170
+name: Unit LoRaE220-920
+vendor: m5stack
+sku: U170
+connector: HY2.0-4P (Grove)
+url: https://docs.m5stack.com/en/unit/LoRaE220-JP%20Unit
+interfaces:
+- uart
+components: []
+notes: |
+  LLCC68 920 MHz LoRa module on Grove Port C.

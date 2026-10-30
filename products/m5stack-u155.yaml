@@ -1,0 +1,12 @@
+schema_version: 1
+key: m5stack-u155
+name: Unit RCA
+vendor: m5stack
+sku: U155
+connector: HY2.0-4P (Grove)
+url: https://docs.m5stack.com/en/unit/RCA
+interfaces:
+- analog
+components: []
+notes: |
+  RCA jack breakout for composite video or audio; the host drives the two analog lines directly.

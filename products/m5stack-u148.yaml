@@ -1,0 +1,14 @@
+schema_version: 1
+key: m5stack-u148
+name: Unit Grove to Grove
+vendor: m5stack
+sku: U148
+connector: HY2.0-4P (Grove)
+url: https://docs.m5stack.com/en/unit/unit_grove2grove
+interfaces:
+- gpio
+- analog
+components: []
+notes: |
+  Grove pass-through with a switchable 5V/1A output (digital) and a 0-1000 mA current readback
+  (analog).

@@ -1,0 +1,26 @@
+schema_version: 1
+key: bmm150
+name: BMM150
+manufacturer: Bosch Sensortec
+tags:
+- magnetometer
+- compass
+interfaces:
+- bus: i2c
+  addresses:
+  - addr: '0x10'
+    note: CSB=GND SDO=GND (default)
+  - addr: '0x11'
+    note: CSB=GND SDO=VDDIO
+  - addr: '0x12'
+    note: CSB=VDDIO SDO=GND
+  - addr: '0x13'
+    note: CSB=VDDIO SDO=VDDIO
+datasheets:
+- source: manufacturer
+  url: https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bmm150-ds001.pdf
+  revision: '1.4'
+  date: 2020-04
+notes: |
+  Geomagnetic (3-axis magnetometer) sensor. The address is selected by the CSB and SDO pins
+  (datasheet Table 30). M5Stack Unit Mini IMU-Pro carries it at 0x10.
