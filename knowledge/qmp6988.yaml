@@ -84,14 +84,16 @@ timing:
       11.6 ms at T x1, P x8, standby 1 ms; read every 10 ms, the same value comes back once in seven reads.
       The pilot's "every 11 ms" was its read interval.
   - key: standby
-    value_us: "IO_SETUP 000: 1000, 001: 5394, 010: 44575, 011: 212036, others the datasheet's (unmeasured)"
+    value_us: "IO_SETUP 000: 1000, 001: 5405, 010: 44575, 011: 212036, others the datasheet's (unmeasured)"
     windows:
-      - {setting: "IO_SETUP=20 (nominal 5 ms)", low_us: 5394, high_us: 5395, evidence: qmp6988-standby-long-5ms__i2c-100k__f1705aad56af1f2f}
+      - {setting: "IO_SETUP=20 (nominal 5 ms)", low_us: 5405, high_us: 5406, evidence: qmp6988-standby-long-5ms__i2c-100k__b5b4f2bb10b53a65}
+      - {setting: "IO_SETUP=20 (nominal 5 ms), an earlier run", low_us: 5394, high_us: 5395, evidence: qmp6988-standby-long-5ms__i2c-100k__f1705aad56af1f2f}
       - {setting: "IO_SETUP=40 (nominal 50 ms)", low_us: 44571, high_us: 44580, evidence: qmp6988-standby-long-50ms__i2c-100k__a7d3b53b29d4a91a}
       - {setting: "IO_SETUP=60 (nominal 250 ms)", low_us: 211858, high_us: 212214, evidence: qmp6988-standby-long-250ms__i2c-100k__eaaee8a15ac32a90}
     notes: |
       The normal period minus the conversion (10635 us at T x1, P x8), fitted over 2 s of reads every 5 ms with the
-      first sample at the conversion time. Not the datasheet's 5 / 50 / 250 ms in any fixed ratio.
+      first sample at the conversion time. Not the datasheet's 5 / 50 / 250 ms in any fixed ratio. The period moves by
+      about 0.07 % between runs of the same part (the two 5 ms runs).
   - key: status-delay
     value_us: "225"
     windows:
