@@ -101,12 +101,23 @@ runs/<run-id>/
   転送を probe の時計に載せられるようにする。キャプチャがあるときは validate が突き合わせる。
 - 生のキャプチャをリポジトリに置かないときは `stored: false` にし、notes に場所を書く。
 
-**wireskein の分析（analysis.json）の形が決まったら**、`decode` をそれに置き換える
-（版・指定・未解釈の区間・lost / gap を含むもの。EmbedBench の REAL_DEVICE_DATA §11 の未決）。
+OEP の run は `c0001.analysis.json`（wireskein decode の `wireskein-analysis/1`。版・指定・未解釈の区間・lost / gap を含む）も
+置いている。`c0001.i2c.json` はその `transactions` を取り出したもの。EmbedBench の `skein2trace.py` が analysis.json を
+直接読めるようになったら、`decode` をそちらに切り替える。
 
 ## 5. 振る舞い: knowledge/<chip>.yaml
 
-`knowledge/README.ja.md` を見る。
+| 項目 | 必須 | 内容 |
+| --- | --- | --- |
+| chip、bus | ○ | ファイル名は chip と同じ |
+| addressing | | `pointer_bits`、`repeated_start_required`、`read_auto_increment`、`evidence`、`notes` |
+| registers | ○ | `[{addr, width, access: r / w / rw, reset, name?, volatile?, per_specimen?, evidence?, notes?}]`。`addr` は `0x` ＋ 大文字の 16 進 2 桁、`reset` は width バイトの 16 進 |
+| timing | | `[{key, value_us, windows?: [{setting, low_us, high_us, evidence}], evidence?, notes?}]`。`value_us` は模型が使う値（式でよい）、`windows` は記録が許す範囲 |
+| behaviours | | `[{key, evidence, notes}]`。表で言えない振る舞い |
+
+`evidence` は `runs/` の run の名前、`i2cdevicedb-pilot:<observation id>`、または `datasheet`。
+validate は、chip がカタログにあることと、根拠がどれかに当たることを検査する。
+`tools/knowledge_table.py <chip>` がレジスタの表を EmbedBench の `RegTableSpec` に書き出す。
 
 ## 6. ガイド: guides/chips/<chip>.md
 

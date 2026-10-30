@@ -593,6 +593,63 @@ def validate_runs(report, cases, chips_by_key, products_by_key, libraries_by_key
             report.add(run_dir, f"run directory must be named {expected}")
 
 
+# ---------------------------------------------------------------- knowledge
+
+# Evidence outside runs/: the I2CDeviceDB pilot (by observation id) and the
+# datasheet. Anything else must name a run directory.
+EXTERNAL_EVIDENCE = re.compile(r"(i2cdevicedb-pilot:[a-z0-9-]+|datasheet)")
+
+
+def evidence_of(item):
+    value = item.get("evidence")
+    return value if isinstance(value, list) else [value] if value else []
+
+
+def validate_knowledge(report, chips_by_key) -> None:
+    runs = {p.name for p in (REPO_ROOT / "runs").iterdir() if p.is_dir()}
+    for path in sorted((REPO_ROOT / "knowledge").glob("*.yaml")):
+        data = load_yaml(path, report)
+        if data is None:
+            continue
+        check_no_comments(report, path)
+        check_fields(report, path, data,
+                     required={"schema_version", "chip", "bus", "registers"},
+                     optional={"addressing", "timing", "behaviours", "notes"})
+        if data.get("chip") != path.stem:
+            report.add(path, f"file stem must equal chip: {data.get('chip')!r}")
+        if data.get("chip") not in chips_by_key:
+            report.add(path, f"unknown chip: {data.get('chip')!r}")
+        items = [("addressing", data.get("addressing") or {})]
+        seen = set()
+        for index, reg in enumerate(data.get("registers") or []):
+            where = f"registers[{index}]"
+            items.append((where, reg))
+            check_fields(report, path, reg, required={"addr", "width", "access", "reset"},
+                         optional={"name", "volatile", "per_specimen", "evidence", "notes"}, where=where)
+            if not re.fullmatch(r"0x[0-9A-F]{2}", str(reg.get("addr"))):
+                report.add(path, f"{where}: addr must be 0x<uppercase hex pair>, found {reg.get('addr')!r}")
+            if reg.get("access") not in ("r", "w", "rw"):
+                report.add(path, f"{where}: access must be r, w or rw")
+            try:
+                if len(bytes.fromhex(str(reg.get("reset")))) != reg.get("width"):
+                    report.add(path, f"{where}: reset must be width ({reg.get('width')}) bytes of hex")
+            except ValueError:
+                report.add(path, f"{where}: reset is not hex: {reg.get('reset')!r}")
+            if reg.get("addr") in seen:
+                report.add(path, f"{where}: duplicate register {reg.get('addr')}")
+            seen.add(reg.get("addr"))
+        for index, item in enumerate(data.get("timing") or []):
+            items.append((f"timing[{index}]", item))
+            for number, window in enumerate(item.get("windows") or []):
+                items.append((f"timing[{index}].windows[{number}]", window))
+        for index, item in enumerate(data.get("behaviours") or []):
+            items.append((f"behaviours[{index}]", item))
+        for where, item in items:
+            for ref in evidence_of(item):
+                if ref not in runs and not EXTERNAL_EVIDENCE.fullmatch(str(ref)):
+                    report.add(path, f"{where}: evidence {ref!r} is neither a run nor a known source")
+
+
 # ---------------------------------------------------------------- guides
 
 
@@ -634,6 +691,7 @@ def validate() -> Report:
     check_orphans(report, chips, products)
     cases = validate_cases(report, chips_by_key, products_by_key, libraries_by_key)
     validate_runs(report, cases, chips_by_key, products_by_key, libraries_by_key)
+    validate_knowledge(report, chips_by_key)
     validate_guides(report, chips_by_key)
     return report
 

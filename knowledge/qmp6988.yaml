@@ -1,0 +1,102 @@
+schema_version: 1
+chip: qmp6988
+bus: i2c
+addressing:
+  pointer_bits: 8
+  repeated_start_required: false
+  read_auto_increment: true
+  evidence: [m5unit-env-u001c-basic__i2c-100k__41ee7552a4ff1802, qmp6988-modes__i2c-100k__1a0394b27a6f2312]
+  notes: |
+    M5Unit-ENV reads the calibration one byte at a time (pointer A0, A1, ... B8) after a STOP, and
+    the measurement from F7 and from FA. The characterization reads F3 for three bytes (F3, F4, F5).
+registers:
+  - addr: "0xA0"
+    width: 25
+    name: COE
+    access: r
+    reset: "52DC0DA7F4820DDC0CD201E6FC86F9C9FAA2F72B0CBB03D8BB"
+    per_specimen: true
+    evidence: [qmp6988-modes__i2c-100k__1a0394b27a6f2312]
+  - addr: "0xD1"
+    width: 1
+    name: CHIP_ID
+    access: r
+    reset: "5C"
+    evidence: [qmp6988-modes__i2c-100k__1a0394b27a6f2312]
+  - addr: "0xE0"
+    width: 1
+    name: RESET
+    access: w
+    reset: "00"
+    notes: E6 resets the part; any other value does nothing (datasheet).
+  - addr: "0xF1"
+    width: 1
+    name: IIR
+    access: rw
+    reset: "00"
+    evidence: [i2cdevicedb-pilot:qmp6988-p0-100k-nominal-0283eb57c7a7c010]
+    notes: The OEP run's read of IIR right after a reset failed without reaching the bus.
+  - addr: "0xF2"
+    width: 1
+    name: I2C_SET
+    access: rw
+    reset: "01"
+    evidence: [i2cdevicedb-pilot:qmp6988-p0-100k-nominal-0283eb57c7a7c010]
+  - addr: "0xF3"
+    width: 1
+    name: DEVICE_STAT
+    access: r
+    reset: "00"
+    volatile: true
+    evidence: [qmp6988-modes__i2c-100k__1a0394b27a6f2312]
+  - addr: "0xF4"
+    width: 1
+    name: CTRL_MEAS
+    access: rw
+    reset: "00"
+    evidence: [qmp6988-modes__i2c-100k__1a0394b27a6f2312]
+    notes: Reads back what was written, forced mode bits included, after the conversion.
+  - addr: "0xF5"
+    width: 1
+    name: IO_SETUP
+    access: rw
+    reset: "00"
+    evidence: [qmp6988-modes__i2c-100k__1a0394b27a6f2312]
+  - addr: "0xF7"
+    width: 6
+    name: DATA
+    access: r
+    reset: "000000000000"
+    volatile: true
+    notes: Pressure (3 bytes) then temperature (3 bytes), raw. Read 000000000000 before any conversion (400 kHz run).
+    evidence: [qmp6988-modes__i2c-400k__7b6def88b0163034]
+timing:
+  - key: conversion
+    value_us: "2940 + 855 * (samples_t + samples_p)"
+    windows:
+      - {setting: "CTRL_MEAS=25 (T x1, P x1)", low_us: 4128, high_us: 4840, evidence: i2cdevicedb-pilot:qmp6988-p0-100k-nominal-0283eb57c7a7c010}
+      - {setting: "CTRL_MEAS=31 (T x1, P x8)", low_us: 9922, high_us: 10861, evidence: qmp6988-modes__i2c-100k__1a0394b27a6f2312}
+    notes: A straight line through the datasheet's 5.5 ms (P x2, T x1) and 33.7 ms (P x32, T x4); inside both windows.
+  - key: normal-period
+    value_us: "conversion + standby(IO_SETUP bits 7:5)"
+    evidence: [qmp6988-modes__i2c-100k__1a0394b27a6f2312, qmp6988-modes__i2c-400k__7b6def88b0163034]
+    notes: |
+      11.6 ms at T x1, P x8, standby 1 ms; read every 10 ms, the same value comes back once in seven reads.
+      The pilot's "every 11 ms" was its read interval.
+  - key: status-delay
+    value_us: "300"
+    windows:
+      - {setting: "after CTRL_MEAS=31", low_us: 176, high_us: 540, evidence: qmp6988-modes__i2c-400k__7b6def88b0163034}
+    notes: DEVICE_STAT bit 3 read 0 176 us after the write (400 kHz) and 1 from 540 us (100 kHz).
+behaviours:
+  - key: forced-then-normal
+    evidence: [qmp6988-modes__i2c-400k__7b6def88b0163034]
+    notes: Normal mode written while a forced conversion runs does not restart it; the normal cycle continues from it.
+  - key: reset-byte-decodes-as-address
+    evidence: [qmp6988-modes__i2c-100k__1a0394b27a6f2312, m5unit-env-u001c-basic__i2c-100k__41ee7552a4ff1802]
+    notes: |
+      E0=E6 resets the part while E6 is on the bus; decoders read that byte as an address (0x73 written).
+      There is no part at 0x73.
+notes: |
+  The EmbedBench model is devices/src/qmp6988_model.* (X68); tools/knowledge_table.py writes the
+  register table this file describes in its RegTableSpec form.
