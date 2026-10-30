@@ -1,0 +1,14 @@
+schema_version: 1
+key: wire-scan
+kind: characterization
+intent: |
+  A scan of every 7-bit address with Wire.beginTransmission / endTransmission on a bus with Unit ENV III: which addresses answer on the wire, and what Wire reports for each.
+targets:
+  - {chip: sht30, product: m5stack-u001-c, bus: i2c, addr: "0x44"}
+  - {chip: qmp6988, product: m5stack-u001-c, bus: i2c, addr: "0x70"}
+source: [EnvCases.cpp, env_collect.py]
+notes: |
+  EnvCases.cpp is a file beside oep-probe-arduino's firmware (examples/Firmware/OepProbe), as its
+  extras/LibraryTest: the probe runs the case on a task of its own and captures SDA / SCL while it runs; the
+  case's lines carry the probe's clock (ProbeLog). It holds four cases, run by number (1 is this one).
+  env_collect.py is the host side that records the wireskein run.

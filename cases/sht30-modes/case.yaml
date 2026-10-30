@@ -1,0 +1,30 @@
+schema_version: 1
+key: sht30-modes
+kind: characterization
+intent: |
+  SHT30 without a library: soft reset, the status register with its CRC, and a single-shot measurement at each repeatability (high, medium, low) by polling (NACK until ready) and by clock stretching.
+targets:
+  - {chip: sht30, product: m5stack-u001-c, bus: i2c, addr: "0x44"}
+phases:
+  - name: soft-reset
+    intent: "0x30A2 and the time to the next command"
+  - name: status
+    intent: "0xF32D then 3 bytes, CRC checked"
+  - name: polling-high
+    intent: "the read NACKed until the result is ready; tries and time to it (high repeatability)"
+  - name: stretch-high
+    intent: "the read address ACKed, SCL held low until the result (high repeatability)"
+  - name: polling-medium
+    intent: "the read NACKed until the result is ready; tries and time to it (medium repeatability)"
+  - name: stretch-medium
+    intent: "the read address ACKed, SCL held low until the result (medium repeatability)"
+  - name: polling-low
+    intent: "the read NACKed until the result is ready; tries and time to it (low repeatability)"
+  - name: stretch-low
+    intent: "the read address ACKed, SCL held low until the result (low repeatability)"
+source: [EnvCases.cpp, env_collect.py]
+notes: |
+  EnvCases.cpp is a file beside oep-probe-arduino's firmware (examples/Firmware/OepProbe), as its
+  extras/LibraryTest: the probe runs the case on a task of its own and captures SDA / SCL while it runs; the
+  case's lines carry the probe's clock (ProbeLog). It holds four cases, run by number (3 is this one).
+  env_collect.py is the host side that records the wireskein run.

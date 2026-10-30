@@ -1,0 +1,301 @@
+{
+ "format": "wireskein-run/3",
+ "meta": {
+  "case": "qmp6988-modes",
+  "probe": "usb:80f1b2d719c5",
+  "pins": {
+   "SDA": 14,
+   "SCL": 15
+  }
+ },
+ "log": [
+  {
+   "t": 0.021196048939600587,
+   "src": "marker",
+   "text": "# qmp6988-modes",
+   "probe_ns": 99745006000,
+   "boot_id": 3073586420,
+   "probe": "usb:80f1b2d719c5"
+  },
+  {
+   "t": 0.02120504784397781,
+   "src": "marker",
+   "text": "## chip-id",
+   "probe_ns": 99745015000,
+   "boot_id": 3073586420,
+   "probe": "usb:80f1b2d719c5"
+  },
+  {
+   "t": 0.022492933785542846,
+   "src": "dut",
+   "text": "got=1 chip_id=0x5c",
+   "probe_ns": 99746303000,
+   "boot_id": 3073586420,
+   "probe": "usb:80f1b2d719c5"
+  },
+  {
+   "t": 0.02249693381600082,
+   "src": "marker",
+   "text": "##",
+   "probe_ns": 99746307000,
+   "boot_id": 3073586420,
+   "probe": "usb:80f1b2d719c5"
+  },
+  {
+   "t": 0.022500932915136218,
+   "src": "marker",
+   "text": "## reset",
+   "probe_ns": 99746311000,
+   "boot_id": 3073586420,
+   "probe": "usb:80f1b2d719c5"
+  },
+  {
+   "t": 0.022877899929881096,
+   "src": "dut",
+   "text": "end=0",
+   "probe_ns": 99746688000,
+   "boot_id": 3073586420,
+   "probe": "usb:80f1b2d719c5"
+  },
+  {
+   "t": 0.08289959095418453,
+   "src": "dut",
+   "text": "iir=ff",
+   "probe_ns": 99806715000,
+   "boot_id": 3073586420,
+   "probe": "usb:80f1b2d719c5"
+  },
+  {
+   "t": 0.08369552087970078,
+   "src": "dut",
+   "text": "f3_f5=000000",
+   "probe_ns": 99807511000,
+   "boot_id": 3073586420,
+   "probe": "usb:80f1b2d719c5"
+  },
+  {
+   "t": 0.08369851997122169,
+   "src": "marker",
+   "text": "##",
+   "probe_ns": 99807514000,
+   "boot_id": 3073586420,
+   "probe": "usb:80f1b2d719c5"
+  },
+  {
+   "t": 0.08370352000929415,
+   "src": "marker",
+   "text": "## calibration",
+   "probe_ns": 99807519000,
+   "boot_id": 3073586420,
+   "probe": "usb:80f1b2d719c5"
+  },
+  {
+   "t": 0.08636128483340144,
+   "src": "dut",
+   "text": "got=25 bytes=52dc0da7f4820ddc0cd201e6fc86f9c9faa2f72b0cbb03d8bb",
+   "probe_ns": 99810177000,
+   "boot_id": 3073586420,
+   "probe": "usb:80f1b2d719c5"
+  },
+  {
+   "t": 0.0863722839858383,
+   "src": "marker",
+   "text": "##",
+   "probe_ns": 99810188000,
+   "boot_id": 3073586420,
+   "probe": "usb:80f1b2d719c5"
+  },
+  {
+   "t": 0.08637428400106728,
+   "src": "marker",
+   "text": "## forced",
+   "probe_ns": 99810190000,
+   "boot_id": 3073586420,
+   "probe": "usb:80f1b2d719c5"
+  },
+  {
+   "t": 0.08670625393278897,
+   "src": "dut",
+   "text": "end=0",
+   "probe_ns": 99810522000,
+   "boot_id": 3073586420,
+   "probe": "usb:80f1b2d719c5"
+  },
+  {
+   "t": 0.09748430084437132,
+   "src": "dut",
+   "text": "polls=12 elapsed_us=10764 status=0x00",
+   "probe_ns": 99821301000,
+   "boot_id": 3073586420,
+   "probe": "usb:80f1b2d719c5"
+  },
+  {
+   "t": 0.09839622001163661,
+   "src": "dut",
+   "text": "got=6 data=a211a66c4680",
+   "probe_ns": 99822213000,
+   "boot_id": 3073586420,
+   "probe": "usb:80f1b2d719c5"
+  },
+  {
+   "t": 0.09884218079969287,
+   "src": "dut",
+   "text": "ctrl_meas=0x31",
+   "probe_ns": 99822659000,
+   "boot_id": 3073586420,
+   "probe": "usb:80f1b2d719c5"
+  },
+  {
+   "t": 0.09884717990644276,
+   "src": "marker",
+   "text": "##",
+   "probe_ns": 99822664000,
+   "boot_id": 3073586420,
+   "probe": "usb:80f1b2d719c5"
+  },
+  {
+   "t": 0.09884917992167175,
+   "src": "marker",
+   "text": "## normal",
+   "probe_ns": 99822666000,
+   "boot_id": 3073586420,
+   "probe": "usb:80f1b2d719c5"
+  },
+  {
+   "t": 0.09983109286986291,
+   "src": "dut",
+   "text": "end=0",
+   "probe_ns": 99823648000,
+   "boot_id": 3073586420,
+   "probe": "usb:80f1b2d719c5"
+  },
+  {
+   "t": 0.10075801098719239,
+   "src": "dut",
+   "text": "t_us=918 got=6 data=a211a66c4680",
+   "probe_ns": 99824575000,
+   "boot_id": 3073586420,
+   "probe": "usb:80f1b2d719c5"
+  },
+  {
+   "t": 0.11077612498775125,
+   "src": "dut",
+   "text": "t_us=10936 got=6 data=a211a66c4680",
+   "probe_ns": 99834594000,
+   "boot_id": 3073586420,
+   "probe": "usb:80f1b2d719c5"
+  },
+  {
+   "t": 0.12077524093911052,
+   "src": "dut",
+   "text": "t_us=20936 got=6 data=a2117b6c473c",
+   "probe_ns": 99844594000,
+   "boot_id": 3073586420,
+   "probe": "usb:80f1b2d719c5"
+  },
+  {
+   "t": 0.13077435595914721,
+   "src": "dut",
+   "text": "t_us=30936 got=6 data=a2117d6c4734",
+   "probe_ns": 99854594000,
+   "boot_id": 3073586420,
+   "probe": "usb:80f1b2d719c5"
+  },
+  {
+   "t": 0.14077647193334997,
+   "src": "dut",
+   "text": "t_us=40939 got=6 data=a2116e6c4749",
+   "probe_ns": 99864597000,
+   "boot_id": 3073586420,
+   "probe": "usb:80f1b2d719c5"
+  },
+  {
+   "t": 0.15076958783902228,
+   "src": "dut",
+   "text": "t_us=50933 got=6 data=a211666c4726",
+   "probe_ns": 99874591000,
+   "boot_id": 3073586420,
+   "probe": "usb:80f1b2d719c5"
+  },
+  {
+   "t": 0.16077070287428796,
+   "src": "dut",
+   "text": "t_us=60932 got=6 data=a211606c46a9",
+   "probe_ns": 99884593000,
+   "boot_id": 3073586420,
+   "probe": "usb:80f1b2d719c5"
+  },
+  {
+   "t": 0.17076681880280375,
+   "src": "dut",
+   "text": "t_us=70932 got=6 data=a211556c4646",
+   "probe_ns": 99894590000,
+   "boot_id": 3073586420,
+   "probe": "usb:80f1b2d719c5"
+  },
+  {
+   "t": 0.18077093386091292,
+   "src": "dut",
+   "text": "t_us=80937 got=6 data=a2114e6c45cc",
+   "probe_ns": 99904595000,
+   "boot_id": 3073586420,
+   "probe": "usb:80f1b2d719c5"
+  },
+  {
+   "t": 0.1907670497894287,
+   "src": "dut",
+   "text": "t_us=90934 got=6 data=a2114e6c45cc",
+   "probe_ns": 99914592000,
+   "boot_id": 3073586420,
+   "probe": "usb:80f1b2d719c5"
+  },
+  {
+   "t": 0.2007681648246944,
+   "src": "dut",
+   "text": "t_us=100936 got=6 data=a211536c459f",
+   "probe_ns": 99924594000,
+   "boot_id": 3073586420,
+   "probe": "usb:80f1b2d719c5"
+  },
+  {
+   "t": 0.21076828078366816,
+   "src": "dut",
+   "text": "t_us=110937 got=6 data=a211636c4571",
+   "probe_ns": 99934595000,
+   "boot_id": 3073586420,
+   "probe": "usb:80f1b2d719c5"
+  },
+  {
+   "t": 0.2202054460067302,
+   "src": "marker",
+   "text": "##",
+   "probe_ns": 99944033000,
+   "boot_id": 3073586420,
+   "probe": "usb:80f1b2d719c5"
+  },
+  {
+   "t": 0.22021344490349293,
+   "src": "marker",
+   "text": "#",
+   "probe_ns": 99944041000,
+   "boot_id": 3073586420,
+   "probe": "usb:80f1b2d719c5"
+  },
+  {
+   "t": 0.691327127860859,
+   "src": "note",
+   "text": "case result=0"
+  }
+ ],
+ "captures": [
+  {
+   "file": "c0001.wireskein",
+   "t0": 0.017620798898860812,
+   "channels": [
+    "SDA",
+    "SCL"
+   ]
+  }
+ ],
+ "expect": {}
+}

@@ -1,0 +1,24 @@
+schema_version: 1
+key: m5unit-env-u001c-basic
+kind: library
+library: m5stack-m5unit-env
+intent: |
+  How the M5Unit-ENV library (SHT3X, QMP6988 classes) drives Unit ENV III: begin of each part, then three rounds of update 100 ms apart.
+targets:
+  - {chip: sht30, product: m5stack-u001-c, bus: i2c, addr: "0x44"}
+  - {chip: qmp6988, product: m5stack-u001-c, bus: i2c, addr: "0x70"}
+phases:
+  - name: sht30-begin
+    intent: "SHT3X::begin: what it sends to 0x44 before any measurement"
+  - name: qmp6988-begin
+    intent: "QMP6988::begin: chip id, reset, calibration, the setup it writes"
+  - name: sht30-update
+    intent: "SHT3X::update: the measurement command, the wait, the read and how long it takes"
+  - name: qmp6988-update
+    intent: "QMP6988::update: the registers read for one measurement"
+source: [EnvCases.cpp, env_collect.py]
+notes: |
+  EnvCases.cpp is a file beside oep-probe-arduino's firmware (examples/Firmware/OepProbe), as its
+  extras/LibraryTest: the probe runs the case on a task of its own and captures SDA / SCL while it runs; the
+  case's lines carry the probe's clock (ProbeLog). It holds four cases, run by number (2 is this one).
+  env_collect.py is the host side that records the wireskein run.

@@ -1,0 +1,24 @@
+schema_version: 1
+key: qmp6988-modes
+kind: characterization
+intent: |
+  QMP6988 without a library: chip id, soft reset and the registers after it, the 25-byte calibration, one forced measurement polled on the status bit, then normal mode read every 10 ms for 120 ms.
+targets:
+  - {chip: qmp6988, product: m5stack-u001-c, bus: i2c, addr: "0x70"}
+phases:
+  - name: chip-id
+    intent: "0xD1 (0x5C expected)"
+  - name: reset
+    intent: "0xE6 to 0xE0, then IIR (0xF1) and 0xF3-0xF5"
+  - name: calibration
+    intent: "0xA0-0xB8"
+  - name: forced
+    intent: "CTRL_MEAS forced (t x1, p x8); the measure bit polled; data 0xF7-0xFC; CTRL_MEAS read back"
+  - name: normal
+    intent: "IIR 4, standby 1 ms, normal mode; data every 10 ms: when the values change"
+source: [EnvCases.cpp, env_collect.py]
+notes: |
+  EnvCases.cpp is a file beside oep-probe-arduino's firmware (examples/Firmware/OepProbe), as its
+  extras/LibraryTest: the probe runs the case on a task of its own and captures SDA / SCL while it runs; the
+  case's lines carry the probe's clock (ProbeLog). It holds four cases, run by number (4 is this one).
+  env_collect.py is the host side that records the wireskein run.
