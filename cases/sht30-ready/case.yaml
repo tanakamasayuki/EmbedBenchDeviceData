@@ -1,0 +1,26 @@
+schema_version: 1
+key: sht30-ready
+kind: characterization
+intent: |
+  When SHT30 answers a polling measurement (0x2400) at once: a 6-byte read every 0.5 ms for 15 ms as the first command since power-on, after a soft reset and 0 / 2 / 10 / 100 ms, and after a measurement read to its end. On Wire.
+targets:
+  - {chip: sht30, product: m5stack-u001-c, bus: i2c, addr: "0x44"}
+phases:
+  - name: power-on
+    intent: "the first command since the part was powered (only on the case's first run after a boot)"
+  - name: reset-wait-0ms
+    intent: "soft reset, then at once"
+  - name: reset-wait-2ms
+    intent: "soft reset, 2 ms"
+  - name: reset-wait-10ms
+    intent: "soft reset, 10 ms"
+  - name: reset-wait-100ms
+    intent: "soft reset, 100 ms"
+  - name: after-measurement
+    intent: "after one measurement read to its end"
+source: [EnvCases.cpp, env_collect.py]
+notes: |
+  EnvCases.cpp is a file beside oep-probe-arduino's firmware (examples/Firmware/OepProbe), as its
+  extras/LibraryTest: the probe runs the case on a task of its own and captures SDA / SCL while it runs; the
+  case's lines carry the probe's clock (ProbeLog). It holds 12 cases, run by number (11 is this one).
+  env_collect.py is the host side that records the wireskein run.

@@ -17,6 +17,14 @@
 //   7 sht30-stretch-wait           the high-repeatability clock-stretch read on the ESP-IDF driver with scl_wait_us 20000
 //                                  (Wire leaves it 0: the hardware's default), then on Wire with its timeout at 1000 ms;
 //                                  one polling measurement read to the end before each
+//   8-10 qmp6988-standby-long      F4 0x00, 200 ms, F4 0x33 (t x1, p x8, normal), the data read every 5 ms for 2 s: standby
+//                                  5 ms (8), 50 ms (9), 250 ms (10); a line only when the data changes
+//   11 sht30-ready                 0x2400 then a 6-byte read every 0.5 ms for 15 ms: as the first command since power-on
+//                                  (only on the case's first run after a boot), after a soft reset and 0 / 2 / 10 / 100 ms,
+//                                  and after a measurement read to its end (Wire: a command after a NACKed read may not
+//                                  reach the wire)
+//   12 sht30-ready-idf             the same on the ESP-IDF i2c_master driver (every transfer on the wire), and after a
+//                                  measurement left unread
 #include <OepEndpoint.h>
 #include <OepPinTable.h>
 #include <OepProbeLog.h>
@@ -414,6 +422,187 @@ int32_t shtStretchWait() {
   return bad;
 }
 
+
+// ---- cases 8-10: QMP6988 normal mode for 2 s at one standby time ---------------------------------------------------
+int32_t qmpStandbyLong(uint8_t io, const char *name) {
+  int32_t bad = 0;
+  uint8_t b[6], last[6] = {};
+  char h[13];
+  markf("# qmp6988-standby-long-%s", name);
+  mark("## setup");
+  writeReg(0xF4, 0x00);
+  writeReg(0xF1, 0x02);   // IIR 4, as qmp6988-standby
+  writeReg(0xF5, io);
+  delay(200);
+  mark("##");
+  mark("## normal");
+  markf("end=%d", writeReg(0xF4, 0x33));   // t x1, p x8, normal
+  const uint32_t t0 = micros();
+  uint32_t next = 0;
+  int reads = 0, changes = 0;
+  while (micros() - t0 < 2000000) {
+    while (micros() - t0 < next) {}
+    const uint32_t at = micros() - t0;
+    const size_t got = readRegs(0xF7, b, 6);
+    ++reads;
+    bad += got != 6;
+    if (got == 6 && (reads == 1 || memcmp(b, last, 6) != 0)) {
+      hex(h, b, 6);
+      markf("t_us=%lu data=%s", static_cast<unsigned long>(at), h);
+      memcpy(last, b, 6);
+      ++changes;
+    }
+    next += 5000;
+  }
+  markf("reads=%d changes=%d", reads, changes);
+  writeReg(0xF4, 0x00);
+  mark("##");
+  mark("#");
+  return bad;
+}
+
+// ---- case 11: when SHT30 answers a polling measurement at once -----------------------------------------------------
+bool booted = true;   // no command to SHT30 since this boot (only cleared by this case)
+
+int32_t shtPoll15(const char *phase) {
+  uint8_t b[6];
+  char h[13];
+  markf("## %s", phase);
+  const int r = command(kSht, 0x2400);
+  const uint32_t t0 = micros();
+  uint32_t next = 0;
+  int nacks = 0, answers = 0;
+  while (micros() - t0 < 15000) {
+    while (micros() - t0 < next) {}
+    const uint32_t at = micros() - t0;
+    const size_t got = readN(kSht, b, 6);
+    if (got == 6) {
+      hex(h, b, 6);
+      markf("t_us=%lu bytes=%s crc=%d", static_cast<unsigned long>(at), h, crcOk(b, 6));
+      ++answers;
+    } else {
+      ++nacks;
+    }
+    next += 500;
+  }
+  markf("end=%d nacks=%d answers=%d", r, nacks, answers);
+  mark("##");
+  delay(20);
+  return answers ? 0 : 1;
+}
+
+int32_t shtReady() {
+  int32_t bad = 0;
+  uint8_t b[6];
+  mark("# sht30-ready");
+  if (booted) {
+    markf("since_boot_ms=%lu", static_cast<unsigned long>(millis()));
+    bad += shtPoll15("power-on");
+    booted = false;
+  }
+  static const uint32_t kWaits[] = {0, 2, 10, 100};
+  for (uint32_t w : kWaits) {
+    command(kSht, 0x30A2);
+    delay(w);
+    char name[24];
+    snprintf(name, sizeof name, "reset-wait-%lums", static_cast<unsigned long>(w));
+    bad += shtPoll15(name);
+  }
+  command(kSht, 0x2400);   // a measurement read to its end
+  const uint32_t t0 = micros();
+  while (micros() - t0 < 50000 && readN(kSht, b, 6) != 6) delayMicroseconds(500);
+  delay(5);
+  bad += shtPoll15("after-measurement");
+  mark("#");
+  return bad;
+}
+
+
+// ---- case 12: case 11 on the ESP-IDF driver ------------------------------------------------------------------------
+i2c_master_dev_handle_t idfSht = nullptr;
+
+int32_t idfPoll15(const char *phase, bool command_it = true) {
+  uint8_t b[6];
+  char h[13];
+  markf("## %s", phase);
+  const uint8_t cmd[2] = {0x24, 0x00};
+  const esp_err_t ew = command_it ? i2c_master_transmit(idfSht, cmd, 2, 50) : ESP_OK;
+  const uint32_t t0 = micros();
+  uint32_t next = 0;
+  int nacks = 0, answers = 0;
+  while (micros() - t0 < 15000) {
+    while (micros() - t0 < next) {}
+    const uint32_t at = micros() - t0;
+    memset(b, 0, sizeof b);
+    if (i2c_master_receive(idfSht, b, 6, 50) == ESP_OK) {
+      hex(h, b, 6);
+      markf("t_us=%lu bytes=%s crc=%d", static_cast<unsigned long>(at), h, crcOk(b, 6));
+      ++answers;
+    } else {
+      ++nacks;
+    }
+    next += 500;
+  }
+  markf("transmit=%d nacks=%d answers=%d", ew, nacks, answers);
+  mark("##");
+  delay(20);
+  return answers ? 0 : 1;
+}
+
+int32_t shtReadyIdf() {
+  int32_t bad = 0;
+  mark("# sht30-ready-idf");
+  bus.end();
+  i2c_master_bus_config_t bc = {};
+  bc.i2c_port = I2C_NUM_0;
+  bc.sda_io_num = static_cast<gpio_num_t>(kSda);
+  bc.scl_io_num = static_cast<gpio_num_t>(kScl);
+  bc.clk_source = I2C_CLK_SRC_DEFAULT;
+  bc.glitch_ignore_cnt = 7;
+  bc.flags.enable_internal_pullup = 1;
+  i2c_master_bus_handle_t mb = nullptr;
+  esp_err_t e = i2c_new_master_bus(&bc, &mb);
+  if (e == ESP_OK) {
+    i2c_device_config_t dc = {};
+    dc.dev_addr_length = I2C_ADDR_BIT_LEN_7;
+    dc.device_address = kSht;
+    dc.scl_speed_hz = kHz;
+    dc.scl_wait_us = 20000;
+    e = i2c_master_bus_add_device(mb, &dc, &idfSht);
+  }
+  if (e != ESP_OK) {
+    markf("setup=%d", e);
+    ++bad;
+  } else {
+    if (booted) {
+      markf("since_boot_ms=%lu", static_cast<unsigned long>(millis()));
+      bad += idfPoll15("power-on");
+      booted = false;
+    }
+    static const uint32_t kWaits[] = {0, 2, 10, 100};
+    const uint8_t reset[2] = {0x30, 0xA2};
+    for (uint32_t w : kWaits) {
+      markf("reset=%d", i2c_master_transmit(idfSht, reset, 2, 50));
+      delay(w);
+      char name[24];
+      snprintf(name, sizeof name, "reset-wait-%lums", static_cast<unsigned long>(w));
+      bad += idfPoll15(name);
+    }
+    bad += idfPoll15("after-measurement");   // the one before was read to its end
+    const uint8_t cmd[2] = {0x24, 0x00};
+    i2c_master_transmit(idfSht, cmd, 2, 50);   // a measurement left unread
+    delay(20);
+    bad += idfPoll15("after-unread-measurement");
+    bad += idfPoll15("read-only", false);       // no command: what a read gets now
+  }
+  if (idfSht) i2c_master_bus_rm_device(idfSht);
+  idfSht = nullptr;
+  if (mb) i2c_del_master_bus(mb);
+  bus.begin(kSda, kScl, kHz);
+  mark("#");
+  return bad;
+}
+
 // ---- the case's thread ---------------------------------------------------------------------------------------------
 enum : uint8_t { kIdle = 0, kRunning = 1, kDone = 2 };
 volatile uint8_t state = kIdle, current = 0;
@@ -427,7 +616,12 @@ int32_t runCase(uint8_t which) {
     case 4: return qmpModes();
     case 5: return qmpStandby();
     case 6: return qmpMeasureBit();
-    default: return shtStretchWait();
+    case 7: return shtStretchWait();
+    case 8: return qmpStandbyLong(0x20, "5ms");
+    case 9: return qmpStandbyLong(0x40, "50ms");
+    case 10: return qmpStandbyLong(0x60, "250ms");
+    case 11: return shtReady();
+    default: return shtReadyIdf();
   }
 }
 
@@ -470,7 +664,7 @@ class EnvCases final : public oep::Interface {
     const oep::Result parsed = oep::plainTail(tail, p, n, op == kOpRun ? 1 : 0, out, capacity);
     if (oep::refused(parsed)) return parsed;
     if (op == kOpRun) {
-      if (p[0] < 1 || p[0] > 7) return oep::unsupportedValue(out, capacity);
+      if (p[0] < 1 || p[0] > 12) return oep::unsupportedValue(out, capacity);
       if (!start(p[0])) return oep::wrongState(out, capacity);
       return oep::completed();
     }

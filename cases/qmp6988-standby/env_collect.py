@@ -18,9 +18,12 @@ SDA, SCL = 14, 15
 NAME = "io.github.example.library-test"
 RUN, STATUS = 0x10, 0x20
 CASES = {"scan": 1, "m5unit-env-u001c-basic": 2, "sht30-modes": 3, "qmp6988-modes": 4, "qmp6988-standby": 5,
-         "qmp6988-measure-bit": 6, "sht30-stretch-wait": 7}
+         "qmp6988-measure-bit": 6, "sht30-stretch-wait": 7, "qmp6988-standby-long-5ms": 8,
+         "qmp6988-standby-long-50ms": 9, "qmp6988-standby-long-250ms": 10, "sht30-ready": 11, "sht30-ready-idf": 12}
 SAMPLES = {"scan": 400_000, "m5unit-env-u001c-basic": 2_000_000, "sht30-modes": 1_000_000, "qmp6988-modes": 1_200_000,
-           "qmp6988-standby": 1_400_000, "qmp6988-measure-bit": 1_400_000, "sht30-stretch-wait": 600_000}
+           "qmp6988-standby": 1_400_000, "qmp6988-measure-bit": 1_400_000, "sht30-stretch-wait": 600_000,
+           "qmp6988-standby-long-5ms": 2_400_000, "qmp6988-standby-long-50ms": 2_400_000,
+           "qmp6988-standby-long-250ms": 2_400_000, "sht30-ready": 1_400_000, "sht30-ready-idf": 1_600_000}
 
 
 def run_case(hst, fn, case, timeout_s=20.0):

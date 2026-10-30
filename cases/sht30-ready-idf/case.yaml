@@ -1,0 +1,30 @@
+schema_version: 1
+key: sht30-ready-idf
+kind: characterization
+intent: |
+  sht30-ready on the ESP-IDF i2c_master driver, so every command and read is on the wire (on Wire a command after a NACKed read may not be), with two more: a measurement left unread, then a read with no command.
+targets:
+  - {chip: sht30, product: m5stack-u001-c, bus: i2c, addr: "0x44"}
+phases:
+  - name: power-on
+    intent: "the first command since this boot of the probe (the part itself may have been used before)"
+  - name: reset-wait-0ms
+    intent: "soft reset, then at once"
+  - name: reset-wait-2ms
+    intent: "soft reset, 2 ms"
+  - name: reset-wait-10ms
+    intent: "soft reset, 10 ms"
+  - name: reset-wait-100ms
+    intent: "soft reset, 100 ms"
+  - name: after-measurement
+    intent: "after one measurement read to its end"
+  - name: after-unread-measurement
+    intent: "a measurement started and left unread for 20 ms, then a new command and the reads"
+  - name: read-only
+    intent: "reads with no command"
+source: [EnvCases.cpp, env_collect.py]
+notes: |
+  EnvCases.cpp is a file beside oep-probe-arduino's firmware (examples/Firmware/OepProbe), as its
+  extras/LibraryTest: the probe runs the case on a task of its own and captures SDA / SCL while it runs; the
+  case's lines carry the probe's clock (ProbeLog). It holds 12 cases, run by number (12 is this one).
+  env_collect.py is the host side that records the wireskein run.

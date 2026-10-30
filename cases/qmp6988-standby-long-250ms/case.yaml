@@ -1,0 +1,18 @@
+schema_version: 1
+key: qmp6988-standby-long-250ms
+kind: characterization
+intent: |
+  As qmp6988-standby-long-5ms at standby 250 ms (IO_SETUP 0x60).
+targets:
+  - {chip: qmp6988, product: m5stack-u001-c, bus: i2c, addr: "0x70"}
+phases:
+  - name: setup
+    intent: "sleep, IIR 4, IO_SETUP, then 200 ms"
+  - name: normal
+    intent: "F4 0x33 and 2 s of reads every 5 ms"
+source: [EnvCases.cpp, env_collect.py]
+notes: |
+  EnvCases.cpp is a file beside oep-probe-arduino's firmware (examples/Firmware/OepProbe), as its
+  extras/LibraryTest: the probe runs the case on a task of its own and captures SDA / SCL while it runs; the
+  case's lines carry the probe's clock (ProbeLog). It holds 12 cases, run by number (10 is this one).
+  env_collect.py is the host side that records the wireskein run.
