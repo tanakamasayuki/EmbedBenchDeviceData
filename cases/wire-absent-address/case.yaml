@@ -1,0 +1,14 @@
+schema_version: 1
+key: wire-absent-address
+kind: characterization
+intent: |
+  Write 2 bytes to an address nothing answers (0x50) and record what the controller and Wire
+  report. The first run through the whole path (OEP LibraryTest, ProbeLog markers, wireskein,
+  EmbedBench skein2trace.py); it was taken before this repository existed.
+targets: []
+phases:
+  - name: write 2 bytes to 0x50
+    intent: an address NACK, and the value endTransmission returns for it
+notes: |
+  No part is on the bus, so there is no target. The case source is the OEP LibraryTest test_wire
+  that produced the run; it was not kept with the run.

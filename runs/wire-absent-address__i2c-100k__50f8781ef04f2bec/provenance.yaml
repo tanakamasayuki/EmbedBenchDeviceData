@@ -1,0 +1,35 @@
+schema_version: 1
+case: wire-absent-address
+date: 2026-10-29
+targets: []
+bus:
+  kind: i2c
+  hz: 100000
+  pins:
+    SDA: unknown
+    SCL: unknown
+  pullups: none
+dut:
+  board: ESP32-P4 (P4X)
+  id: usb:e8f60ae84e28
+  core:
+    name: arduino-esp32
+    version: unknown
+  controller: esp32p4
+probe:
+  id: usb:e8f60ae84e28
+  firmware: oep-probe-arduino
+  version: unknown
+wireskein:
+  version: unknown
+captures:
+  - file: c0001.wireskein
+    decode: c0001.i2c.json
+    timebase:
+      tick_hz: [1000000, 1]
+      tick0: 0
+      start_ns: 6061908000
+notes: |
+  Copied from EmbedBench tests/skein2trace/libtest_run1 (X66), where it is the converter's
+  fixture. The DUT is the probe itself (LibraryTest). Wire returned 4 for a transfer the bus
+  shows as an address NACK: the bus had no pull-ups. Versions not recorded at the time are unknown.
