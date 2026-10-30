@@ -1,0 +1,36 @@
+schema_version: 1
+case: sht30-stretch-wait
+date: 2026-10-30
+targets:
+  - {chip: sht30, product: m5stack-u001-c, bus: i2c, addr: "0x44"}
+bus:
+  kind: i2c
+  hz: 100000
+  pins:
+    SDA: 14
+    SCL: 15
+  pullups: unknown (only Unit ENV III on the Grove; none added on the board side)
+dut:
+  board: ESP32-P4X (oep-bench resident position 3-3 / 3-4, Unit ENV III on its Grove GPIO14 / 15)
+  id: usb:80f1b2d719c5
+  core:
+    name: arduino-esp32
+    version: 3.3.12
+  controller: esp32p4
+probe:
+  id: usb:80f1b2d719c5
+  firmware: oep-probe-arduino
+  version: 3feb4e2
+wireskein:
+  version: 45261b2
+captures:
+  - file: c0001.wireskein
+    decode: c0001.i2c.json
+    timebase:
+      tick_hz: [2000000, 1]
+      tick0: 0
+      start_ns: 8383134500
+notes: |
+  Captured at 2 MHz. ESP-IDF with scl_wait_us 20000: SCL held 11.7 ms, 6 bytes, CRC good (12.5 ms for the receive). Wire with setTimeOut(1000): still 0 bytes after 6.7 ms; the give-up is the driver's SCL wait, not Wire's timeout. The read Wire abandoned left SHT30 holding the bus (end_cond none): the 400 kHz attempts after it
+  found SCL held low from start to end (not kept here).
+  c0001.analysis.json is wireskein decode (wireskein-analysis/1); c0001.i2c.json is its transactions.

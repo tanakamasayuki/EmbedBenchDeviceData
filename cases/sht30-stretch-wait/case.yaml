@@ -1,0 +1,18 @@
+schema_version: 1
+key: sht30-stretch-wait
+kind: characterization
+intent: |
+  The high-repeatability clock-stretch read (0x2C06) with a controller that waits long enough: on the ESP-IDF i2c_master driver with scl_wait_us 20000, then on Wire with setTimeOut(1000) (Wire leaves scl_wait_us 0, the hardware default). One polling measurement read to the end before each.
+targets:
+  - {chip: sht30, product: m5stack-u001-c, bus: i2c, addr: "0x44"}
+phases:
+  - name: idf-scl-wait-20000us
+    intent: "ESP-IDF driver, scl_wait_us 20000: the read held about 12 ms, then 6 bytes"
+  - name: wire-timeout-1000ms
+    intent: "Wire with a 1000 ms timeout: whether the 6.7 ms give-up moves"
+source: [EnvCases.cpp, env_collect.py]
+notes: |
+  EnvCases.cpp is a file beside oep-probe-arduino's firmware (examples/Firmware/OepProbe), as its
+  extras/LibraryTest: the probe runs the case on a task of its own and captures SDA / SCL while it runs; the
+  case's lines carry the probe's clock (ProbeLog). It holds seven cases, run by number (7 is this one).
+  env_collect.py is the host side that records the wireskein run.

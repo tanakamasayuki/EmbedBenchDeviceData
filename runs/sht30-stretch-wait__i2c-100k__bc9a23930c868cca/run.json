@@ -1,0 +1,93 @@
+{
+ "format": "wireskein-run/3",
+ "meta": {
+  "case": "sht30-stretch-wait",
+  "probe": "usb:80f1b2d719c5",
+  "pins": {
+   "SDA": 14,
+   "SCL": 15
+  }
+ },
+ "log": [
+  {
+   "t": 0.012012941995635629,
+   "src": "marker",
+   "text": "# sht30-stretch-wait",
+   "probe_ns": 8383921000,
+   "boot_id": 586200616,
+   "probe": "usb:80f1b2d719c5"
+  },
+  {
+   "t": 0.017768461955711246,
+   "src": "marker",
+   "text": "## idf-scl-wait-20000us",
+   "probe_ns": 8389677000,
+   "boot_id": 586200616,
+   "probe": "usb:80f1b2d719c5"
+  },
+  {
+   "t": 0.032350245863199234,
+   "src": "dut",
+   "text": "transmit=0 receive=0 elapsed_us=12496 bytes=6319329e3206 crc=1",
+   "probe_ns": 8404260000,
+   "boot_id": 586200616,
+   "probe": "usb:80f1b2d719c5"
+  },
+  {
+   "t": 0.032555229030549526,
+   "src": "marker",
+   "text": "##",
+   "probe_ns": 8404465000,
+   "boot_id": 586200616,
+   "probe": "usb:80f1b2d719c5"
+  },
+  {
+   "t": 0.06976612494327128,
+   "src": "marker",
+   "text": "## wire-timeout-1000ms",
+   "probe_ns": 8441679000,
+   "boot_id": 586200616,
+   "probe": "usb:80f1b2d719c5"
+  },
+  {
+   "t": 0.07683353498578072,
+   "src": "dut",
+   "text": "end=0 elapsed_us=6700 got=0 bytes= crc=0",
+   "probe_ns": 8448747000,
+   "boot_id": 586200616,
+   "probe": "usb:80f1b2d719c5"
+  },
+  {
+   "t": 0.07684653392061591,
+   "src": "marker",
+   "text": "##",
+   "probe_ns": 8448760000,
+   "boot_id": 586200616,
+   "probe": "usb:80f1b2d719c5"
+  },
+  {
+   "t": 0.07685053395107388,
+   "src": "marker",
+   "text": "#",
+   "probe_ns": 8448764000,
+   "boot_id": 586200616,
+   "probe": "usb:80f1b2d719c5"
+  },
+  {
+   "t": 0.5639626618940383,
+   "src": "note",
+   "text": "case result=1"
+  }
+ ],
+ "captures": [
+  {
+   "file": "c0001.wireskein",
+   "t0": 0.009278449928388,
+   "channels": [
+    "SDA",
+    "SCL"
+   ]
+  }
+ ],
+ "expect": {}
+}

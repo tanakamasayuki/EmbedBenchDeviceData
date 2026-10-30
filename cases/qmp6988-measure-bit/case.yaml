@@ -1,0 +1,76 @@
+schema_version: 1
+key: qmp6988-measure-bit
+kind: characterization
+intent: |
+  When the measure bit (0xF3 bit 3) rises after a forced CTRL_MEAS write: one status read a set time after the write (0 to 600 us in 20 us steps), each measurement left to end before the next.
+targets:
+  - {chip: qmp6988, product: m5stack-u001-c, bus: i2c, addr: "0x70"}
+phases:
+  - name: delay-0us
+    intent: "the status read 0 us after CTRL_MEAS forced (the read takes its own bus time on top)"
+  - name: delay-20us
+    intent: "the status read 20 us after CTRL_MEAS forced (the read takes its own bus time on top)"
+  - name: delay-40us
+    intent: "the status read 40 us after CTRL_MEAS forced (the read takes its own bus time on top)"
+  - name: delay-60us
+    intent: "the status read 60 us after CTRL_MEAS forced (the read takes its own bus time on top)"
+  - name: delay-80us
+    intent: "the status read 80 us after CTRL_MEAS forced (the read takes its own bus time on top)"
+  - name: delay-100us
+    intent: "the status read 100 us after CTRL_MEAS forced (the read takes its own bus time on top)"
+  - name: delay-120us
+    intent: "the status read 120 us after CTRL_MEAS forced (the read takes its own bus time on top)"
+  - name: delay-140us
+    intent: "the status read 140 us after CTRL_MEAS forced (the read takes its own bus time on top)"
+  - name: delay-160us
+    intent: "the status read 160 us after CTRL_MEAS forced (the read takes its own bus time on top)"
+  - name: delay-180us
+    intent: "the status read 180 us after CTRL_MEAS forced (the read takes its own bus time on top)"
+  - name: delay-200us
+    intent: "the status read 200 us after CTRL_MEAS forced (the read takes its own bus time on top)"
+  - name: delay-220us
+    intent: "the status read 220 us after CTRL_MEAS forced (the read takes its own bus time on top)"
+  - name: delay-240us
+    intent: "the status read 240 us after CTRL_MEAS forced (the read takes its own bus time on top)"
+  - name: delay-260us
+    intent: "the status read 260 us after CTRL_MEAS forced (the read takes its own bus time on top)"
+  - name: delay-280us
+    intent: "the status read 280 us after CTRL_MEAS forced (the read takes its own bus time on top)"
+  - name: delay-300us
+    intent: "the status read 300 us after CTRL_MEAS forced (the read takes its own bus time on top)"
+  - name: delay-320us
+    intent: "the status read 320 us after CTRL_MEAS forced (the read takes its own bus time on top)"
+  - name: delay-340us
+    intent: "the status read 340 us after CTRL_MEAS forced (the read takes its own bus time on top)"
+  - name: delay-360us
+    intent: "the status read 360 us after CTRL_MEAS forced (the read takes its own bus time on top)"
+  - name: delay-380us
+    intent: "the status read 380 us after CTRL_MEAS forced (the read takes its own bus time on top)"
+  - name: delay-400us
+    intent: "the status read 400 us after CTRL_MEAS forced (the read takes its own bus time on top)"
+  - name: delay-420us
+    intent: "the status read 420 us after CTRL_MEAS forced (the read takes its own bus time on top)"
+  - name: delay-440us
+    intent: "the status read 440 us after CTRL_MEAS forced (the read takes its own bus time on top)"
+  - name: delay-460us
+    intent: "the status read 460 us after CTRL_MEAS forced (the read takes its own bus time on top)"
+  - name: delay-480us
+    intent: "the status read 480 us after CTRL_MEAS forced (the read takes its own bus time on top)"
+  - name: delay-500us
+    intent: "the status read 500 us after CTRL_MEAS forced (the read takes its own bus time on top)"
+  - name: delay-520us
+    intent: "the status read 520 us after CTRL_MEAS forced (the read takes its own bus time on top)"
+  - name: delay-540us
+    intent: "the status read 540 us after CTRL_MEAS forced (the read takes its own bus time on top)"
+  - name: delay-560us
+    intent: "the status read 560 us after CTRL_MEAS forced (the read takes its own bus time on top)"
+  - name: delay-580us
+    intent: "the status read 580 us after CTRL_MEAS forced (the read takes its own bus time on top)"
+  - name: delay-600us
+    intent: "the status read 600 us after CTRL_MEAS forced (the read takes its own bus time on top)"
+source: [EnvCases.cpp, env_collect.py]
+notes: |
+  EnvCases.cpp is a file beside oep-probe-arduino's firmware (examples/Firmware/OepProbe), as its
+  extras/LibraryTest: the probe runs the case on a task of its own and captures SDA / SCL while it runs; the
+  case's lines carry the probe's clock (ProbeLog). It holds seven cases, run by number (6 is this one).
+  env_collect.py is the host side that records the wireskein run.

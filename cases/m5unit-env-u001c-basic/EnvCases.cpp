@@ -12,11 +12,17 @@
 //   2 m5unit-env-u001c-basic       the library (M5Unit-ENV): SHT3X and QMP6988 begin, then three rounds of update
 //   3 sht30-modes                  no library: soft reset, status, each repeatability by polling and by clock stretch
 //   4 qmp6988-modes                no library: chip id, reset, calibration, a forced measurement, normal mode ~120 ms
+//   5 qmp6988-standby              normal mode at standby 5 ms (0x20) and 50 ms (0x40), the data read every 1 ms / 5 ms
+//   6 qmp6988-measure-bit          forced measurements, each with one status read a set time after CTRL_MEAS (0-600 us)
+//   7 sht30-stretch-wait           the high-repeatability clock-stretch read on the ESP-IDF driver with scl_wait_us 20000
+//                                  (Wire leaves it 0: the hardware's default), then on Wire with its timeout at 1000 ms;
+//                                  one polling measurement read to the end before each
 #include <OepEndpoint.h>
 #include <OepPinTable.h>
 #include <OepProbeLog.h>
 #include <M5UnitENV.h>
 #include <Wire.h>
+#include <driver/i2c_master.h>
 
 #include "OepFeatures.h"
 
@@ -278,6 +284,136 @@ int32_t qmpModes() {
   return bad;
 }
 
+
+// ---- case 5: QMP6988 normal mode at two standby times --------------------------------------------------------------
+int32_t qmpStandby() {
+  int32_t bad = 0;
+  uint8_t b[6];
+  char h[13];
+  mark("# qmp6988-standby");
+  static const struct { const char *name; uint8_t io; uint32_t every_us, for_us; } kRuns[] = {
+      {"standby-5ms", 0x20, 1000, 120000}, {"standby-50ms", 0x40, 5000, 400000}};
+  for (const auto &r : kRuns) {
+    markf("## %s", r.name);
+    writeReg(0xF4, 0x00);   // sleep before the change
+    writeReg(0xF1, 0x02);   // IIR 4
+    writeReg(0xF5, r.io);
+    markf("end=%d", writeReg(0xF4, (1 << 5) | (4 << 2) | 3));   // t x1, p x8, normal
+    const uint32_t t0 = micros();
+    uint32_t next = 0;
+    while (micros() - t0 < r.for_us) {
+      while (micros() - t0 < next) {}
+      const size_t got = readRegs(0xF7, b, 6);
+      hex(h, b, got);
+      markf("t_us=%lu data=%s", static_cast<unsigned long>(micros() - t0), h);
+      bad += got != 6;
+      next += r.every_us;
+    }
+    writeReg(0xF4, 0x00);
+    mark("##");
+  }
+  mark("#");
+  return bad;
+}
+
+// ---- case 6: when QMP6988's measure bit rises after a forced CTRL_MEAS ---------------------------------------------
+int32_t qmpMeasureBit() {
+  int32_t bad = 0;
+  mark("# qmp6988-measure-bit");
+  writeReg(0xF4, 0x00);
+  delay(5);
+  for (uint32_t d = 0; d <= 600; d += 20) {
+    markf("## delay-%luus", static_cast<unsigned long>(d));
+    writeReg(0xF4, (1 << 5) | (4 << 2) | 1);   // forced
+    const uint32_t t0 = micros();
+    while (micros() - t0 < d) {}
+    uint8_t stat = 0xff;
+    const size_t got = readRegs(0xF3, &stat, 1);
+    markf("after_us=%lu status=0x%02x", static_cast<unsigned long>(micros() - t0), stat);
+    bad += got != 1;
+    delay(15);   // the measurement ends (about 10.8 ms at t x1, p x8)
+    mark("##");
+  }
+  mark("#");
+  return bad;
+}
+
+// ---- case 7: SHT30 high repeatability, clock stretch, with longer waits --------------------------------------------
+// One high-repeatability measurement by polling, read to its last byte: the state sht30-modes leaves before a stretch
+// read (right after a soft reset the part answered a stretch read at once, without holding SCL)
+void primeSht() {
+  uint8_t b[6];
+  command(kSht, 0x2400);
+  const uint32_t t0 = micros();
+  while (micros() - t0 < 50000 && readN(kSht, b, 6) != 6) delayMicroseconds(500);
+  delay(5);
+}
+
+int32_t shtStretchWait() {
+  int32_t bad = 0;
+  uint8_t b[6];
+  char h[13];
+  mark("# sht30-stretch-wait");
+  int r = 0;
+  uint32_t t1 = 0;
+  size_t got = 0;
+  primeSht();   // one polling measurement read to the end first, as in sht30-modes before its stretch reads
+  mark("## idf-scl-wait-20000us");
+  bus.end();
+  i2c_master_bus_config_t bc = {};
+  bc.i2c_port = I2C_NUM_0;
+  bc.sda_io_num = static_cast<gpio_num_t>(kSda);
+  bc.scl_io_num = static_cast<gpio_num_t>(kScl);
+  bc.clk_source = I2C_CLK_SRC_DEFAULT;
+  bc.glitch_ignore_cnt = 7;
+  bc.flags.enable_internal_pullup = 1;   // as Wire sets it
+  i2c_master_bus_handle_t mb = nullptr;
+  i2c_master_dev_handle_t dev = nullptr;
+  esp_err_t e = i2c_new_master_bus(&bc, &mb);
+  if (e == ESP_OK) {
+    i2c_device_config_t dc = {};
+    dc.dev_addr_length = I2C_ADDR_BIT_LEN_7;
+    dc.device_address = kSht;
+    dc.scl_speed_hz = kHz;
+    dc.scl_wait_us = 20000;
+    e = i2c_master_bus_add_device(mb, &dc, &dev);
+  }
+  if (e == ESP_OK) {
+    const uint8_t cmd[2] = {0x2C, 0x06};
+    const esp_err_t ew = i2c_master_transmit(dev, cmd, 2, 100);
+    t1 = micros();
+    memset(b, 0, sizeof b);
+    const esp_err_t er = i2c_master_receive(dev, b, 6, 100);
+    hex(h, b, 6);
+    markf("transmit=%d receive=%d elapsed_us=%lu bytes=%s crc=%d", ew, er, static_cast<unsigned long>(micros() - t1), h,
+          er == ESP_OK && crcOk(b, 6));
+    bad += er != ESP_OK;
+  } else {
+    markf("setup=%d", e);
+    ++bad;
+  }
+  if (dev) i2c_master_bus_rm_device(dev);
+  if (mb) i2c_del_master_bus(mb);
+  bus.begin(kSda, kScl, kHz);
+  mark("##");
+  delay(20);
+  primeSht();   // one polling measurement read to the end first, as in sht30-modes before its stretch reads
+  mark("## wire-timeout-1000ms");
+  const uint16_t was = bus.getTimeOut();
+  bus.setTimeOut(1000);
+  r = command(kSht, 0x2C06);
+  t1 = micros();
+  got = readN(kSht, b, 6);
+  hex(h, b, got);
+  markf("end=%d elapsed_us=%lu got=%u bytes=%s crc=%d", r, static_cast<unsigned long>(micros() - t1),
+        static_cast<unsigned>(got), h, got == 6 && crcOk(b, 6));
+  bad += got != 6;
+  bus.setTimeOut(was);
+  mark("##");
+  mark("#");
+  return bad;
+}
+
 // ---- the case's thread ---------------------------------------------------------------------------------------------
 enum : uint8_t { kIdle = 0, kRunning = 1, kDone = 2 };
 volatile uint8_t state = kIdle, current = 0;
@@ -288,7 +424,10 @@ int32_t runCase(uint8_t which) {
     case 1: return scan();
     case 2: return basic();
     case 3: return shtModes();
-    default: return qmpModes();
+    case 4: return qmpModes();
+    case 5: return qmpStandby();
+    case 6: return qmpMeasureBit();
+    default: return shtStretchWait();
   }
 }
 
@@ -331,7 +470,7 @@ class EnvCases final : public oep::Interface {
     const oep::Result parsed = oep::plainTail(tail, p, n, op == kOpRun ? 1 : 0, out, capacity);
     if (oep::refused(parsed)) return parsed;
     if (op == kOpRun) {
-      if (p[0] < 1 || p[0] > 4) return oep::unsupportedValue(out, capacity);
+      if (p[0] < 1 || p[0] > 7) return oep::unsupportedValue(out, capacity);
       if (!start(p[0])) return oep::wrongState(out, capacity);
       return oep::completed();
     }

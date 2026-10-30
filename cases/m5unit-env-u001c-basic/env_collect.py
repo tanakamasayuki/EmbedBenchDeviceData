@@ -2,7 +2,7 @@
 
     env_collect.py OUT_ROOT CASE[,CASE...] [--rate 2000000] [--samples N]
 
-CASE: scan, m5unit-env-u001c-basic, sht30-modes, qmp6988-modes. Each run: run.json + c0001.wireskein (SDA, SCL on the
+CASE: one of CASES below. Each run: run.json + c0001.wireskein (SDA, SCL on the
 probe's clock, the case's ProbeLog lines placed on it)."""
 import argparse
 import struct
@@ -17,8 +17,10 @@ PORT = "usb:80f1b2d719c5"
 SDA, SCL = 14, 15
 NAME = "io.github.example.library-test"
 RUN, STATUS = 0x10, 0x20
-CASES = {"scan": 1, "m5unit-env-u001c-basic": 2, "sht30-modes": 3, "qmp6988-modes": 4}
-SAMPLES = {"scan": 400_000, "m5unit-env-u001c-basic": 2_000_000, "sht30-modes": 1_000_000, "qmp6988-modes": 1_200_000}
+CASES = {"scan": 1, "m5unit-env-u001c-basic": 2, "sht30-modes": 3, "qmp6988-modes": 4, "qmp6988-standby": 5,
+         "qmp6988-measure-bit": 6, "sht30-stretch-wait": 7}
+SAMPLES = {"scan": 400_000, "m5unit-env-u001c-basic": 2_000_000, "sht30-modes": 1_000_000, "qmp6988-modes": 1_200_000,
+           "qmp6988-standby": 1_400_000, "qmp6988-measure-bit": 1_400_000, "sht30-stretch-wait": 600_000}
 
 
 def run_case(hst, fn, case, timeout_s=20.0):

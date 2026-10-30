@@ -1,0 +1,35 @@
+schema_version: 1
+case: qmp6988-measure-bit
+date: 2026-10-30
+targets:
+  - {chip: qmp6988, product: m5stack-u001-c, bus: i2c, addr: "0x70"}
+bus:
+  kind: i2c
+  hz: 100000
+  pins:
+    SDA: 14
+    SCL: 15
+  pullups: unknown (only Unit ENV III on the Grove; none added on the board side)
+dut:
+  board: ESP32-P4X (oep-bench resident position 3-3 / 3-4, Unit ENV III on its Grove GPIO14 / 15)
+  id: usb:80f1b2d719c5
+  core:
+    name: arduino-esp32
+    version: 3.3.12
+  controller: esp32p4
+probe:
+  id: usb:80f1b2d719c5
+  firmware: oep-probe-arduino
+  version: 3feb4e2
+wireskein:
+  version: 45261b2
+captures:
+  - file: c0001.wireskein
+    decode: c0001.i2c.json
+    timebase:
+      tick_hz: [2000000, 1]
+      tick0: 0
+      start_ns: 10676242000
+notes: |
+  Captured at 2 MHz. At 100 kHz the status byte is on the wire 280 us after the write at the earliest; every read showed the bit set.
+  c0001.analysis.json is wireskein decode (wireskein-analysis/1); c0001.i2c.json is its transactions.
