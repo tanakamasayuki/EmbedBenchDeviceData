@@ -32,5 +32,9 @@ captures:
       start_ns: 97627781500
 notes: |
   The high-repeatability clock-stretch read returned 0 bytes after 6.7 ms: SCL was held longer than the controller waits (the I2CDeviceDB pilot on an ESP32-S3 stopped at 6.76 ms the same way). The polling reads all answered.
+  On the wire (wireskein): SHT30 holds SCL low 12.16 ms after the read's address; the controller's 6.7 ms timeout
+  does not show on the wire. When SHT30 lets SCL go, 9 SCL clocks 10 us apart follow (the controller's bus clear at the
+  start of polling-medium): SHT30 shifts out 0x62 and the 9th is a NACK, so the wire reads as a 1-byte read ending
+  with a repeated START into the next write (0x240B). The library saw got=0; the decoded read is the wire's view.
   c0001.analysis.json is the same capture decoded by wireskein decode (wireskein-analysis/1); c0001.i2c.json is its
   transactions. The DUT is the probe itself (EnvCases.cpp beside the OEP firmware).

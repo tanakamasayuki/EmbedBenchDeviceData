@@ -1,0 +1,237 @@
+{
+ "format": "wireskein-run/3",
+ "meta": {
+  "case": "m5unit-env-u001c-basic",
+  "probe": "usb:80f1b2d719c5",
+  "pins": {
+   "SDA": 14,
+   "SCL": 15
+  }
+ },
+ "log": [
+  {
+   "t": 0.02470399485900998,
+   "src": "marker",
+   "text": "# m5unit-env-u001c-basic",
+   "probe_ns": 15360867000,
+   "boot_id": 1666464636,
+   "probe": "usb:80f1b2d719c5"
+  },
+  {
+   "t": 0.024712993996217847,
+   "src": "marker",
+   "text": "## sht30-begin",
+   "probe_ns": 15360876000,
+   "boot_id": 1666464636,
+   "probe": "usb:80f1b2d719c5"
+  },
+  {
+   "t": 0.025760806864127517,
+   "src": "dut",
+   "text": "ok=1",
+   "probe_ns": 15361924000,
+   "boot_id": 1666464636,
+   "probe": "usb:80f1b2d719c5"
+  },
+  {
+   "t": 0.025763806886970997,
+   "src": "marker",
+   "text": "##",
+   "probe_ns": 15361927000,
+   "boot_id": 1666464636,
+   "probe": "usb:80f1b2d719c5"
+  },
+  {
+   "t": 0.025765806902199984,
+   "src": "marker",
+   "text": "## qmp6988-begin",
+   "probe_ns": 15361929000,
+   "boot_id": 1666464636,
+   "probe": "usb:80f1b2d719c5"
+  },
+  {
+   "t": 0.17960844305343926,
+   "src": "dut",
+   "text": "ok=1",
+   "probe_ns": 15515799000,
+   "boot_id": 1666464636,
+   "probe": "usb:80f1b2d719c5"
+  },
+  {
+   "t": 0.1796134419273585,
+   "src": "marker",
+   "text": "##",
+   "probe_ns": 15515804000,
+   "boot_id": 1666464636,
+   "probe": "usb:80f1b2d719c5"
+  },
+  {
+   "t": 0.1796164410188794,
+   "src": "marker",
+   "text": "## sht30-update",
+   "probe_ns": 15515807000,
+   "boot_id": 1666464636,
+   "probe": "usb:80f1b2d719c5"
+  },
+  {
+   "t": 0.429872928885743,
+   "src": "dut",
+   "text": "ok=1 elapsed_us=249925 temperature_c=22.77 humidity_rh=61.66",
+   "probe_ns": 15766108000,
+   "boot_id": 1666464636,
+   "probe": "usb:80f1b2d719c5"
+  },
+  {
+   "t": 0.42988492688164115,
+   "src": "marker",
+   "text": "##",
+   "probe_ns": 15766120000,
+   "boot_id": 1666464636,
+   "probe": "usb:80f1b2d719c5"
+  },
+  {
+   "t": 0.42988692596554756,
+   "src": "marker",
+   "text": "## qmp6988-update",
+   "probe_ns": 15766122000,
+   "boot_id": 1666464636,
+   "probe": "usb:80f1b2d719c5"
+  },
+  {
+   "t": 0.43110570893622935,
+   "src": "dut",
+   "text": "ok=1 elapsed_us=1174 pressure_pa=101394.0 temperature_c=22.90",
+   "probe_ns": 15767341000,
+   "boot_id": 1666464636,
+   "probe": "usb:80f1b2d719c5"
+  },
+  {
+   "t": 0.43118869489990175,
+   "src": "marker",
+   "text": "##",
+   "probe_ns": 15767424000,
+   "boot_id": 1666464636,
+   "probe": "usb:80f1b2d719c5"
+  },
+  {
+   "t": 0.530451038852334,
+   "src": "marker",
+   "text": "## sht30-update",
+   "probe_ns": 15866704000,
+   "boot_id": 1666464636,
+   "probe": "usb:80f1b2d719c5"
+  },
+  {
+   "t": 0.7807665159925818,
+   "src": "dut",
+   "text": "ok=1 elapsed_us=250024 temperature_c=22.77 humidity_rh=61.69",
+   "probe_ns": 16117064000,
+   "boot_id": 1666464636,
+   "probe": "usb:80f1b2d719c5"
+  },
+  {
+   "t": 0.78077851398848,
+   "src": "marker",
+   "text": "##",
+   "probe_ns": 16117076000,
+   "boot_id": 1666464636,
+   "probe": "usb:80f1b2d719c5"
+  },
+  {
+   "t": 0.7807805128395557,
+   "src": "marker",
+   "text": "## qmp6988-update",
+   "probe_ns": 16117078000,
+   "boot_id": 1666464636,
+   "probe": "usb:80f1b2d719c5"
+  },
+  {
+   "t": 0.781989298062399,
+   "src": "dut",
+   "text": "ok=1 elapsed_us=1161 pressure_pa=101394.1 temperature_c=22.95",
+   "probe_ns": 16118287000,
+   "boot_id": 1666464636,
+   "probe": "usb:80f1b2d719c5"
+  },
+  {
+   "t": 0.7819982969667763,
+   "src": "marker",
+   "text": "##",
+   "probe_ns": 16118296000,
+   "boot_id": 1666464636,
+   "probe": "usb:80f1b2d719c5"
+  },
+  {
+   "t": 0.8813886179123074,
+   "src": "marker",
+   "text": "## sht30-update",
+   "probe_ns": 16217704000,
+   "boot_id": 1666464636,
+   "probe": "usb:80f1b2d719c5"
+  },
+  {
+   "t": 1.1316990959458053,
+   "src": "dut",
+   "text": "ok=1 elapsed_us=250026 temperature_c=22.77 humidity_rh=61.66",
+   "probe_ns": 16468059000,
+   "boot_id": 1666464636,
+   "probe": "usb:80f1b2d719c5"
+  },
+  {
+   "t": 1.1317110939417034,
+   "src": "marker",
+   "text": "##",
+   "probe_ns": 16468071000,
+   "boot_id": 1666464636,
+   "probe": "usb:80f1b2d719c5"
+  },
+  {
+   "t": 1.1317130939569324,
+   "src": "marker",
+   "text": "## qmp6988-update",
+   "probe_ns": 16468073000,
+   "boot_id": 1666464636,
+   "probe": "usb:80f1b2d719c5"
+  },
+  {
+   "t": 1.1329648708924651,
+   "src": "dut",
+   "text": "ok=1 elapsed_us=1205 pressure_pa=101393.8 temperature_c=22.96",
+   "probe_ns": 16469325000,
+   "boot_id": 1666464636,
+   "probe": "usb:80f1b2d719c5"
+  },
+  {
+   "t": 1.1329748688731343,
+   "src": "marker",
+   "text": "##",
+   "probe_ns": 16469335000,
+   "boot_id": 1666464636,
+   "probe": "usb:80f1b2d719c5"
+  },
+  {
+   "t": 1.2323221990372986,
+   "src": "marker",
+   "text": "#",
+   "probe_ns": 16568700000,
+   "boot_id": 1666464636,
+   "probe": "usb:80f1b2d719c5"
+  },
+  {
+   "t": 1.8269795898813754,
+   "src": "note",
+   "text": "case result=0"
+  }
+ ],
+ "captures": [
+  {
+   "file": "c0001.wireskein",
+   "t0": 0.02158253686502576,
+   "channels": [
+    "SDA",
+    "SCL"
+   ]
+  }
+ ],
+ "expect": {}
+}

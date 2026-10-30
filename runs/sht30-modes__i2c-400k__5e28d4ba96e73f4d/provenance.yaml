@@ -1,0 +1,37 @@
+schema_version: 1
+case: sht30-modes
+date: 2026-10-30
+targets:
+  - {chip: sht30, product: m5stack-u001-c, bus: i2c, addr: "0x44"}
+bus:
+  kind: i2c
+  hz: 400000
+  pins:
+    SDA: 14
+    SCL: 15
+  pullups: unknown (only Unit ENV III on the Grove; none added on the board side)
+dut:
+  board: ESP32-P4X (oep-bench resident position 3-3 / 3-4, Unit ENV III on its Grove GPIO14 / 15)
+  id: usb:80f1b2d719c5
+  core:
+    name: arduino-esp32
+    version: 3.3.12
+  controller: esp32p4
+probe:
+  id: usb:80f1b2d719c5
+  firmware: oep-probe-arduino
+  version: 3feb4e2
+wireskein:
+  version: 45261b2
+captures:
+  - file: c0001.wireskein
+    decode: c0001.i2c.json
+    timebase:
+      tick_hz: [8000000, 1]
+      tick0: 0
+      start_ns: 10350615000
+notes: |
+  Captured at 8 MHz. As at 100 kHz, the high-repeatability clock-stretch read returned 0 bytes after 6.65 ms
+  (the controller gave up while SHT30 held SCL; see the 100 kHz run's notes for what the wire shows after it).
+  The firmware is the cases' EnvCases.cpp built with ENV_HZ=400000. c0001.analysis.json is wireskein decode
+  (wireskein-analysis/1); c0001.i2c.json is its transactions.
