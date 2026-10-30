@@ -1,0 +1,28 @@
+schema_version: 1
+key: sht30-unread-reset
+kind: characterization
+intent: |
+  Whether a measurement result left unread survives a soft reset: a measurement (0x2400) left unread for 20 ms, a soft reset, a wait of 2 / 10 / 100 ms, then reads every 0.5 ms for 15 ms, first with no command, then after a new 0x2400. On the ESP-IDF driver (every transfer on the wire).
+targets:
+  - {chip: sht30, product: m5stack-u001-c, bus: i2c, addr: "0x44"}
+phases:
+  - name: read-only-reset-wait-2ms
+    intent: "reads with no command (2 ms after the reset)"
+  - name: read-only-reset-wait-10ms
+    intent: "reads with no command (10 ms after the reset)"
+  - name: read-only-reset-wait-100ms
+    intent: "reads with no command (100 ms after the reset)"
+  - name: command-reset-wait-2ms
+    intent: "a new 0x2400, then the reads (2 ms after the reset)"
+  - name: command-reset-wait-10ms
+    intent: "a new 0x2400, then the reads (10 ms after the reset)"
+  - name: command-reset-wait-100ms
+    intent: "a new 0x2400, then the reads (100 ms after the reset)"
+  - name: after-measurement
+    intent: "for comparison: after a measurement read to its end"
+source: [EnvCases.cpp, env_collect.py]
+notes: |
+  EnvCases.cpp is a file beside oep-probe-arduino's firmware (examples/Firmware/OepProbe), as its
+  extras/LibraryTest: the probe runs the case on a task of its own and captures SDA / SCL while it runs; the
+  case's lines carry the probe's clock (ProbeLog). It holds 13 cases, run by number (13 is this one).
+  env_collect.py is the host side that records the wireskein run.

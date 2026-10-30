@@ -1,0 +1,38 @@
+schema_version: 1
+case: sht30-unread-reset
+date: 2026-10-30
+targets:
+  - {chip: sht30, product: m5stack-u001-c, bus: i2c, addr: "0x44"}
+bus:
+  kind: i2c
+  hz: 100000
+  pins:
+    SDA: 14
+    SCL: 15
+  pullups: unknown (only Unit ENV III on the Grove; none added on the board side)
+dut:
+  board: ESP32-P4X (oep-bench resident position 3-3 / 3-4, Unit ENV III on its Grove GPIO14 / 15)
+  id: usb:80f1b2d719c5
+  core:
+    name: arduino-esp32
+    version: 3.3.12
+  controller: esp32p4
+probe:
+  id: usb:80f1b2d719c5
+  firmware: oep-probe-arduino
+  version: 3feb4e2
+wireskein:
+  version: 45261b2
+captures:
+  - file: c0001.wireskein
+    decode: c0001.i2c.json
+    timebase:
+      tick_hz: [2000000, 1]
+      tick0: 0
+      start_ns: 7678114000
+notes: |
+  Captured at 2 MHz. With no command after the reset, every read was ACKed and got 00 00 81 FF FF FF (word 0x0000
+  with its CRC, then FF) at 2, 10 and 100 ms. With a new 0x2400 after the reset, the first read (2 us after it) got a
+  result with a good CRC at once and the new one came at 12.5 ms: the unread result outlived the soft reset and went
+  to the first read after the next command.
+  c0001.analysis.json is wireskein decode (wireskein-analysis/1); c0001.i2c.json is its transactions.

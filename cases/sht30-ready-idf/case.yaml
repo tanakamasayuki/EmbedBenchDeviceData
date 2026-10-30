@@ -26,5 +26,5 @@ source: [EnvCases.cpp, env_collect.py]
 notes: |
   EnvCases.cpp is a file beside oep-probe-arduino's firmware (examples/Firmware/OepProbe), as its
   extras/LibraryTest: the probe runs the case on a task of its own and captures SDA / SCL while it runs; the
-  case's lines carry the probe's clock (ProbeLog). It holds 12 cases, run by number (12 is this one).
+  case's lines carry the probe's clock (ProbeLog). It holds 13 cases, run by number (12 is this one).
   env_collect.py is the host side that records the wireskein run.

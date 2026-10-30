@@ -31,5 +31,6 @@ captures:
       tick0: 0
       start_ns: 45452730000
 notes: |
-  Captured at 1 MHz. 401 reads, the data changed 126 times.
+  Captured at 1 MHz. 401 reads, the data changed 126 times. The window began 2 ms before F433: the setup
+  (F400, F102, F520) is not in it; the later run of this case has it.
   c0001.analysis.json is wireskein decode (wireskein-analysis/1); c0001.i2c.json is its transactions.

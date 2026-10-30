@@ -25,6 +25,8 @@
 //                                  reach the wire)
 //   12 sht30-ready-idf             the same on the ESP-IDF i2c_master driver (every transfer on the wire), and after a
 //                                  measurement left unread
+//   13 sht30-unread-reset          a measurement left unread, then a soft reset: whether a read after it still gets the
+//                                  old result (no command; then with a command), on the ESP-IDF driver
 #include <OepEndpoint.h>
 #include <OepPinTable.h>
 #include <OepProbeLog.h>
@@ -549,6 +551,67 @@ int32_t idfPoll15(const char *phase, bool command_it = true) {
   return answers ? 0 : 1;
 }
 
+// The ESP-IDF bus for SHT30 in place of Wire for one case (every transfer on the wire): fn runs between
+template <typename F>
+int32_t onIdf(F fn) {
+  int32_t bad = 0;
+  bus.end();
+  i2c_master_bus_config_t bc = {};
+  bc.i2c_port = I2C_NUM_0;
+  bc.sda_io_num = static_cast<gpio_num_t>(kSda);
+  bc.scl_io_num = static_cast<gpio_num_t>(kScl);
+  bc.clk_source = I2C_CLK_SRC_DEFAULT;
+  bc.glitch_ignore_cnt = 7;
+  bc.flags.enable_internal_pullup = 1;
+  i2c_master_bus_handle_t mb = nullptr;
+  esp_err_t e = i2c_new_master_bus(&bc, &mb);
+  if (e == ESP_OK) {
+    i2c_device_config_t dc = {};
+    dc.dev_addr_length = I2C_ADDR_BIT_LEN_7;
+    dc.device_address = kSht;
+    dc.scl_speed_hz = kHz;
+    dc.scl_wait_us = 20000;
+    e = i2c_master_bus_add_device(mb, &dc, &idfSht);
+  }
+  if (e != ESP_OK) {
+    markf("setup=%d", e);
+    ++bad;
+  } else {
+    bad += fn();
+  }
+  if (idfSht) i2c_master_bus_rm_device(idfSht);
+  idfSht = nullptr;
+  if (mb) i2c_del_master_bus(mb);
+  bus.begin(kSda, kScl, kHz);
+  return bad;
+}
+
+// ---- case 13: a result left unread across a soft reset -------------------------------------------------------------
+int32_t shtUnreadReset() {
+  mark("# sht30-unread-reset");
+  const int32_t bad = onIdf([] {
+    int32_t bad = 0;
+    const uint8_t cmd[2] = {0x24, 0x00}, reset[2] = {0x30, 0xA2};
+    static const uint32_t kWaits[] = {2, 10, 100};
+    for (int with_command = 0; with_command < 2; ++with_command) {
+      for (uint32_t w : kWaits) {
+        i2c_master_transmit(idfSht, cmd, 2, 50);   // a measurement left unread
+        delay(20);
+        markf("reset=%d", i2c_master_transmit(idfSht, reset, 2, 50));
+        delay(w);
+        char name[40];
+        snprintf(name, sizeof name, "%s-reset-wait-%lums", with_command ? "command" : "read-only",
+                 static_cast<unsigned long>(w));
+        bad += idfPoll15(name, with_command) && with_command;
+      }
+    }
+    bad += idfPoll15("after-measurement");   // a measurement read to its end, for comparison
+    return bad;
+  });
+  mark("#");
+  return bad;
+}
+
 int32_t shtReadyIdf() {
   int32_t bad = 0;
   mark("# sht30-ready-idf");
@@ -621,7 +684,8 @@ int32_t runCase(uint8_t which) {
     case 9: return qmpStandbyLong(0x40, "50ms");
     case 10: return qmpStandbyLong(0x60, "250ms");
     case 11: return shtReady();
-    default: return shtReadyIdf();
+    case 12: return shtReadyIdf();
+    default: return shtUnreadReset();
   }
 }
 
@@ -664,7 +728,7 @@ class EnvCases final : public oep::Interface {
     const oep::Result parsed = oep::plainTail(tail, p, n, op == kOpRun ? 1 : 0, out, capacity);
     if (oep::refused(parsed)) return parsed;
     if (op == kOpRun) {
-      if (p[0] < 1 || p[0] > 12) return oep::unsupportedValue(out, capacity);
+      if (p[0] < 1 || p[0] > 13) return oep::unsupportedValue(out, capacity);
       if (!start(p[0])) return oep::wrongState(out, capacity);
       return oep::completed();
     }
