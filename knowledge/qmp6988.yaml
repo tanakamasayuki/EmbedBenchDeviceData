@@ -113,11 +113,17 @@ behaviours:
   - key: forced-then-normal
     evidence: [qmp6988-modes__i2c-400k__136be8de00714934]
     notes: Normal mode written while a forced conversion runs does not restart it; the normal cycle continues from it.
-  - key: reset-byte-decodes-as-address
-    evidence: [qmp6988-modes__i2c-100k__b85bde517b61bfb7, m5unit-env-u001c-basic__i2c-100k__c553167c6f54e3f4]
+decode_artefacts:
+  - key: reset-byte-as-address
+    write: "E0E6"
+    then: {addr: "0x73", rw: write, bytes: ""}
+    cause: unknown
+    evidence: [qmp6988-modes__i2c-100k__b85bde517b61bfb7, qmp6988-modes__i2c-400k__136be8de00714934, i2cdevicedb-pilot:qmp6988-p0-100k-nominal-0283eb57c7a7c010]
     notes: |
-      E0=E6 resets the part while E6 is on the bus; the decoder keeps E6 as data and then sees a START with E6 as an
-      address (0x73 written, refused). There is no part at 0x73.
+      Right after E0=E6 (the reset) the wire shows a START with E6 as the address: 0x73 written, refused on the
+      P4X (wireskein), ACKed on the pilot's S3 (sigrok). There is no part at 0x73. The decode is right to show it;
+      it is not a transfer of its own. Whether the part (resetting while E6 is on the bus) or the controller makes
+      the extra frame is not separated yet.
 notes: |
   The EmbedBench model is devices/src/qmp6988_model.* (X68); tools/knowledge_table.py writes the
   register table this file describes in its RegTableSpec form.

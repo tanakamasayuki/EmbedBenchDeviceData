@@ -123,6 +123,7 @@ OEP の run は `c0001.analysis.json`（wireskein decode の `wireskein-analysis
 | timing | | `[{key, value_us, windows?: [{setting, low_us, high_us, evidence}], evidence?, notes?}]`。`value_us` は模型が使う値（式でよい）、`windows` は記録が許す範囲 |
 | behaviours | | `[{key, evidence, notes}]`。表で言えない振る舞い |
 | controllers | | `[{key, controller, evidence, notes}]`。この部品で見えた、controller の側の性質（部品の性質と分ける） |
+| decode_artefacts | | `[{key, write, then: {addr, rw, bytes?}, cause: part / controller / unknown, evidence, notes}]`。部品への書込み `write`（16 進）の直後に decode が出す、転送ではないもの。decode はそれを正しく出し、読む側（EmbedBench の `skein2trace.py --knowledge`）が畳む |
 
 `evidence` は `runs/` の run の名前、`i2cdevicedb-pilot:<observation id>`、または `datasheet`。
 validate は、chip がカタログにあることと、根拠がどれかに当たることを検査する。

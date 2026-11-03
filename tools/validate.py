@@ -634,7 +634,8 @@ def validate_knowledge(report, chips_by_key) -> None:
         check_no_comments(report, path)
         check_fields(report, path, data,
                      required={"schema_version", "chip", "bus", "registers"},
-                     optional={"addressing", "commands", "timing", "behaviours", "controllers", "notes"},
+                     optional={"addressing", "commands", "timing", "behaviours", "controllers", "decode_artefacts",
+                               "notes"},
                      may_be_empty={"registers"})
         if not data.get("registers") and not data.get("commands"):
             report.add(path, "a chip has registers or commands; both are empty")
@@ -680,6 +681,15 @@ def validate_knowledge(report, chips_by_key) -> None:
             items.append((where, item))
             check_fields(report, path, item, required={"key", "controller", "evidence", "notes"},
                          optional=set(), where=where)
+        for index, item in enumerate(data.get("decode_artefacts") or []):
+            where = f"decode_artefacts[{index}]"
+            items.append((where, item))
+            check_fields(report, path, item, required={"key", "write", "then", "cause", "evidence", "notes"},
+                         optional=set(), where=where)
+            check_fields(report, path, item.get("then") or {}, required={"addr", "rw"}, optional={"bytes"},
+                         where=f"{where}.then")
+            if item.get("cause") not in ("part", "controller", "unknown"):
+                report.add(path, f"{where}: cause must be part, controller or unknown")
         for index, item in enumerate(data.get("timing") or []):
             items.append((f"timing[{index}]", item))
             for number, window in enumerate(item.get("windows") or []):
