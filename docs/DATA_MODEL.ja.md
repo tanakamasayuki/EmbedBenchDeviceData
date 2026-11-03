@@ -118,13 +118,15 @@ OEP の run は `c0001.analysis.json`（wireskein decode の `wireskein-analysis
 | --- | --- | --- |
 | chip、bus | ○ | ファイル名は chip と同じ |
 | addressing | | `pointer_bits`、`repeated_start_required`、`read_auto_increment`、`evidence`、`notes` |
-| registers | ○ | `[{addr, width, access: r / w / rw, reset, name?, volatile?, per_specimen?, evidence?, notes?}]`。`addr` は `0x` ＋ 大文字の 16 進 2 桁、`reset` は width バイトの 16 進 |
+| registers | ○（空でよい） | `[{addr, width, access: r / w / rw, reset, name?, volatile?, per_specimen?, evidence?, notes?}]`。`addr` は `0x` ＋ 大文字の 16 進 2 桁、`reset` は width バイトの 16 進 |
+| commands | | コマンド型の部品: `[{code, name, answer_bytes, timing?, evidence, notes?}]`。`code` は `0x` ＋ 大文字の 16 進、`timing` は timing の key。registers と commands のどちらかは空でない |
 | timing | | `[{key, value_us, windows?: [{setting, low_us, high_us, evidence}], evidence?, notes?}]`。`value_us` は模型が使う値（式でよい）、`windows` は記録が許す範囲 |
 | behaviours | | `[{key, evidence, notes}]`。表で言えない振る舞い |
+| controllers | | `[{key, controller, evidence, notes}]`。この部品で見えた、controller の側の性質（部品の性質と分ける） |
 
 `evidence` は `runs/` の run の名前、`i2cdevicedb-pilot:<observation id>`、または `datasheet`。
 validate は、chip がカタログにあることと、根拠がどれかに当たることを検査する。
-`tools/knowledge_table.py <chip>` がレジスタの表を EmbedBench の `RegTableSpec` に書き出す。
+`tools/knowledge_table.py <chip>` がレジスタの表を EmbedBench の `RegTableSpec` に書き出す（レジスタのある部品だけ）。
 
 ## 6. ガイド: guides/chips/<chip>.md
 

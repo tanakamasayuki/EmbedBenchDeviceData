@@ -634,7 +634,10 @@ def validate_knowledge(report, chips_by_key) -> None:
         check_no_comments(report, path)
         check_fields(report, path, data,
                      required={"schema_version", "chip", "bus", "registers"},
-                     optional={"addressing", "timing", "behaviours", "notes"})
+                     optional={"addressing", "commands", "timing", "behaviours", "controllers", "notes"},
+                     may_be_empty={"registers"})
+        if not data.get("registers") and not data.get("commands"):
+            report.add(path, "a chip has registers or commands; both are empty")
         if data.get("chip") != path.stem:
             report.add(path, f"file stem must equal chip: {data.get('chip')!r}")
         if data.get("chip") not in chips_by_key:
@@ -658,6 +661,25 @@ def validate_knowledge(report, chips_by_key) -> None:
             if reg.get("addr") in seen:
                 report.add(path, f"{where}: duplicate register {reg.get('addr')}")
             seen.add(reg.get("addr"))
+        timing_keys = {item.get("key") for item in data.get("timing") or []}
+        codes = set()
+        for index, command in enumerate(data.get("commands") or []):
+            where = f"commands[{index}]"
+            items.append((where, command))
+            check_fields(report, path, command, required={"code", "name", "answer_bytes", "evidence"},
+                         optional={"timing", "notes"}, where=where)
+            if not re.fullmatch(r"0x[0-9A-F]{2,4}", str(command.get("code"))):
+                report.add(path, f"{where}: code must be 0x<uppercase hex>, found {command.get('code')!r}")
+            if command.get("code") in codes:
+                report.add(path, f"{where}: duplicate command {command.get('code')}")
+            codes.add(command.get("code"))
+            if command.get("timing") is not None and command.get("timing") not in timing_keys:
+                report.add(path, f"{where}: timing {command.get('timing')!r} is not a timing key")
+        for index, item in enumerate(data.get("controllers") or []):
+            where = f"controllers[{index}]"
+            items.append((where, item))
+            check_fields(report, path, item, required={"key", "controller", "evidence", "notes"},
+                         optional=set(), where=where)
         for index, item in enumerate(data.get("timing") or []):
             items.append((f"timing[{index}]", item))
             for number, window in enumerate(item.get("windows") or []):

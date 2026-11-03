@@ -1,7 +1,7 @@
 # knowledge/
 
 チップごとの振る舞いの表（`knowledge/<chip>.yaml`）。カタログ（`chips/`）の項目は繰り返さない。
-形の正本は `docs/DATA_MODEL.ja.md` §5。最初の 1 件は QMP6988（EmbedBench の X68 で模型と照合済み）。
+形の正本は `docs/DATA_MODEL.ja.md` §5。QMP6988（レジスタ型）と SHT30（コマンド型）があり、どちらも EmbedBench の X68 で模型と照合済み。
 
 - 値ごとに根拠（`evidence`）を書く: `runs/` の run の名前、`i2cdevicedb-pilot:<observation id>`、または `datasheet`。
 - 時間は値と窓を分ける。`value_us` は模型が使う値（式でもよい）、`windows` は記録が許す範囲。
