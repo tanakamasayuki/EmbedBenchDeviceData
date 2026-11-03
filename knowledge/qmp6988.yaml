@@ -25,6 +25,7 @@ registers:
     name: CHIP_ID
     access: r
     reset: "5C"
+    identifies: true
     evidence: [qmp6988-modes__i2c-100k__b85bde517b61bfb7]
   - addr: "0xE0"
     width: 1

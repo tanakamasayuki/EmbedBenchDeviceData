@@ -644,12 +644,21 @@ def validate_knowledge(report, chips_by_key) -> None:
         if data.get("chip") not in chips_by_key:
             report.add(path, f"unknown chip: {data.get('chip')!r}")
         items = [("addressing", data.get("addressing") or {})]
+        crc = (data.get("addressing") or {}).get("crc")
+        if crc is not None:
+            check_fields(report, path, crc, required={"poly", "init", "word"}, optional=set(),
+                         where="addressing.crc")
         seen = set()
         for index, reg in enumerate(data.get("registers") or []):
             where = f"registers[{index}]"
             items.append((where, reg))
             check_fields(report, path, reg, required={"addr", "width", "access", "reset"},
-                         optional={"name", "volatile", "per_specimen", "evidence", "notes"}, where=where)
+                         optional={"name", "volatile", "per_specimen", "identifies", "evidence", "notes"},
+                         where=where)
+            if reg.get("identifies") and (reg.get("per_specimen") or reg.get("volatile")
+                                          or "r" not in str(reg.get("access"))):
+                report.add(path, f"{where}: identifies needs a readable register whose value is the part's "
+                                 "(not per_specimen, not volatile)")
             if not re.fullmatch(r"0x[0-9A-F]{2}", str(reg.get("addr"))):
                 report.add(path, f"{where}: addr must be 0x<uppercase hex pair>, found {reg.get('addr')!r}")
             if reg.get("access") not in ("r", "w", "rw"):

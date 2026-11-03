@@ -117,8 +117,8 @@ OEP の run は `c0001.analysis.json`（wireskein decode の `wireskein-analysis
 | 項目 | 必須 | 内容 |
 | --- | --- | --- |
 | chip、bus | ○ | ファイル名は chip と同じ |
-| addressing | | `pointer_bits`、`repeated_start_required`、`read_auto_increment`、`evidence`、`notes` |
-| registers | ○（空でよい） | `[{addr, width, access: r / w / rw, reset, name?, volatile?, per_specimen?, evidence?, notes?}]`。`addr` は `0x` ＋ 大文字の 16 進 2 桁、`reset` は width バイトの 16 進 |
+| addressing | | `pointer_bits`、`repeated_start_required`、`read_auto_increment`、`crc?: {poly, init, word}`（答えの word ごとの CRC-8）、`evidence`、`notes` |
+| registers | ○（空でよい） | `[{addr, width, access: r / w / rw, reset, name?, volatile?, per_specimen?, identifies?, evidence?, notes?}]`。`identifies: true` はその値が読めたらこの部品と決まるレジスタ（個体ごとの値や変わる値には付けない）。`addr` は `0x` ＋ 大文字の 16 進 2 桁、`reset` は width バイトの 16 進 |
 | commands | | コマンド型の部品: `[{code, name, answer_bytes, timing?, evidence, notes?}]`。`code` は `0x` ＋ 大文字の 16 進、`timing` は timing の key。registers と commands のどちらかは空でない |
 | timing | | `[{key, value_us, windows?: [{setting, low_us, high_us, evidence}], evidence?, notes?}]`。`value_us` は模型が使う値（式でよい）、`windows` は記録が許す範囲 |
 | behaviours | | `[{key, evidence, notes}]`。表で言えない振る舞い |
@@ -128,6 +128,7 @@ OEP の run は `c0001.analysis.json`（wireskein decode の `wireskein-analysis
 `evidence` は `runs/` の run の名前、`i2cdevicedb-pilot:<observation id>`、または `datasheet`。
 validate は、chip がカタログにあることと、根拠がどれかに当たることを検査する。
 `tools/knowledge_table.py <chip>` がレジスタの表を EmbedBench の `RegTableSpec` に書き出す（レジスタのある部品だけ）。
+`tools/knowledge_decl.py OUT` が wireskein の `decl/devices/<bus>/<メーカー>/<chip>.toml`（部品の見分け）を書き出す。
 
 ## 6. ガイド: guides/chips/<chip>.md
 

@@ -3,6 +3,7 @@ chip: sht30
 bus: i2c
 addressing:
   pointer_bits: 16
+  crc: {poly: "0x31", init: "0xFF", word: 2}
   notes: |
     No registers: a 16-bit command, then a read of words, each word followed by its CRC-8 (polynomial 0x31, initial
     0xFF). Every answer in the runs carried a matching CRC.
@@ -20,6 +21,7 @@ commands:
   - {code: "0x3041", name: "clear status", answer_bytes: 0, evidence: [datasheet]}
   - {code: "0x306D", name: "heater on", answer_bytes: 0, evidence: [datasheet]}
   - {code: "0x3066", name: "heater off", answer_bytes: 0, evidence: [datasheet]}
+  - {code: "0xE000", name: fetch data (periodic mode), answer_bytes: 6, evidence: [datasheet]}
   - {code: "0x3093", name: "break (stop periodic mode)", answer_bytes: 0, evidence: [datasheet]}
 timing:
   - key: measure-high
