@@ -12,3 +12,6 @@ notes: |
   extras/LibraryTest: the probe runs the case on a task of its own and captures SDA / SCL while it runs; the
   case's lines carry the probe's clock (ProbeLog). It holds 13 cases, run by number (1 is this one).
   env_collect.py is the host side that records the wireskein run.
+  On the ESP32-P4 (arduino-esp32 3.3.12) Wire's answers do not match the wire: endTransmission sometimes ends
+  without putting anything on the wire after a transfer that did, and reports refused addresses as answering. It
+  comes and goes from run to run; see each run's notes.

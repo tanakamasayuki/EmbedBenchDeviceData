@@ -51,7 +51,7 @@ captures:
     - 1
     tick0: 0
     start_ns: 21502840500
-notes: 'Captured at 2 MHz, 400000 samples. case result=55: Wire reported 55 addresses as answering. The decode has only 73 of the 126 addresses, every one refused but 0x44; 0x70 is not among them, and 54 of the 55 that Wire reported are refused ones on the wire. Not explained (the 400 kHz run is clean). The DUT is the probe itself (EnvCases.cpp beside the OEP firmware).
+notes: 'Captured at 2 MHz, 400000 samples. case result=55: Wire reported 55 of the 127 addresses (0x01-0x7F) as answering; the wire disagrees. Only 73 transfers reached the wire (the decode is complete: nothing uninterpreted, nothing lost, the last transfer ends 10.5 ms into a 0.2 s window). Of the 54 that did not, 53 came right after an address refused on the wire and one (0x45) right after the ACKed 0x44: endTransmission sometimes ends without putting anything on the wire after a transfer that did. Of the 55 Wire reported, 53 were refused on the wire, one ACKed (0x44) and one never on it (0x45). 0x70 is missing because 0x6F was refused. The controller''s (arduino-esp32 3.3.12 Wire on the ESP32-P4) behaviour, not the decode''s. The DUT is the probe itself (EnvCases.cpp beside the OEP firmware).
 
   c0001.analysis.json is the same capture decoded by wireskein decode (wireskein-analysis/1); c0001.i2c.json is its transactions.
 

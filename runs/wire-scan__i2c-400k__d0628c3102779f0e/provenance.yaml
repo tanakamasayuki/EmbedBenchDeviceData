@@ -51,7 +51,7 @@ captures:
     - 1
     tick0: 0
     start_ns: 75859416750
-notes: 'Captured at 8 MHz, 2000000 samples. case result=2: Wire reported 0x44 and 0x70, the two addresses the wire shows answering, out of 127 transfers. The DUT is the probe itself (EnvCases.cpp beside the OEP firmware,
+notes: 'Captured at 8 MHz, 2000000 samples. case result=2: all 127 addresses reached the wire and Wire reported 0x44 and 0x70, the two ACKed there. The skipped transfers of the 100 kHz run did not happen this time; they come and go (an earlier 400 kHz run had them), so they are not a matter of speed. The DUT is the probe itself (EnvCases.cpp beside the OEP firmware,
   built with ENV_HZ=400000).
 
   c0001.analysis.json is the same capture decoded by wireskein decode (wireskein-analysis/1); c0001.i2c.json is its transactions.
