@@ -13,7 +13,7 @@ from oep_client import capture, core, link
 from oep_client.probe_log import ProbeLog, rows
 from wireskein.runlog import Recorder
 
-PORT = "usb:80f1b2d719c5"
+PORT = "oep://80f1b2d719c5"
 SDA, SCL = 14, 15
 NAME = "io.github.example.library-test"
 RUN, STATUS = 0x10, 0x20
@@ -63,7 +63,7 @@ def collect(out: Path, name: str, rate: int, samples: int):
             rec.capture(armed, cfg.rate, interleaved=data, names=["SDA", "SCL"], width=cfg.width,
                         positions=cfg.positions, n=seg.samples, start_ns=seg.start_ns,
                         start_uncertainty_ns=seg.start_uncertainty_ns, boot_id=readings[0].boot_id,
-                        trigger_tick=seg.trigger_index, source=f"oep:{PORT}")
+                        trigger_tick=seg.trigger_index, source=PORT)
             rec.close()
             last = max((l.probe_ns for l in lines.lines), default=0)
             end_ns = seg.start_ns + seg.samples * 1e9 / float(cfg.rate)

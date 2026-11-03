@@ -1,37 +1,45 @@
 schema_version: 1
 case: wire-absent-address
-date: 2026-10-29
+date: '2026-11-03'
 targets: []
 bus:
   kind: i2c
   hz: 100000
   pins:
-    SDA: unknown
-    SCL: unknown
+    SDA: 32
+    SCL: 33
   pullups: none
 dut:
   board: ESP32-P4 (P4X)
-  id: usb:e8f60ae84e28
-  bench: {name: oep-4e28, position: unknown}
+  id: oep://e8f60ae84e28
+  bench:
+    name: oep-4e28
+    position: 4-1
   core:
     name: arduino-esp32
-    version: unknown
+    version: 3.3.12
   controller: esp32p4
 probe:
-  id: usb:e8f60ae84e28
-  bench: {name: oep-4e28, position: unknown}
+  id: oep://e8f60ae84e28
+  bench:
+    name: oep-4e28
+    position: 4-1
   firmware: oep-probe-arduino
-  version: unknown
+  version: feb8cf3
 wireskein:
-  version: unknown
+  version: b0d33f4
 captures:
-  - file: c0001.wireskein
-    decode: c0001.i2c.json
-    timebase:
-      tick_hz: [1000000, 1]
-      tick0: 0
-      start_ns: 6061908000
-notes: |
-  Copied from EmbedBench tests/skein2trace/libtest_run1 (X66), where it is the converter's
-  fixture. The DUT is the probe itself (LibraryTest). Wire returned 4 for a transfer the bus
-  shows as an address NACK: the bus had no pull-ups. Versions not recorded at the time are unknown.
+- file: c0001.wireskein
+  decode: c0001.i2c.json
+  timebase:
+    tick_hz:
+    - 1000000
+    - 1
+    tick0: 0
+    start_ns: 71958934000
+notes: 'Captured at 1 MHz, 8192 samples. case result=4. The DUT is the probe itself: oep-probe-arduino extras/LibraryTest
+  (case 1, write 2 bytes to 0x50) beside the OEP firmware, on GPIO32 / 33 with nothing connected and no pull-ups.
+
+  c0001.analysis.json is the same capture decoded by wireskein decode (wireskein-analysis/1); c0001.i2c.json is its transactions.
+
+  '

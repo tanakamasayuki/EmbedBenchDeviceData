@@ -5,7 +5,7 @@ addressing:
   pointer_bits: 8
   repeated_start_required: false
   read_auto_increment: true
-  evidence: [m5unit-env-u001c-basic__i2c-100k__41ee7552a4ff1802, qmp6988-modes__i2c-100k__1a0394b27a6f2312]
+  evidence: [m5unit-env-u001c-basic__i2c-100k__c553167c6f54e3f4, qmp6988-modes__i2c-100k__b85bde517b61bfb7]
   notes: |
     M5Unit-ENV reads the calibration one byte at a time (pointer A0, A1, ... B8) after a STOP, and
     the measurement from F7 and from FA. The characterization reads F3 for three bytes (F3, F4, F5).
@@ -16,7 +16,7 @@ registers:
     access: r
     reset: "52DC0DA7F4820DDC0CD201E6FC86F9C9FAA2F72B0CBB03D8BB"
     per_specimen: true
-    evidence: [qmp6988-modes__i2c-100k__1a0394b27a6f2312]
+    evidence: [qmp6988-modes__i2c-100k__b85bde517b61bfb7]
     notes: |
       The bench's ENV III env3; the oep-bench ledger names the unit by this value. Read the same in qmp6988-modes and
       m5unit-env-u001c-basic, at 100 and 400 kHz.
@@ -25,7 +25,7 @@ registers:
     name: CHIP_ID
     access: r
     reset: "5C"
-    evidence: [qmp6988-modes__i2c-100k__1a0394b27a6f2312]
+    evidence: [qmp6988-modes__i2c-100k__b85bde517b61bfb7]
   - addr: "0xE0"
     width: 1
     name: RESET
@@ -51,20 +51,20 @@ registers:
     access: r
     reset: "00"
     volatile: true
-    evidence: [qmp6988-modes__i2c-100k__1a0394b27a6f2312]
+    evidence: [qmp6988-modes__i2c-100k__b85bde517b61bfb7]
   - addr: "0xF4"
     width: 1
     name: CTRL_MEAS
     access: rw
     reset: "00"
-    evidence: [qmp6988-modes__i2c-100k__1a0394b27a6f2312]
+    evidence: [qmp6988-modes__i2c-100k__b85bde517b61bfb7]
     notes: Reads back what was written, forced mode bits included, after the conversion.
   - addr: "0xF5"
     width: 1
     name: IO_SETUP
     access: rw
     reset: "00"
-    evidence: [qmp6988-modes__i2c-100k__1a0394b27a6f2312]
+    evidence: [qmp6988-modes__i2c-100k__b85bde517b61bfb7]
   - addr: "0xF7"
     width: 6
     name: DATA
@@ -72,47 +72,52 @@ registers:
     reset: "000000000000"
     volatile: true
     notes: Pressure (3 bytes) then temperature (3 bytes), raw. Read 000000000000 before any conversion (400 kHz run).
-    evidence: [qmp6988-modes__i2c-400k__7b6def88b0163034]
+    evidence: [qmp6988-modes__i2c-400k__136be8de00714934]
 timing:
   - key: conversion
-    value_us: "2940 + 855 * (samples_t + samples_p)"
+    value_us: "2970 + 855 * (samples_t + samples_p)"
     windows:
       - {setting: "CTRL_MEAS=25 (T x1, P x1)", low_us: 4128, high_us: 4840, evidence: i2cdevicedb-pilot:qmp6988-p0-100k-nominal-0283eb57c7a7c010}
-      - {setting: "CTRL_MEAS=31 (T x1, P x8)", low_us: 9922, high_us: 10861, evidence: qmp6988-modes__i2c-100k__1a0394b27a6f2312}
-    notes: A straight line through the datasheet's 5.5 ms (P x2, T x1) and 33.7 ms (P x32, T x4); inside both windows.
+      - {setting: "CTRL_MEAS=31 (T x1, P x8)", low_us: 10646, high_us: 10728, evidence: qmp6988-modes__i2c-400k__136be8de00714934}
+    notes: |
+      The datasheet's slope (5.5 ms at P x2, T x1 to 33.7 ms at P x32, T x4) through the middle of the P x8 window.
+      Its low end: a forced read 10645 us after the write found no data (400 kHz). Its high end: the first normal
+      sample of qmp6988-standby-long-5ms__i2c-100k__42c0c43742107c85.
   - key: normal-period
     value_us: "conversion + standby(IO_SETUP bits 7:5)"
-    evidence: [qmp6988-modes__i2c-100k__1a0394b27a6f2312, qmp6988-modes__i2c-400k__7b6def88b0163034]
-    notes: |
-      11.6 ms at T x1, P x8, standby 1 ms; read every 10 ms, the same value comes back once in seven reads.
-      The pilot's "every 11 ms" was its read interval.
-  - key: standby
-    value_us: "IO_SETUP 000: 1000, 001: 5405, 010: 44575, 011: 212036, others the datasheet's (unmeasured)"
     windows:
-      - {setting: "IO_SETUP=20 (nominal 5 ms)", low_us: 5405, high_us: 5406, evidence: qmp6988-standby-long-5ms__i2c-100k__b5b4f2bb10b53a65}
-      - {setting: "IO_SETUP=20 (nominal 5 ms), an earlier run", low_us: 5394, high_us: 5395, evidence: qmp6988-standby-long-5ms__i2c-100k__f1705aad56af1f2f}
-      - {setting: "IO_SETUP=40 (nominal 50 ms)", low_us: 44571, high_us: 44580, evidence: qmp6988-standby-long-50ms__i2c-100k__a7d3b53b29d4a91a}
-      - {setting: "IO_SETUP=60 (nominal 250 ms)", low_us: 211858, high_us: 212214, evidence: qmp6988-standby-long-250ms__i2c-100k__eaaee8a15ac32a90}
+      - {setting: "CTRL_MEAS=33, IO_SETUP=00 (standby 1 ms)", low_us: 11632, high_us: 11643, evidence: m5unit-env-u001c-basic__i2c-100k__c553167c6f54e3f4}
+    evidence: [qmp6988-modes__i2c-100k__b85bde517b61bfb7, qmp6988-modes__i2c-400k__136be8de00714934, m5unit-env-u001c-basic__i2c-100k__c553167c6f54e3f4]
     notes: |
-      The normal period minus the conversion (10635 us at T x1, P x8), fitted over 2 s of reads every 5 ms with the
-      first sample at the conversion time. Not the datasheet's 5 / 50 / 250 ms in any fixed ratio. The period moves by
-      about 0.07 % between runs of the same part (the two 5 ms runs).
+      About 11.64 ms at T x1, P x8, standby 1 ms; read every 10 ms, the same value comes back about once in seven
+      reads. The window is the library run's 1 s of normal mode with the conversion above.
+  - key: standby
+    value_us: "IO_SETUP 000: 972, 001: 5391, 010: 45600, 011: 219640, others the datasheet's (unmeasured)"
+    windows:
+      - {setting: "IO_SETUP=20 (nominal 5 ms)", low_us: 5391, high_us: 5391, evidence: qmp6988-standby-long-5ms__i2c-100k__42c0c43742107c85}
+      - {setting: "IO_SETUP=40 (nominal 50 ms)", low_us: 45583, high_us: 45618, evidence: qmp6988-standby-long-50ms__i2c-100k__e2bc048e50fc2277}
+      - {setting: "IO_SETUP=60 (nominal 250 ms)", low_us: 219327, high_us: 219951, evidence: qmp6988-standby-long-250ms__i2c-100k__64ea79827dd16f5a}
+    notes: |
+      The normal period minus the conversion (10665 us at T x1, P x8), fitted over 2 s of reads every 5 ms with the
+      first sample at the conversion time; 000 from the normal-period window. Not the datasheet's 1 / 5 / 50 / 250 ms
+      in any fixed ratio. The periods are one day's: they are not stable from day to day (earlier runs of the same
+      part fitted periods up to 3.5 % shorter), so a model checked against runs of another day needs its own values.
   - key: status-delay
     value_us: "225"
     windows:
-      - {setting: "after CTRL_MEAS=31, 400 kHz", low_us: 216, high_us: 234, evidence: qmp6988-measure-bit__i2c-400k__0c09be5b47d601d3}
+      - {setting: "after CTRL_MEAS=31, 400 kHz", low_us: 210, high_us: 226, evidence: qmp6988-measure-bit__i2c-400k__012a3215e73278a3}
     notes: |
-      From the start of the CTRL_MEAS write to the start of the status read: 00 up to 216 us, 08 from 234 us
-      (a sweep in 20 us steps). At 100 kHz the earliest read (550 us) already had it.
+      From the start of the CTRL_MEAS write to the start of the status read: 00 up to 209 us, 08 from 226 us
+      (a sweep in about 20 us steps). At 100 kHz the earliest read (550 us) already had it.
 behaviours:
   - key: forced-then-normal
-    evidence: [qmp6988-modes__i2c-400k__7b6def88b0163034]
+    evidence: [qmp6988-modes__i2c-400k__136be8de00714934]
     notes: Normal mode written while a forced conversion runs does not restart it; the normal cycle continues from it.
   - key: reset-byte-decodes-as-address
-    evidence: [qmp6988-modes__i2c-100k__1a0394b27a6f2312, m5unit-env-u001c-basic__i2c-100k__41ee7552a4ff1802]
+    evidence: [qmp6988-modes__i2c-100k__b85bde517b61bfb7, m5unit-env-u001c-basic__i2c-100k__c553167c6f54e3f4]
     notes: |
-      E0=E6 resets the part while E6 is on the bus; decoders read that byte as an address (0x73 written).
-      There is no part at 0x73.
+      E0=E6 resets the part while E6 is on the bus; the decoder keeps E6 as data and then sees a START with E6 as an
+      address (0x73 written, refused). There is no part at 0x73.
 notes: |
   The EmbedBench model is devices/src/qmp6988_model.* (X68); tools/knowledge_table.py writes the
   register table this file describes in its RegTableSpec form.

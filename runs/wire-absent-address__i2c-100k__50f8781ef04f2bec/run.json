@@ -1,74 +1,53 @@
 {
- "format": "wireskein-run/3",
+ "format": "wireskein-run/1",
  "meta": {
-  "probe": "usb:e8f60ae84e28"
+  "case": "wire-absent-address",
+  "probe": "oep://e8f60ae84e28",
+  "pins": {
+   "SDA": 32,
+   "SCL": 33
+  }
  },
  "log": [
   {
-   "t": 0.011321855010464787,
-   "src": "marker",
-   "text": "# test_wire"
-  },
-  {
-   "t": 0.01902855304069817,
+   "host_ns": 1642892199103221,
    "src": "marker",
    "text": "## write 2 bytes to 0x50",
-   "probe_ns": 6061895000,
-   "boot_id": 2010918671,
-   "probe": "usb:e8f60ae84e28"
+   "probe_ns": 71958925000,
+   "boot_id": 2649132837,
+   "probe": "oep://e8f60ae84e28"
   },
   {
-   "t": 0.019424904137849808,
+   "host_ns": 1642892199491358,
    "src": "dut",
    "text": "endTransmission=4",
-   "probe_ns": 6062291000,
-   "boot_id": 2010918671,
-   "probe": "usb:e8f60ae84e28"
+   "probe_ns": 71959313000,
+   "boot_id": 2649132837,
+   "probe": "oep://e8f60ae84e28"
   },
   {
-   "t": 0.01942790695466101,
+   "host_ns": 1642892199496360,
    "src": "marker",
    "text": "##",
-   "probe_ns": 6062294000,
-   "boot_id": 2010918671,
-   "probe": "usb:e8f60ae84e28"
+   "probe_ns": 71959318000,
+   "boot_id": 2649132837,
+   "probe": "oep://e8f60ae84e28"
   },
   {
-   "t": 0.08745495416224003,
-   "src": "marker",
-   "text": "#"
+   "host_ns": 1642892243178839,
+   "src": "note",
+   "text": "case result=4"
   }
  ],
  "captures": [
   {
    "file": "c0001.wireskein",
-   "t0": 0.017283132998272777,
+   "host_ns": 1642892147265971,
    "channels": [
     "SDA",
     "SCL"
-   ],
-   "path": "test_wire"
-  }
- ],
- "expect": {
-  "test_wire/write 2 bytes to 0x50": {
-   "checks": [
-    {
-     "kind": "i2c",
-     "scl": "SCL",
-     "sda": "SDA",
-     "transactions": [
-      {
-       "addr": 80,
-       "rw": "write",
-       "ack": false
-      }
-     ],
-     "hz": null,
-     "tol_hz": 0.1,
-     "released": true
-    }
    ]
   }
- }
+ ],
+ "expect": {}
 }

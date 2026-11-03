@@ -1,0 +1,93 @@
+{
+ "format": "wireskein-run/1",
+ "meta": {
+  "case": "sht30-stretch-wait",
+  "probe": "oep://80f1b2d719c5",
+  "pins": {
+   "SDA": 14,
+   "SCL": 15
+  }
+ },
+ "log": [
+  {
+   "host_ns": 1642272711932934,
+   "src": "marker",
+   "text": "# sht30-stretch-wait",
+   "probe_ns": 63749716000,
+   "boot_id": 1260567476,
+   "probe": "oep://80f1b2d719c5"
+  },
+  {
+   "host_ns": 1642272729919592,
+   "src": "marker",
+   "text": "## idf-scl-wait-20000us",
+   "probe_ns": 63767703000,
+   "boot_id": 1260567476,
+   "probe": "oep://80f1b2d719c5"
+  },
+  {
+   "host_ns": 1642272743732330,
+   "src": "dut",
+   "text": "transmit=0 receive=0 elapsed_us=12971 bytes=6206ab9931fb crc=1",
+   "probe_ns": 63781516000,
+   "boot_id": 1260567476,
+   "probe": "oep://80f1b2d719c5"
+  },
+  {
+   "host_ns": 1642272743985325,
+   "src": "marker",
+   "text": "##",
+   "probe_ns": 63781769000,
+   "boot_id": 1260567476,
+   "probe": "oep://80f1b2d719c5"
+  },
+  {
+   "host_ns": 1642272781919605,
+   "src": "marker",
+   "text": "## wire-timeout-1000ms",
+   "probe_ns": 63819704000,
+   "boot_id": 1260567476,
+   "probe": "oep://80f1b2d719c5"
+  },
+  {
+   "host_ns": 1642272789014471,
+   "src": "dut",
+   "text": "end=0 elapsed_us=6701 got=0 bytes= crc=0",
+   "probe_ns": 63826799000,
+   "boot_id": 1260567476,
+   "probe": "oep://80f1b2d719c5"
+  },
+  {
+   "host_ns": 1642272789022471,
+   "src": "marker",
+   "text": "##",
+   "probe_ns": 63826807000,
+   "boot_id": 1260567476,
+   "probe": "oep://80f1b2d719c5"
+  },
+  {
+   "host_ns": 1642272789025471,
+   "src": "marker",
+   "text": "#",
+   "probe_ns": 63826810000,
+   "boot_id": 1260567476,
+   "probe": "oep://80f1b2d719c5"
+  },
+  {
+   "host_ns": 1642273255084976,
+   "src": "note",
+   "text": "case result=1"
+  }
+ ],
+ "captures": [
+  {
+   "file": "c0001.wireskein",
+   "host_ns": 1642272660540374,
+   "channels": [
+    "SDA",
+    "SCL"
+   ]
+  }
+ ],
+ "expect": {}
+}

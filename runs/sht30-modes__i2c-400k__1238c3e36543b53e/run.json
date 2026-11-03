@@ -1,0 +1,237 @@
+{
+ "format": "wireskein-run/1",
+ "meta": {
+  "case": "sht30-modes",
+  "probe": "oep://80f1b2d719c5",
+  "pins": {
+   "SDA": 14,
+   "SCL": 15
+  }
+ },
+ "log": [
+  {
+   "host_ns": 1642484898729168,
+   "src": "marker",
+   "text": "# sht30-modes",
+   "probe_ns": 71723383000,
+   "boot_id": 1414762871,
+   "probe": "oep://80f1b2d719c5"
+  },
+  {
+   "host_ns": 1642484898736168,
+   "src": "marker",
+   "text": "## soft-reset",
+   "probe_ns": 71723390000,
+   "boot_id": 1414762871,
+   "probe": "oep://80f1b2d719c5"
+  },
+  {
+   "host_ns": 1642484899429179,
+   "src": "dut",
+   "text": "end=0",
+   "probe_ns": 71724083000,
+   "boot_id": 1414762871,
+   "probe": "oep://80f1b2d719c5"
+  },
+  {
+   "host_ns": 1642484901062203,
+   "src": "marker",
+   "text": "##",
+   "probe_ns": 71725716000,
+   "boot_id": 1414762871,
+   "probe": "oep://80f1b2d719c5"
+  },
+  {
+   "host_ns": 1642484901123203,
+   "src": "marker",
+   "text": "## status",
+   "probe_ns": 71725777000,
+   "boot_id": 1414762871,
+   "probe": "oep://80f1b2d719c5"
+  },
+  {
+   "host_ns": 1642484901511209,
+   "src": "dut",
+   "text": "end=0 got=3 bytes=8010e1 crc=1",
+   "probe_ns": 71726165000,
+   "boot_id": 1414762871,
+   "probe": "oep://80f1b2d719c5"
+  },
+  {
+   "host_ns": 1642484901518209,
+   "src": "marker",
+   "text": "##",
+   "probe_ns": 71726172000,
+   "boot_id": 1414762871,
+   "probe": "oep://80f1b2d719c5"
+  },
+  {
+   "host_ns": 1642484901527209,
+   "src": "marker",
+   "text": "## polling-high",
+   "probe_ns": 71726181000,
+   "boot_id": 1414762871,
+   "probe": "oep://80f1b2d719c5"
+  },
+  {
+   "host_ns": 1642484914325397,
+   "src": "dut",
+   "text": "end=0 tries=23 elapsed_us=12657 got=6 bytes=61fcdf994f1c crc=1",
+   "probe_ns": 71738979000,
+   "boot_id": 1414762871,
+   "probe": "oep://80f1b2d719c5"
+  },
+  {
+   "host_ns": 1642484914336397,
+   "src": "marker",
+   "text": "##",
+   "probe_ns": 71738990000,
+   "boot_id": 1414762871,
+   "probe": "oep://80f1b2d719c5"
+  },
+  {
+   "host_ns": 1642484919065467,
+   "src": "marker",
+   "text": "## stretch-high",
+   "probe_ns": 71743719000,
+   "boot_id": 1414762871,
+   "probe": "oep://80f1b2d719c5"
+  },
+  {
+   "host_ns": 1642484925854566,
+   "src": "dut",
+   "text": "end=0 elapsed_us=6645 got=0 bytes= crc=0",
+   "probe_ns": 71750508000,
+   "boot_id": 1414762871,
+   "probe": "oep://80f1b2d719c5"
+  },
+  {
+   "host_ns": 1642484925861566,
+   "src": "marker",
+   "text": "##",
+   "probe_ns": 71750515000,
+   "boot_id": 1414762871,
+   "probe": "oep://80f1b2d719c5"
+  },
+  {
+   "host_ns": 1642484930070628,
+   "src": "marker",
+   "text": "## polling-medium",
+   "probe_ns": 71754724000,
+   "boot_id": 1414762871,
+   "probe": "oep://80f1b2d719c5"
+  },
+  {
+   "host_ns": 1642484936383721,
+   "src": "dut",
+   "text": "end=0 tries=9 elapsed_us=4760 got=6 bytes=621c339973a4 crc=1",
+   "probe_ns": 71761037000,
+   "boot_id": 1414762871,
+   "probe": "oep://80f1b2d719c5"
+  },
+  {
+   "host_ns": 1642484936391721,
+   "src": "marker",
+   "text": "##",
+   "probe_ns": 71761045000,
+   "boot_id": 1414762871,
+   "probe": "oep://80f1b2d719c5"
+  },
+  {
+   "host_ns": 1642484941066790,
+   "src": "marker",
+   "text": "## stretch-medium",
+   "probe_ns": 71765720000,
+   "boot_id": 1414762871,
+   "probe": "oep://80f1b2d719c5"
+  },
+  {
+   "host_ns": 1642484945699858,
+   "src": "dut",
+   "text": "end=0 elapsed_us=4502 got=6 bytes=62013c995071 crc=1",
+   "probe_ns": 71770353000,
+   "boot_id": 1414762871,
+   "probe": "oep://80f1b2d719c5"
+  },
+  {
+   "host_ns": 1642484945706858,
+   "src": "marker",
+   "text": "##",
+   "probe_ns": 71770360000,
+   "boot_id": 1414762871,
+   "probe": "oep://80f1b2d719c5"
+  },
+  {
+   "host_ns": 1642484950067922,
+   "src": "marker",
+   "text": "## polling-low",
+   "probe_ns": 71774721000,
+   "boot_id": 1414762871,
+   "probe": "oep://80f1b2d719c5"
+  },
+  {
+   "host_ns": 1642484953235968,
+   "src": "dut",
+   "text": "end=0 tries=6 elapsed_us=3029 got=6 bytes=623b22995b9b crc=1",
+   "probe_ns": 71777889000,
+   "boot_id": 1414762871,
+   "probe": "oep://80f1b2d719c5"
+  },
+  {
+   "host_ns": 1642484953244968,
+   "src": "marker",
+   "text": "##",
+   "probe_ns": 71777898000,
+   "boot_id": 1414762871,
+   "probe": "oep://80f1b2d719c5"
+  },
+  {
+   "host_ns": 1642484958066039,
+   "src": "marker",
+   "text": "## stretch-low",
+   "probe_ns": 71782719000,
+   "boot_id": 1414762871,
+   "probe": "oep://80f1b2d719c5"
+  },
+  {
+   "host_ns": 1642484960838080,
+   "src": "dut",
+   "text": "end=0 elapsed_us=2643 got=6 bytes=621c33992fa7 crc=1",
+   "probe_ns": 71785491000,
+   "boot_id": 1414762871,
+   "probe": "oep://80f1b2d719c5"
+  },
+  {
+   "host_ns": 1642484960846080,
+   "src": "marker",
+   "text": "##",
+   "probe_ns": 71785499000,
+   "boot_id": 1414762871,
+   "probe": "oep://80f1b2d719c5"
+  },
+  {
+   "host_ns": 1642484965066142,
+   "src": "marker",
+   "text": "#",
+   "probe_ns": 71789719000,
+   "boot_id": 1414762871,
+   "probe": "oep://80f1b2d719c5"
+  },
+  {
+   "host_ns": 1642485246563249,
+   "src": "note",
+   "text": "case result=1"
+  }
+ ],
+ "captures": [
+  {
+   "file": "c0001.wireskein",
+   "host_ns": 1642484841368253,
+   "channels": [
+    "SDA",
+    "SCL"
+   ]
+  }
+ ],
+ "expect": {}
+}
