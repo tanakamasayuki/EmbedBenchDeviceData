@@ -105,6 +105,11 @@ runs/<run-id>/
   targets の部品にも付ける。ENV III（`env3`）は QMP6988 の COE で個体を見分ける（台帳に COE を載せてある）。
 - 生のキャプチャをリポジトリに置かないときは `stored: false` にし、notes に場所を書く。
 
+run.json の形は wireskein の版で変わる。今の `wireskein-run/1`（wireskein 4c96212 から）は host の時刻を単調時計の ns
+（`log[].host_ns`、`captures[].host_ns`）で持つ。それより前の run は `wireskein-run/3`（秒の `t`、`t0`）のまま置いてあり、
+EmbedBench の `skein2trace.py` は読まない（host の目印を置き直すには取り直す。転送の `c0001.i2c.json` はどちらでも読める）。
+元の単調時計の値は戻せないので、書き換えはしない。
+
 OEP の run は `c0001.analysis.json`（wireskein decode の `wireskein-analysis/1`。版・指定・未解釈の区間・lost / gap を含む）も
 置いている。`c0001.i2c.json` はその `transactions` を取り出したもの。EmbedBench の `skein2trace.py` が analysis.json を
 直接読めるようになったら、`decode` をそちらに切り替える。
