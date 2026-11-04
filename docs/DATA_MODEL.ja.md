@@ -1,7 +1,7 @@
 # データモデル
 
 各ファイルの形と規則の正本。`tools/validate.py` がこの文書の規則を検査する。
-設計の理由は EmbedBench の `docs/REAL_DEVICE_DATA.ja.md` §5 と `docs/REAL_DEVICE_ROADMAP.ja.md` §1。
+このデータの使い方は EmbedBench の `docs/REAL_DEVICE_DATA.ja.md`。
 
 `schema_version` はすべて 1。YAML にコメントは書かない（`notes:` に書く）。キーの重複は誤り。
 

@@ -83,5 +83,5 @@ controllers:
       Gives up a stretched read after about 6.7 ms, whatever setTimeOut says; the high repeatability needs 12.4 ms.
       ESP-IDF's master with scl_wait_us 20000 waits it out. How long to wait is the controller's, not the part's.
 notes: |
-  The EmbedBench model is devices/src/sht30_model.* (X68) is devices/src/sht30_model.* (X68). The windows put the model's 12.4 / 4.5 / 2.5 ms inside
+  The EmbedBench model is devices/src/sht30_model.*, checked in tests/model_replay/. The windows put the model's 12.4 / 4.5 / 2.5 ms inside
   every recorded measurement.
