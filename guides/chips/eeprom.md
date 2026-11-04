@@ -124,7 +124,7 @@ ADS1115 側を使いたいだけなら、EEPROM には一切アクセスする�
 | バス上の位置・電源・絶縁の構成 | M5Stack のブロック図画像 [ameter_sch_01.webp](https://static-cdn.m5stack.com/resource/docs/products/unit/ameter/ameter_sch_01.webp) / [vmeter_sch_01.webp](https://static-cdn.m5stack.com/resource/docs/products/unit/vmeter/vmeter_sch_01.webp) |
 | 「書き込むな」という警告と、EEPROM の役割 | [Unit AMeter 製品ページ](https://docs.m5stack.com/en/unit/Ameter%20Unit)、[Unit VMeter 製品ページ](https://docs.m5stack.com/en/unit/vmeter) |
 | 同居している ADC | [`chips/ads1115.yaml`](../../chips/ads1115.yaml)（AMeter は `0x48`、VMeter は `0x49`） |
-| 本リポジトリの probe | **無し**（`scenarios/eeprom/` は存在しない） |
+| I2CDeviceDB の probe | **無し**（`scenarios/eeprom/` は存在しない） |
 | 実測 | **無し**（`observations/eeprom/` は存在しない） |
 
 ## この部品を特定するには
@@ -140,7 +140,7 @@ ADS1115 側を使いたいだけなら、EEPROM には一切アクセスする�
    この種のパッケージ（SOT-23-5 や SOIC-8）はマーキングが省略コードのことが多いので、
    コードからメーカーを引き当てる手間は要る。
 
-1 の方が非破壊で、しかも本リポジトリの収集フロー
+1 の方が非破壊で、しかもI2CDeviceDB の収集フロー
 （[docs/VERIFY.ja.md](https://github.com/tanakamasayuki/I2CDeviceDB/blob/38f1d82/docs/VERIFY.ja.md)）にそのまま乗る。ただし
 **校正データを壊さないよう read-only に徹すること**。
 

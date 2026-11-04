@@ -11,7 +11,7 @@
 >
 > **安全**: **`0x00` に `1` を書いた瞬間からモータが回る。** 位置モードなら、そのとき
 > `0x80` に入っている目標位置まで即座に動く。速度モードなら設定速度まで加速する。試すときは
-> 出力軸に何も付けず、本体を固定してから行うこと。本リポジトリの probe が read-only なのは
+> 出力軸に何も付けず、本体を固定してから行うこと。I2CDeviceDB の probe が read-only なのは
 > まさにこのためで（[docs/VERIFY.ja.md](https://github.com/tanakamasayuki/I2CDeviceDB/blob/38f1d82/docs/VERIFY.ja.md) の「アクチュエータを持つユニット」）、
 > 書き込み側の挙動は一切確かめていない。
 

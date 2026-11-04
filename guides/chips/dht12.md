@@ -97,7 +97,7 @@ datasheet の例（p.9）:
 8/256 でも 8/100 でもない。
 
 **転送の形**: `0x00` を書いてから 5 バイトを一気に読む（バースト読み出し）。
-本リポジトリの probe も `burst-read` + `checksum-verify` という構成になっている
+I2CDeviceDB の probe も `burst-read` + `checksum-verify` という構成になっている
 （`scenarios/dht12/p0.yaml`）。1 バイトずつ読んだ場合の順序保証は datasheet に記述が
 無く、probe も `single-register-read-order` を `deferred` にしている。
 
@@ -183,7 +183,7 @@ datasheet は M5Stack がホストする `DHT12_en.pdf`（版表記なし、全 
 | 保管条件・薬品・光の影響・復帰処理 | 「Nine, information」（p.12–13） |
 | 機械可読なレジスタマップ | [`profiles/dht12.yaml`](https://github.com/tanakamasayuki/I2CDeviceDB/blob/38f1d82/profiles/dht12.yaml) |
 | アドレス・datasheet URL・注記 | [`chips/dht12.yaml`](../../chips/dht12.yaml) |
-| 本リポジトリの probe が何をして何を避けているか | [`scenarios/dht12/p0.yaml`](https://github.com/tanakamasayuki/I2CDeviceDB/blob/38f1d82/scenarios/dht12/p0.yaml) |
+| I2CDeviceDB の probe が何をして何を避けているか | [`scenarios/dht12/p0.yaml`](https://github.com/tanakamasayuki/I2CDeviceDB/blob/38f1d82/scenarios/dht12/p0.yaml) |
 | probe のスケッチ | `collection/sketches/dht12__characterize/` |
 | ライブラリ経由のスケッチ | `collection/sketches/dht12__robtillaart-dht12/`、`collection/sketches/dht12__m5stack-m5unit-env/` |
 | ライブラリの定義 | [`libraries/robtillaart-dht12.yaml`](../../libraries/robtillaart-dht12.yaml)、[`libraries/m5stack-m5unit-env.yaml`](../../libraries/m5stack-m5unit-env.yaml) |

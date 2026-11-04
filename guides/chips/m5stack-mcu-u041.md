@@ -118,7 +118,7 @@ HIGH にしろ」と頼む形になる。したがって:
 ## 利用上の注意
 
 **このユニットは実際の出力を駆動する。** デジタル出力・PWM・LED への書き込みは、
-繋がっている先を実際に動かす。本リポジトリの probe が read-only
+繋がっている先を実際に動かす。I2CDeviceDB の probe が read-only
 （`scenarios/m5stack-mcu-u041/p0.yaml` の `safety: read-only`）なのはこのためで、
 書き込み系の操作はすべて `deferred` に置かれている。何が繋がっているか分からない
 状態で書き込みを試さないこと。

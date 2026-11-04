@@ -4,7 +4,7 @@
 > 書き込みで操作できるようにしたユニット。電源電圧のモニタ用 ADC も持つ。
 >
 > **⚠️ これは出力デバイスである。書き込むとモータが回る。** 実験する前に負荷（モータ）を
-> 外すこと。本リポジトリの probe が read-only なのは、まさにこの理由による。
+> 外すこと。I2CDeviceDB の probe が read-only なのは、まさにこの理由による。
 >
 > **確度**: [`profiles/m5stack-mcu-u160.yaml`](https://github.com/tanakamasayuki/I2CDeviceDB/blob/38f1d82/profiles/m5stack-mcu-u160.yaml) の
 > レジスタマップは `M5Unit-Hbridge` ライブラリのソースから起こした推定
@@ -61,7 +61,7 @@ DC モータドライバ IC（RZ7899）と、それを制御する STM32F030F4P6
 | ドライバ IC | RZ7899（双方向 DC モータドライバ） |
 | MCU | STM32F030F4P6 |
 | インタフェース | Grove HY2.0-4P + HT3.96-4P ねじ端子 |
-| I2C 速度 | 100kHz / 400kHz を試す予定（**未実測**） |
+| I2C 速度 | **未実測** |
 | PWM 周波数 | 100〜10000Hz、既定 1000Hz |
 | 割り込み | 無し（ポーリング） |
 | バイト順 | 16bit 値はリトルエンディアン（LSB first） |
@@ -127,7 +127,7 @@ DC モータドライバ IC（RZ7899）と、それを制御する STM32F030F4P6
   ライブラリにもタイムアウトやウォッチドッグの気配は無い。firmware 側に停止機構があるかは
   **未確認**。ホストのリセットで暴走させたくないなら、外部電源を切れるようにしておく。
 - **外部入力は最大 12V、電流は最大 3A。** これを超える電源やモータを繋がない。
-- **本リポジトリの probe（`scenarios/m5stack-mcu-u160/p0.yaml`）は `safety: read-only`。**
+- **I2CDeviceDB の probe（`scenarios/m5stack-mcu-u160/p0.yaml`）は `safety: read-only`。**
   書き込みレジスタは 1 つも叩かない。書き込み側の挙動は `deferred` として保留してある。
 
 ### プロトコル

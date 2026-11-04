@@ -8,8 +8,9 @@
 **このディレクトリはリポジトリの主目的から外れる。** 正本は `chips/` `knowledge/` `runs/` の
 機械可読なデータである。ガイドはそれを人向けに読み下したもので、`tools/validate.py` はリンク切れだけを検査する。
 
-I2CDeviceDB（commit 38f1d82）から移した。そこでの `profiles/` と `observations/` への参照は、
-その commit への固定のリンクにしてある。`knowledge/` と `runs/` ができたチップから、参照をそちらへ書き換える。
+I2CDeviceDB（commit 38f1d82）から移した。本文の `profiles/`・`scenarios/`・`observations/`・`collection/` は
+I2CDeviceDB のそのコミットのパスで、このリポジトリには無い（リンクにしたものは、そのコミットへの固定のリンク）。probe（`scenarios/`）と収集の仕組みは I2CDeviceDB のもので、
+このリポジトリの run は OEP が録る（`cases/`）。`knowledge/` と `runs/` があるチップは、そちらが正本である。
 
 それでも置いている理由は 2 つ。
 

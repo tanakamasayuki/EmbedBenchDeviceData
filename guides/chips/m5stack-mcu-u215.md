@@ -164,7 +164,7 @@ Fn + 1 は Esc（`0x1B`）。表で空欄になっているキーは値を出さ
 - **USB シリアルには常に出ている。** どのモードでも、USB Type-C 側には
   `KEY [KEY_ID] [KEY_STATE]` の形式で 115200 bps で出力される。デバッグにはこちらが
   使える（KEY_ID は 行番号 × 11 + 列番号）。
-- **本リポジトリの probe は read-only。** `scenarios/m5stack-mcu-u215/p0.yaml` は
+- **I2CDeviceDB の probe は read-only。** `scenarios/m5stack-mcu-u215/p0.yaml` は
   `0xF1` を読むだけである。書けるレジスタがそもそも無いので、他のユニットと違って
   「書き込みを保留している」わけではない。
 

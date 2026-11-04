@@ -5,7 +5,7 @@
 >
 > **⚠️ 相手は産業用の配線である。** ループには外部の 24V 電源が入ることがあり、現場の
 > 配線は動力線と並走していることも多い。実験するときはループを外し、絶縁境界を跨ぐ配線を
-> しないこと。本リポジトリの probe が read-only なのは、書き込みが校正を書き換えて
+> しないこと。I2CDeviceDB の probe が read-only なのは、書き込みが校正を書き換えて
 > バスを 500ms 止めるためでもある。
 >
 > **確度**: [`profiles/m5stack-mcu-u162.yaml`](https://github.com/tanakamasayuki/I2CDeviceDB/blob/38f1d82/profiles/m5stack-mcu-u162.yaml) の
@@ -58,7 +58,7 @@
 | 入力インピーダンス | 200Ω |
 | MCU | STM32G030F6P6 |
 | チャンネル数 | **Unit は 1ch**（ライブラリは 4ch 版の Module と共通。後述） |
-| I2C 速度 | 100kHz / 400kHz を試す予定（**未実測**） |
+| I2C 速度 | **未実測** |
 | 割り込み | 無し（ポーリング） |
 | バイト順 | 16bit 値はリトルエンディアン（LSB first） |
 | 外形 | 56.0 × 24.0 × 11.3 mm、8.8 g |
@@ -146,7 +146,7 @@ repeated START ではなく STOP を挟む。
   この絶縁を無効にする。
 - **`0x30` への書き込みは校正の破壊的な変更である。** 一度書くと、それ以前の換算は失われる。
   何が入っていたかを読み返す手段は無い。
-- **本リポジトリの probe（`scenarios/m5stack-mcu-u162/p0.yaml`）は `safety: read-only`。**
+- **I2CDeviceDB の probe（`scenarios/m5stack-mcu-u162/p0.yaml`）は `safety: read-only`。**
   `0x30` とアドレス変更には一切触れない。
 
 ### プロトコル

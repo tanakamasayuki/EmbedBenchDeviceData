@@ -152,7 +152,7 @@ count が 4 のときは 1 バイトのステータスだけが返る（datashee
 
 - **スリープ中は I2C scan に映らない。** アドレスバイトに ACK を返さないので、
   素朴な「0x08〜0x77 を舐めて ACK を数える」スキャンでは**存在しないように見える**。
-  ウェイクしてからスキャンする必要がある。本リポジトリの
+  ウェイクしてからスキャンする必要がある。I2CDeviceDB の
   [`scenarios/atecc608b/p0.yaml`](https://github.com/tanakamasayuki/I2CDeviceDB/blob/38f1d82/scenarios/atecc608b/p0.yaml) が
   `presence-before-wake` と `presence-after-wake` を別の出力として持っているのはこのためである。
 - **ビジー中も NACK。** 「応答しない」の原因が「眠っている」「実行中」「そもそも居ない」の
@@ -240,7 +240,7 @@ count が 4 のときは 1 バイトのステータスだけが返る（datashee
 | **tWLO / tWHI / tWATCHDOG の規格値** | §8.3 AC Parameters / Table 8-2, p.63 |
 | I2C タイミング規格値 | §8.3.1 AC Parameters: I2C Interface / Table 8-3, p.63–64 |
 
-### 本リポジトリ
+### このリポジトリと I2CDeviceDB
 
 | 知りたいこと | 参照先 |
 |---|---|

@@ -154,7 +154,7 @@ datasheet p22 Table 12 の規約に従っているためと考えられる**（3
 1. `0x010F` を 16bit インデックスとして書き、2 バイト読む。`0xEACC` なら VL53L1X。
 2. `0x0001` を読めば現在の I2C アドレスが分かる。
 
-本リポジトリの probe（`collection/sketches/vl53l1x__characterize/vl53l1x__characterize.ino`）が
+I2CDeviceDB の probe（`collection/sketches/vl53l1x__characterize/vl53l1x__characterize.ino`）が
 やっているのはここまでである。**16bit アドレスであることをバス上に記録する**のが目的で、
 測距は `deferred` に置かれている。
 
@@ -257,7 +257,7 @@ datasheet p22 Table 12 の規約に従っているためと考えられる**（3
 | 機械可読なレジスタマップ | [`profiles/vl53l1x.yaml`](https://github.com/tanakamasayuki/I2CDeviceDB/blob/38f1d82/profiles/vl53l1x.yaml)（`evidence.source: inferred`） |
 | VL53L0X との違い | [`profiles/vl53l0x.yaml`](https://github.com/tanakamasayuki/I2CDeviceDB/blob/38f1d82/profiles/vl53l0x.yaml)（8bit アドレス）、[`chips/vl53l0x.yaml`](../../chips/vl53l0x.yaml) |
 | アドレスと搭載製品 | [`chips/vl53l1x.yaml`](../../chips/vl53l1x.yaml)、[`products/m5stack-u172.yaml`](../../products/m5stack-u172.yaml) |
-| 本リポジトリの probe が何を触るか | [`scenarios/vl53l1x/p0.yaml`](https://github.com/tanakamasayuki/I2CDeviceDB/blob/38f1d82/scenarios/vl53l1x/p0.yaml)、`collection/sketches/vl53l1x__characterize/vl53l1x__characterize.ino` |
+| I2CDeviceDB の probe が何を触るか | [`scenarios/vl53l1x/p0.yaml`](https://github.com/tanakamasayuki/I2CDeviceDB/blob/38f1d82/scenarios/vl53l1x/p0.yaml)、`collection/sketches/vl53l1x__characterize/vl53l1x__characterize.ino` |
 | ミラーされた datasheet（Rev 2） | [M5Stack OSS の VL53L1CXV0FY.PDF](https://m5stack.oss-cn-shenzhen.aliyuncs.com/resource/docs/products/unit/Unit-ToF4M/VL53L1CXV0FY.PDF) |
 | ユニットの仕様・測距範囲 | [M5Stack Unit ToF4M 製品ページ](https://docs.m5stack.com/en/unit/Unit-ToF4M) |
 | 実測（あれば） | `observations/vl53l1x/`（現時点で存在しない） |

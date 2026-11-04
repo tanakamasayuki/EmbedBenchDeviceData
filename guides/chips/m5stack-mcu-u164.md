@@ -5,7 +5,7 @@
 >
 > **⚠️ このユニットの端子には商用電源が直接入る。感電すれば死ぬ電圧である。**
 > 通電中は端子に触れない。配線は必ず電源を切ってから行い、通電したまま実験しない。
-> 本リポジトリの probe が read-only なのは、こうしたユニットに書き込みを行わないためである。
+> I2CDeviceDB の probe が read-only なのは、こうしたユニットに書き込みを行わないためである。
 >
 > **確度**: [`profiles/m5stack-mcu-u164.yaml`](https://github.com/tanakamasayuki/I2CDeviceDB/blob/38f1d82/profiles/m5stack-mcu-u164.yaml) の
 > レジスタマップは `M5Unit-ACMeasure` ライブラリのソースから起こした推定
@@ -60,7 +60,7 @@ I2C レジスタとして公開している、という二段構えのユニッ�
 | 計量 IC | HLW8032（UART で MCU に接続。**I2C バスには出ていない**） |
 | 絶縁 | B0505ST16-W5（絶縁 DC/DC）+ EL357NB（フォトカプラ） |
 | MCU | STM32G030F6P6 |
-| I2C 速度 | 100kHz / 400kHz を試す予定（**未実測**） |
+| I2C 速度 | **未実測** |
 | 割り込み | 無し（ポーリング） |
 | バイト順 | 16bit / 32bit 値はリトルエンディアン（LSB first） |
 | スケール | **数値レジスタはすべて 実値 × 100**（例: 100.55V → 10055） |
@@ -138,7 +138,7 @@ repeated START ではなく STOP を挟む。
   ままになるはずで、測定値には意味が無い。転送の形とアドレスの確認はこの状態で行うのが安全。
 - **`0xFD` に書くとブートローダに入る。** 通常のアプリケーションから触る理由は無い。
   誤って書くと I2C の応答が変わる。
-- **本リポジトリの probe（`scenarios/m5stack-mcu-u164/p0.yaml`）は `safety: read-only`。**
+- **I2CDeviceDB の probe（`scenarios/m5stack-mcu-u164/p0.yaml`）は `safety: read-only`。**
   `0xE0`（係数の保存）と `0xFD`（ブートローダ）は `deferred` として明示的に除外してある。
 
 ### プロトコル

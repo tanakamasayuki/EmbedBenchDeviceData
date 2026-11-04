@@ -202,7 +202,7 @@ FIFO から読む場合も窓口は同じ `0x32`〜`0x37` で、6 バイト読�
 | セルフテストの使い方 | datasheet p31（USING SELF-TEST） |
 | 機械可読なレジスタマップ | [`profiles/adxl345.yaml`](https://github.com/tanakamasayuki/I2CDeviceDB/blob/38f1d82/profiles/adxl345.yaml) |
 | アドレスと搭載製品 | [`chips/adxl345.yaml`](../../chips/adxl345.yaml)、[`products/m5stack-u056.yaml`](../../products/m5stack-u056.yaml) |
-| 本リポジトリの probe が何を触るか | [`scenarios/adxl345/p0.yaml`](https://github.com/tanakamasayuki/I2CDeviceDB/blob/38f1d82/scenarios/adxl345/p0.yaml)、`collection/sketches/adxl345__characterize/adxl345__characterize.ino` |
+| I2CDeviceDB の probe が何を触るか | [`scenarios/adxl345/p0.yaml`](https://github.com/tanakamasayuki/I2CDeviceDB/blob/38f1d82/scenarios/adxl345/p0.yaml)、`collection/sketches/adxl345__characterize/adxl345__characterize.ino` |
 | ミラーされた datasheet（Rev E） | [M5Stack OSS の ADXL345_en.pdf](https://m5stack.oss-cn-shenzhen.aliyuncs.com/resource/docs/datasheet/unit/ADXL345_en.pdf) |
 | ユニットの仕様・寸法 | [M5Stack Unit Accel 製品ページ](https://docs.m5stack.com/en/unit/accel) |
 | 実測（あれば） | `observations/adxl345/`（現時点で存在しない） |

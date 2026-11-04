@@ -108,7 +108,7 @@
   見える。存在確認をしたいなら自分でアドレスを叩く。
 - **読み出しの合間に STOP が入る。** repeated START を前提にバスを解析していると、想定と違う
   波形に見える。マルチマスタ環境では、STOP と次の START の間に他のマスタが割り込む余地がある。
-- **本リポジトリの characterization probe は read-only。** LED（`0x30`）とモード（`0x00`）は
+- **I2CDeviceDB の characterization probe は read-only。** LED（`0x30`）とモード（`0x00`）は
   書き込みなので触っていない。
 
 ## どこに何が書いてあるか

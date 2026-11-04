@@ -238,7 +238,7 @@ ST7789V2 を、ESP32-PICO に載った M5Stack ファームウェアが束ねて
   （`src/M5UnitLCD.h` と `src/lgfx/v1/panel/Panel_M5UnitLCD.{hpp,cpp}`、
   ユーザ向けの入口は `#include <M5UnitLCD.h>` と `class M5UnitLCD : public M5GFX`）。
   M5GFX は Arduino Library Manager 経由のライブラリなので、
-  本リポジトリの `collection/vendor/` には現れず、スケッチ側でバージョン指定して取得される。
+  I2CDeviceDB の `collection/vendor/` には現れず、スケッチ側でバージョン指定して取得される。
   **「ライブラリを探すならここ」という一点だけでも、本ガイドで最も実用的な情報である。**
 - `0x3A`（SET_BYTESWAP）、`0xF0`〜`0xF2`（ファーム更新）、`0xFF`（RESET）、
   リセット後の 300ms 待ち、`READ_BUFCOUNT` によるフロー制御の具体的な手順:

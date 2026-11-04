@@ -4,7 +4,7 @@
 > **電流検出（`0x30`）とブートローダ移行（`0xFD`）の 2 つだけが増えている**。
 >
 > **⚠️ これは出力デバイスである。書き込むとモータが回る。** 実験する前に負荷（モータ）を
-> 外すこと。本リポジトリの probe が read-only なのは、まさにこの理由による。
+> 外すこと。I2CDeviceDB の probe が read-only なのは、まさにこの理由による。
 >
 > **確度**: [`profiles/m5stack-mcu-u160-v11.yaml`](https://github.com/tanakamasayuki/I2CDeviceDB/blob/38f1d82/profiles/m5stack-mcu-u160-v11.yaml) の
 > レジスタマップは `M5Unit-Hbridge` ライブラリのソースから起こした推定
@@ -65,7 +65,7 @@ HT3.96-4P ねじ端子、Grove、`0x20`〜`0x2F`）。
 | MCU | STM32F030F4P6 |
 | ファームウェア | V2（v1.0 は V1）。`0xFE` で読める |
 | インタフェース | Grove HY2.0-4P + HT3.96-4P ねじ端子 |
-| I2C 速度 | 100kHz / 400kHz を試す予定（**未実測**） |
+| I2C 速度 | **未実測** |
 | PWM 周波数 | 100〜10000Hz、既定 1000Hz |
 | 割り込み | 無し（ポーリング） |
 | バイト順 | 16bit / 32bit 値はリトルエンディアン（LSB first） |
@@ -156,7 +156,7 @@ ACK が返るかを見るだけで、版も firmware バージョンも確認し
 - **`0xFD` に書くとブートローダに入る。** 通常のアプリケーションから触る理由は無い。
   誤って書くと I2C の応答が変わり、モータ制御も効かなくなる。書き込み先を計算で組み立てる
   コードでは特に注意する。
-- **本リポジトリの probe（`scenarios/m5stack-mcu-u160-v11/p0.yaml`）は `safety: read-only`。**
+- **I2CDeviceDB の probe（`scenarios/m5stack-mcu-u160-v11/p0.yaml`）は `safety: read-only`。**
   書き込みレジスタは 1 つも叩かない。
 
 ### プロトコル

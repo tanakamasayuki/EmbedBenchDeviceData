@@ -243,7 +243,7 @@
 | ゲインモードと動作温度範囲の関係 | datasheet p6（Table 5） |
 | 機械可読なレジスタマップ | [`profiles/sths34pf80.yaml`](https://github.com/tanakamasayuki/I2CDeviceDB/blob/38f1d82/profiles/sths34pf80.yaml) |
 | アドレスと搭載製品 | [`chips/sths34pf80.yaml`](../../chips/sths34pf80.yaml)、[`products/m5stack-u185.yaml`](../../products/m5stack-u185.yaml) |
-| 本リポジトリの probe が何を触るか | [`scenarios/sths34pf80/p0.yaml`](https://github.com/tanakamasayuki/I2CDeviceDB/blob/38f1d82/scenarios/sths34pf80/p0.yaml)、`collection/sketches/sths34pf80__characterize/sths34pf80__characterize.ino` |
+| I2CDeviceDB の probe が何を触るか | [`scenarios/sths34pf80/p0.yaml`](https://github.com/tanakamasayuki/I2CDeviceDB/blob/38f1d82/scenarios/sths34pf80/p0.yaml)、`collection/sketches/sths34pf80__characterize/sths34pf80__characterize.ino` |
 | ミラーされた datasheet | [M5Stack OSS の STHS34PF80_Datasheet.pdf](https://m5stack.oss-cn-shenzhen.aliyuncs.com/resource/docs/products/unit/UNIT-TMOS%20PIR/STHS34PF80_Datasheet.pdf) |
 | ミラーされた AN5867 | [M5Stack OSS の STHS34PF80_Application_note.pdf](https://m5stack.oss-cn-shenzhen.aliyuncs.com/resource/docs/products/unit/UNIT-TMOS%20PIR/STHS34PF80_Application_note.pdf) |
 | ユニットの仕様・検出距離 | [M5Stack Unit TMOS PIR 製品ページ](https://docs.m5stack.com/en/unit/UNIT-TMOS%20PIR) |

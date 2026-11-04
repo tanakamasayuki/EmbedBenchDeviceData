@@ -156,7 +156,7 @@ MAX31855 も絶縁素子も I2C バスには出てこない。
   `Inter-Temp-Celsius-byte0..3` と書かれているが、`0x10` と同じラベルであり、行の note と
   `0x04`（`K-Temp-Fahrenheit`）との対称性からは華氏のはず。ライブラリも華氏として読んでいる。
   **未確認**。
-- **本リポジトリの characterization probe は read-only。** アドレス変更は通信相手そのものを
+- **I2CDeviceDB の characterization probe は read-only。** アドレス変更は通信相手そのものを
   変える副作用があるため触っていない。
 
 ## どこに何が書いてあるか

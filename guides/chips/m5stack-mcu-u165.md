@@ -9,7 +9,7 @@
 > 実測では未確認。
 >
 > **安全**: このユニットは書き込むと**その場でサーボが動く**。`0x50` / `0x60` に書けば軸が回り、
-> `0x10` に書けば出力ピンが駆動される。本リポジトリの probe が read-only なのは
+> `0x10` に書けば出力ピンが駆動される。I2CDeviceDB の probe が read-only なのは
 > まさにこのためで（[docs/VERIFY.ja.md](https://github.com/tanakamasayuki/I2CDeviceDB/blob/38f1d82/docs/VERIFY.ja.md) の「アクチュエータを持つユニット」）、
 > 書き込み側の挙動は一切確かめていない。
 

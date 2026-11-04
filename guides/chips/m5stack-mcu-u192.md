@@ -146,7 +146,7 @@
 - **`begin()` の既定 I2C 速度は 4000000（4MHz）になっている。** ヘッダの
   デフォルト引数がそうなっているだけで、付属サンプルは全部 400000 を明示的に渡している。
   デフォルトのまま呼ばないほうがよい。
-- **本リポジトリの probe は read-only。** `scenarios/m5stack-mcu-u192/p0.yaml` は
+- **I2CDeviceDB の probe は read-only。** `scenarios/m5stack-mcu-u192/p0.yaml` は
   読めるレジスタを舐めるだけで、`0xF0`（flash 保存）を含む書き込みは `deferred` に
   置いてある。**書き込み側の挙動は実測で裏付けられていない。**
 

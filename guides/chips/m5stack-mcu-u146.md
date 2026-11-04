@@ -9,7 +9,7 @@
 > `profiles/` に入っているマップは **`M5Unit-DigiClock` ライブラリ v0.0.1 のソースから起こした推定**
 > （`evidence: inferred / tentative`）で、実測では未確認。
 
-> **書き込みは実際に表示を変える。** 危険なユニットではないが、本リポジトリの characterization
+> **書き込みは実際に表示を変える。** 危険なユニットではないが、I2CDeviceDB の characterization
 > probe は read-only で、読めるのは `0xFE`（ファーム版数）だけを読む。書き込み系レジスタは
 > すべてレビュー済みシナリオに委ねられている。
 
@@ -127,7 +127,7 @@
 - **TM1637 の datasheet を読んでも意味が無い。** ホストから見えるのは STM32 のファームであり、
   TM1637 のコマンド体系はこの I2C マップとは無関係である。
 - **時計として使うならホストが時刻を持つ。** RTC も電池も入っていない。電源を切れば表示は失われる。
-- **本リポジトリの characterization probe は read-only。** 読めるレジスタが `0xFE` の 1 つしか
+- **I2CDeviceDB の characterization probe は read-only。** 読めるレジスタが `0xFE` の 1 つしか
   ないので、probe が読むのもそれだけである。書き込みは表示を実際に変えるため触っていない。
 
 ## どこに何が書いてあるか
