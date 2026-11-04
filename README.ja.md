@@ -23,7 +23,7 @@ guides/chips/<chip>.md     人が読むデバイスの解説（日本語）
 cases/<case>/              収集のケース: case.yaml（意図・対象・段階）と、OEP の LibraryTest のソース
 runs/<run-id>/             1 回の記録: run.json、キャプチャ、復号、provenance.yaml
 knowledge/<chip>.yaml      振る舞いの表（レジスタ・コマンド・時間）。根拠の run を引く
-tools/                     validate、run の名前、索引の build
+tools/                     validate、run の名前、索引の build、knowledge の書き出し（EmbedBench の表・wireskein の定義）
 docs/DATA_MODEL.ja.md      各ファイルの形と規則（正本）
 ```
 
@@ -42,8 +42,8 @@ python3 tools/build.py               # 逆引きの索引を build/ に（コミ
 `chips/`・`products/`・`libraries/`・`surveys/`・`guides/` は
 [I2CDeviceDB](https://github.com/tanakamasayuki/I2CDeviceDB)（commit 38f1d82）から移した（履歴は引き継いでいない）。
 チップのアドレスはバスごとの `interfaces` に、製品の部品は `bus` 付きに組み直した。
-I2CDeviceDB の `profiles/`・`observations/` は移していない。ガイドからの参照は、その commit への固定のリンクにしてある。
-`profiles/` の表は `knowledge/` へ作り直す。
+I2CDeviceDB の `profiles/`・`observations/` は移していない。振る舞いの表は、このリポジトリでは `knowledge/` に
+run を根拠にして書く。ガイドからの `profiles/` などへの参照は、その commit への固定のリンクにしてある。
 
 ## ライセンス
 

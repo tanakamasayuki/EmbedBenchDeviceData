@@ -29,7 +29,7 @@ guides/chips/<chip>.md     human-readable device guides (Japanese)
 cases/<case>/              collection cases: case.yaml and the OEP LibraryTest source
 runs/<run-id>/             one recording: run.json, capture, decode, provenance.yaml
 knowledge/<chip>.yaml      behaviour tables (registers, commands, timing), citing runs
-tools/                     validate, run naming, index build
+tools/                     validate, run naming, index build, knowledge export (EmbedBench tables, wireskein declarations)
 docs/DATA_MODEL.ja.md      the shape and rules of every file (authoritative, Japanese)
 ```
 
@@ -47,7 +47,11 @@ Requires Python 3.9+ and PyYAML.
 
 The catalog (`chips/`, `products/`, `libraries/`, `surveys/`, `guides/`) was
 moved from [I2CDeviceDB](https://github.com/tanakamasayuki/I2CDeviceDB) at
-commit 38f1d82, without its history.
+commit 38f1d82, without its history. Chip addresses were regrouped into
+per-bus `interfaces`, and product parts carry their `bus`. I2CDeviceDB's
+`profiles/` and `observations/` were not moved: behaviour tables live in
+`knowledge/` here, citing runs, and the guides' references to `profiles/`
+and the like are pinned links to that commit.
 
 ## License
 
