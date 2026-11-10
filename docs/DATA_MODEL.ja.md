@@ -22,8 +22,10 @@
 | chip | 型番の slug（ベンダー無し） | `sht30`、`qmp6988`。ファームウェアの載ったマイコンは `m5stack-mcu-u186` |
 | product | `slug(vendor)-slug(sku)` | `m5stack-u001-c` |
 | library | `slug(owner)-slug(repo)`（repo が owner で始まるなら repo だけ） | `m5stack-m5unit-env` |
-| case | `[a-z0-9-]` | `m5unit-env-u001c-basic` |
-| run | `<case>__i2c-<kHz>k__<hash16>` | `wire-absent-address__i2c-100k__50f8781ef04f2bec` |
+| case | `<対象>-<何を>`、`[a-z0-9-]`。対象はチップ・製品・ライブラリ。バスは入れない | `sht30-modes`、`m5unit-env-u001c-basic` |
+| run | `<case>__<bus>-<速さ>__<hash16>`（I2C は `i2c-<kHz>k`） | `wire-absent-address__i2c-100k__50f8781ef04f2bec` |
+| 収集のスケッチ | `<vendor>/<sku>`（product のキーと対応）。製品の無い部品は `generic/<chip>` | `m5stack/u001-c` |
+| ベンチ | oep-bench の台帳の略称 | `p4x-grove` |
 
 I2CDeviceDB のキーをそのまま引き継いだ。
 
@@ -64,7 +66,7 @@ survey は `sku_pattern` でラインの境界を決め、`out_of_line`（ライ
 | intent | ○ | 何を確かめるか |
 | targets | ○ | `[{chip, bus, addr, product?}]`。空なら notes に何を相手にするかを書く |
 | phases | | `[{name, intent}]`。`name` は ProbeLog の `## <name>` と同じ文字列 |
-| source | | ケースのディレクトリに置いたソースのファイル名（OEP の LibraryTest の形のまま） |
+| collect | | 収集のしかた: `{sketch, number, lines, timeout_s?}`。`sketch` は `collect/` の下のスケッチ（`m5stack/u001-c`）、`number` はそのスケッチでのケースの番号、`lines` は録る線の役割（I2C は `[SDA, SCL]`）、`timeout_s` はケースの終わりを待つ秒（既定 60） |
 | notes | | |
 
 ## 4. 記録: runs/<run-id>/
@@ -73,9 +75,13 @@ survey は `sku_pattern` でラインの境界を決め、`out_of_line`（ライ
 runs/<run-id>/
   run.json            wireskein-run の出力そのまま（ログ・目印・期待）
   c0001.wireskein     生のキャプチャ。名前は run.json の captures[].file と同じ
-  c0001.i2c.json      wireskein の I2C の転送（{"transactions": [...]}）。EmbedBench の skein2trace.py が読む
+  c0001.analysis.json wireskein decode の出力（wireskein-analysis/1）
+  c0001.i2c.json      その I2C の転送（{"transactions": [...]}）。EmbedBench の skein2trace.py が読む
   provenance.yaml     来歴（下）
 ```
+
+**正本は生のキャプチャと目印。** 復号は、そのときの wireskein の分析で、生のキャプチャからいつでもやり直せる。
+run.json の目印（`#` ケース、`##` 段階）が何をしたかを、ケースが書いた行がその段階の結果を言う。
 
 **run-id** は `tools/run_id.py` が決める。転送の列（`addr、rw、addr_ack、bytes、acks、start_cond、end_cond`。時刻は除く）を
 全キャプチャぶん並べた JSON の sha256 の先頭 16 桁。同じバイトが同じ順に動いた run は同じ名前になる。
@@ -108,8 +114,7 @@ runs/<run-id>/
 run.json は `wireskein-run/1`。host の時刻は単調時計の ns（`log[].host_ns`、`captures[].host_ns`）で、
 EmbedBench の `skein2trace.py` はこの形だけを読む。
 
-`c0001.analysis.json`（wireskein decode の `wireskein-analysis/1`。版・指定・未解釈の区間・lost / gap を含む）は任意。
-`c0001.i2c.json` はその `transactions` を取り出したもの。
+`c0001.analysis.json` は版・指定・未解釈の区間・lost / gap を含む。`c0001.i2c.json` はその `transactions` を取り出したもの。
 
 ## 5. 振る舞い: knowledge/<chip>.yaml
 

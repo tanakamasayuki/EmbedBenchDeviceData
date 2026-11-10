@@ -20,9 +20,7 @@ phases:
     intent: "a new 0x2400, then the reads (100 ms after the reset)"
   - name: after-measurement
     intent: "for comparison: after a measurement read to its end"
-source: [EnvCases.cpp, env_collect.py]
-notes: |
-  EnvCases.cpp is a file beside oep-probe-arduino's firmware (examples/Firmware/OepProbe), as its
-  extras/LibraryTest: the probe runs the case on a task of its own and captures SDA / SCL while it runs; the
-  case's lines carry the probe's clock (ProbeLog). It holds 13 cases, run by number (13 is this one).
-  env_collect.py is the host side that records the wireskein run.
+collect:
+  sketch: m5stack/u001-c
+  number: 13
+  lines: [SDA, SCL]

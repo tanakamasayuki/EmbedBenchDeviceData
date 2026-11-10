@@ -1,14 +1,13 @@
 // SPDX-License-Identifier: MIT
 // Collecting cases for M5Stack Unit ENV III (U001-C: SHT30 at 0x44, QMP6988 at 0x70), run on an OEP probe as
 // oep-probe-arduino's extras/LibraryTest runs its cases: a file beside the firmware's .ino, the probe captures the same
-// lines while a case runs, and every line the case writes (mark) carries the probe's clock.
+// lines while a case runs, and every line the case writes (mark) carries the probe's clock. The interface, the task
+// and the log are the ProbeCases library's; this file holds the cases and their numbers.
 //
-//   op 0x10 run     case(u8)  ->  -        starts the case and answers at once (busy: unavailable)
-//   op 0x20 status  -         ->  state(u8: 0 idle, 1 running, 2 done) case(u8) result(i32)
-//   op 0x11 read, 0x12 marks, 0x13 clear   the log (OepProbeLog.h)
+//   (ops: ProbeCases.h; op 0x14 configure sets the bus speed in Hz for the cases that follow)
 //
 // Cases (the heading names are the phases the data repository's case.yaml lists):
-//   1 scan                         every 7-bit address, the ones that answer
+//   1 wire-scan                    every 7-bit address, the ones that answer
 //   2 m5unit-env-u001c-basic       the library (M5Unit-ENV): SHT3X and QMP6988 begin, then three rounds of update
 //   3 sht30-modes                  no library: soft reset, status, each repeatability by polling and by clock stretch
 //   4 qmp6988-modes                no library: chip id, reset, calibration, a forced measurement, normal mode ~120 ms
@@ -27,9 +26,10 @@
 //                                  measurement left unread
 //   13 sht30-unread-reset          a measurement left unread, then a soft reset: whether a read after it still gets the
 //                                  old result (no command; then with a command), on the ESP-IDF driver
+//   14 wire-absent-address         2 bytes written to 0x50, where nothing answers: the address NACK and what Wire says
 #include <OepEndpoint.h>
 #include <OepPinTable.h>
-#include <OepProbeLog.h>
+#include <ProbeCases.h>
 #include <M5UnitENV.h>
 #include <Wire.h>
 #include <driver/i2c_master.h>
@@ -49,33 +49,13 @@
 namespace {
 
 constexpr int kSda = ENV_SDA, kScl = ENV_SCL;
-constexpr uint32_t kHz = ENV_HZ;
+uint32_t kHz = ENV_HZ;   // the bus speed: configure (op 0x14) changes it between cases
 constexpr uint8_t kSht = 0x44, kQmp = 0x70;
 TwoWire &bus = Wire;
 constexpr uint8_t kOwner = oep::owners::kSketch;
 
-// ---- the log, shared by the case's thread and the endpoint's -------------------------------------------------------
-constexpr size_t kLogBytes = 16384, kLogMarks = 512;
-oep::ProbeLog *log_ = nullptr;
-portMUX_TYPE logLock = portMUX_INITIALIZER_UNLOCKED;
-void lockLog() { portENTER_CRITICAL(&logLock); }
-void unlockLog() { portEXIT_CRITICAL(&logLock); }
-
-void mark(const char *text) {
-  lockLog();
-  log_->line(text);
-  unlockLog();
-}
-
-void markf(const char *format, ...) __attribute__((format(printf, 1, 2)));
-void markf(const char *format, ...) {
-  char text[oep::ProbeLog::kLineMax + 1];
-  va_list args;
-  va_start(args, format);
-  vsnprintf(text, sizeof text, format, args);
-  va_end(args);
-  mark(text);
-}
+using probe_cases::mark;
+using probe_cases::markf;
 
 void hex(char *out, const uint8_t *b, size_t n) {
   for (size_t i = 0; i < n; ++i) sprintf(out + 2 * i, "%02x", b[i]);
@@ -84,7 +64,7 @@ void hex(char *out, const uint8_t *b, size_t n) {
 
 // ---- case 1: scan --------------------------------------------------------------------------------------------------
 int32_t scan() {
-  mark("# scan");
+  mark("# wire-scan");
   int32_t found = 0;
   for (uint8_t a = 0x01; a <= 0x7f; ++a) {
     bus.beginTransmission(a);
@@ -666,95 +646,44 @@ int32_t shtReadyIdf() {
   return bad;
 }
 
-// ---- the case's thread ---------------------------------------------------------------------------------------------
-enum : uint8_t { kIdle = 0, kRunning = 1, kDone = 2 };
-volatile uint8_t state = kIdle, current = 0;
-volatile int32_t result = 0;
-
-int32_t runCase(uint8_t which) {
-  switch (which) {
-    case 1: return scan();
-    case 2: return basic();
-    case 3: return shtModes();
-    case 4: return qmpModes();
-    case 5: return qmpStandby();
-    case 6: return qmpMeasureBit();
-    case 7: return shtStretchWait();
-    case 8: return qmpStandbyLong(0x20, "5ms");
-    case 9: return qmpStandbyLong(0x40, "50ms");
-    case 10: return qmpStandbyLong(0x60, "250ms");
-    case 11: return shtReady();
-    case 12: return shtReadyIdf();
-    default: return shtUnreadReset();
-  }
+// ---- case 14: an address nothing answers ---------------------------------------------------------------------------
+int32_t absentAddress() {
+  mark("# wire-absent-address");
+  mark("## write 2 bytes to 0x50");
+  bus.beginTransmission(0x50);
+  bus.write(0x00);
+  bus.write(0x00);
+  const uint8_t end = bus.endTransmission();
+  markf("endTransmission=%u", end);
+  mark("##");
+  mark("#");
+  return end == 2 ? 0 : 1;
 }
 
-void caseTask(void *) {
-  result = runCase(current);
-  __atomic_thread_fence(__ATOMIC_RELEASE);
-  state = kDone;
-  vTaskDelete(nullptr);
-}
+// ---- the table ------------------------------------------------------------------------------------------------------
+int32_t qmpStandbyLong5() { return qmpStandbyLong(0x20, "5ms"); }
+int32_t qmpStandbyLong50() { return qmpStandbyLong(0x40, "50ms"); }
+int32_t qmpStandbyLong250() { return qmpStandbyLong(0x60, "250ms"); }
 
-bool start(uint8_t which) {
-  if (state == kRunning) return false;
-  current = which;
-  result = 0;
-  __atomic_thread_fence(__ATOMIC_RELEASE);
-  state = kRunning;
-  if (xTaskCreate(caseTask, "env_case", 8192, nullptr, 1, nullptr) == pdPASS) return true;
-  state = kIdle;
-  return false;
-}
-
-class EnvCases final : public oep::Interface {
- public:
-  static constexpr uint8_t kOpRun = 0x10, kOpStatus = 0x20;
-  const char *name() const override { return "io.github.example.library-test"; }
-  uint16_t instance() const override { return 0; }
-  uint8_t revision() const override { return 1; }
-  bool offers(uint8_t op) const override { return op == kOpRun || op == kOpStatus || oep::ProbeLog::handles(op); }
-  bool lockFree(uint8_t op) const override { return op == kOpStatus || oep::ProbeLog::lockFree(op); }
-  void setFrameLimit(size_t max_frame) override { max_read_ = max_frame > 16 ? static_cast<uint16_t>(max_frame - 16) : 0; }
-
-  oep::Result handle(uint8_t op, const uint8_t *p, size_t n, uint8_t *out, size_t capacity) override {
-    if (oep::ProbeLog::handles(op)) {
-      lockLog();
-      const oep::Result r = log_->handle(op, p, n, out, capacity, max_read_);
-      unlockLog();
-      return r;
-    }
-    oep::Tail tail;
-    const oep::Result parsed = oep::plainTail(tail, p, n, op == kOpRun ? 1 : 0, out, capacity);
-    if (oep::refused(parsed)) return parsed;
-    if (op == kOpRun) {
-      if (p[0] < 1 || p[0] > 13) return oep::unsupportedValue(out, capacity);
-      if (!start(p[0])) return oep::wrongState(out, capacity);
-      return oep::completed();
-    }
-    if (capacity < 6) return oep::failed();
-    out[0] = state;
-    __atomic_thread_fence(__ATOMIC_ACQUIRE);
-    out[1] = current;
-    oep::putU32(out + 2, static_cast<uint32_t>(result));
-    return oep::completed(6);
-  }
-
- private:
-  uint16_t max_read_ = 1000;
+const probe_cases::Case kCases[] = {
+    {1, scan},           {2, basic},          {3, shtModes},          {4, qmpModes},          {5, qmpStandby},
+    {6, qmpMeasureBit},  {7, shtStretchWait}, {8, qmpStandbyLong5},   {9, qmpStandbyLong50},  {10, qmpStandbyLong250},
+    {11, shtReady},      {12, shtReadyIdf},   {13, shtUnreadReset},   {14, absentAddress},
 };
 
-EnvCases envCases;
+void configure(uint32_t hz) {
+  if (hz < 10000 || hz > 1000000) return;
+  kHz = hz;
+  bus.end();
+  bus.begin(kSda, kScl, kHz);
+}
 
 }  // namespace
 
 void oepUserSetup(oep::Endpoint &endpoint, oep::PinTable &pins) {
-  static oep::ProbeLog log(static_cast<uint8_t *>(malloc(kLogBytes)), kLogBytes,
-                           static_cast<oep::PositionStream::Mark *>(malloc(sizeof(oep::PositionStream::Mark) * kLogMarks)),
-                           kLogMarks);
-  log_ = &log;
+  probe_cases::begin(endpoint, "io.github.tanakamasayuki.devicedata.env-cases", kCases,
+                     sizeof kCases / sizeof kCases[0], configure);
   pins.claim(kSda, kOwner);
   pins.claim(kScl, kOwner);
   bus.begin(kSda, kScl, kHz);
-  endpoint.add(envCases);
 }

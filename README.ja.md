@@ -8,8 +8,12 @@ EmbedBench はライブラリやアプリをホストで、デバイスの模型
 このリポジトリは、その記録（run）と、記録を読むためのカタログ・ケース・振る舞いの表を持つ。
 
 - **記録は試験ではなく、試験の前の準備。** 実物を一度動かして線を記録し、解析して、ホストの模型（とその照合の試験）の材料にする。
-- **記録を取るのは OEP の probe**（キャプチャと、同じ時計のケースの目印）、**解析は wireskein**。
-  EmbedBench は `runs/` を読むだけ（`skein2trace.py` → 表の雛形・tape・照合）。
+- **収集はこのリポジトリが行う。** ケース（`cases/`）と、probe に書くスケッチと収集の pytest（`collect/`）を持つ。
+  probe は OEP のライブラリ（OpenEmbeddedProbe、oep-client-python）で動かし、記録と復号は wireskein で行う。
+  手順は [docs/COLLECTION.ja.md](docs/COLLECTION.ja.md)。
+- **正本は生のキャプチャと目印。** 復号はそのときの分析で、生のキャプチャからいつでもやり直せる。
+- **ほかのリポジトリは `runs/` と `knowledge/` を読むだけ。** EmbedBench は模型の材料と照合に
+  （`skein2trace.py`、`knowledge_table.py`）、wireskein は部品の定義（`knowledge_decl.py`）と復号の評価に使う。
 - 形式はバスに依存しない一般的なもの（wireskein の run と分析）で、ほかの用途に使うことは妨げない。
 
 ## 構成
@@ -20,11 +24,13 @@ products/<product>.yaml    部品表。製品にどのチップがどのバス�
 libraries/<library>.yaml   ライブラリと、それが叩くチップ
 surveys/                   ベンダーのラインをどう列挙したか
 guides/chips/<chip>.md     人が読むデバイスの解説（日本語）
-cases/<case>/              収集のケース: case.yaml（意図・対象・段階）と、OEP の LibraryTest のソース
-runs/<run-id>/             1 回の記録: run.json、キャプチャ、復号、provenance.yaml
+cases/<case>/              収集のケース: case.yaml（意図・対象・段階、どのファームウェアの何番か）
+collect/                   収集: 製品ごとのスケッチ（<vendor>/<sku>/）、共通のファームウェアと Python、ベンチ、pytest
+runs/<run-id>/             1 回の記録: run.json、生のキャプチャ、復号、provenance.yaml
 knowledge/<chip>.yaml      振る舞いの表（レジスタ・コマンド・時間）。根拠の run を引く
 tools/                     validate、run の名前、索引の build（EmbedBench の表・wireskein の定義への変換は、それぞれのリポジトリにある）
 docs/DATA_MODEL.ja.md      各ファイルの形と規則（正本）
+docs/COLLECTION.ja.md      収集の手順
 ```
 
 ## 使い方
@@ -35,7 +41,7 @@ python3 tools/run_id.py runs/<dir>   # run のディレクトリが持つべき�
 python3 tools/build.py               # 逆引きの索引を build/ に（コミットしない）
 ```
 
-必要なもの: Python 3.9 以上と PyYAML。
+必要なもの: Python 3.9 以上と PyYAML。収集には、さらに arduino-cli と uv（`collect/` で `uv sync`）。
 
 ## 出自
 

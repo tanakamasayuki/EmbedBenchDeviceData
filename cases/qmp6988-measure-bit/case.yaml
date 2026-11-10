@@ -68,9 +68,7 @@ phases:
     intent: "the status read 580 us after CTRL_MEAS forced (the read takes its own bus time on top)"
   - name: delay-600us
     intent: "the status read 600 us after CTRL_MEAS forced (the read takes its own bus time on top)"
-source: [EnvCases.cpp, env_collect.py]
-notes: |
-  EnvCases.cpp is a file beside oep-probe-arduino's firmware (examples/Firmware/OepProbe), as its
-  extras/LibraryTest: the probe runs the case on a task of its own and captures SDA / SCL while it runs; the
-  case's lines carry the probe's clock (ProbeLog). It holds 13 cases, run by number (6 is this one).
-  env_collect.py is the host side that records the wireskein run.
+collect:
+  sketch: m5stack/u001-c
+  number: 6
+  lines: [SDA, SCL]

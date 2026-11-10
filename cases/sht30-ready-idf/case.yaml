@@ -22,9 +22,7 @@ phases:
     intent: "a measurement started and left unread for 20 ms, then a new command and the reads"
   - name: read-only
     intent: "reads with no command"
-source: [EnvCases.cpp, env_collect.py]
-notes: |
-  EnvCases.cpp is a file beside oep-probe-arduino's firmware (examples/Firmware/OepProbe), as its
-  extras/LibraryTest: the probe runs the case on a task of its own and captures SDA / SCL while it runs; the
-  case's lines carry the probe's clock (ProbeLog). It holds 13 cases, run by number (12 is this one).
-  env_collect.py is the host side that records the wireskein run.
+collect:
+  sketch: m5stack/u001-c
+  number: 12
+  lines: [SDA, SCL]

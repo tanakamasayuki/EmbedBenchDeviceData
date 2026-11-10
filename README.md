@@ -13,8 +13,17 @@ them.
 - **A recording is preparation for testing, not a test.** A real part is driven
   once, its lines are captured and analysed, and the result becomes material
   for a host model and the test that checks the model.
-- **The OEP probe records** (capture plus case markers on the same clock);
-  **wireskein analyses**. EmbedBench only reads `runs/`.
+- **This repository collects.** It keeps the cases (`cases/`) and, under
+  `collect/`, the sketches written to the probe and the pytest that collects;
+  the probe is driven with OEP's libraries (OpenEmbeddedProbe,
+  oep-client-python), and runs are recorded and decoded with wireskein. See
+  docs/COLLECTION.ja.md.
+- **The raw capture and the markers are the record.** A decode is the analysis
+  of its day and can always be redone from the raw capture.
+- **Other repositories only read `runs/` and `knowledge/`.** EmbedBench uses
+  them for model material and comparison (`skein2trace.py`,
+  `knowledge_table.py`); wireskein for its device declarations
+  (`knowledge_decl.py`) and for scoring its decoder.
 - Formats are bus-neutral (wireskein runs and analyses), so other uses are
   not ruled out.
 
@@ -26,11 +35,13 @@ products/<product>.yaml    bill of materials for a vendor's whole line
 libraries/<library>.yaml   libraries and the chips they drive
 surveys/                   how a vendor line was enumerated
 guides/chips/<chip>.md     human-readable device guides (Japanese)
-cases/<case>/              collection cases: case.yaml and the OEP LibraryTest source
-runs/<run-id>/             one recording: run.json, capture, decode, provenance.yaml
+cases/<case>/              collection cases: case.yaml (intent, targets, phases, which firmware case)
+collect/                   collection: one sketch per product (<vendor>/<sku>/), the common firmware and Python, benches, pytest
+runs/<run-id>/             one recording: run.json, the raw capture, decode, provenance.yaml
 knowledge/<chip>.yaml      behaviour tables (registers, commands, timing), citing runs
 tools/                     validate, run naming, index build (converters to EmbedBench tables and wireskein declarations live in those repositories)
 docs/DATA_MODEL.ja.md      the shape and rules of every file (authoritative, Japanese)
+docs/COLLECTION.ja.md      how runs are collected (Japanese)
 ```
 
 ## Usage
@@ -41,7 +52,7 @@ python3 tools/run_id.py runs/<dir>   # the name a run directory should have
 python3 tools/build.py               # reverse indexes into build/ (not committed)
 ```
 
-Requires Python 3.9+ and PyYAML.
+Requires Python 3.9+ and PyYAML. Collection also needs arduino-cli and uv (`uv sync` in `collect/`).
 
 ## Origin
 

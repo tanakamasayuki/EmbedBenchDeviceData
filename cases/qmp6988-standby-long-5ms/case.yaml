@@ -10,9 +10,7 @@ phases:
     intent: "sleep, IIR 4, IO_SETUP, then 200 ms"
   - name: normal
     intent: "F4 0x33 and 2 s of reads every 5 ms"
-source: [EnvCases.cpp, env_collect.py]
-notes: |
-  EnvCases.cpp is a file beside oep-probe-arduino's firmware (examples/Firmware/OepProbe), as its
-  extras/LibraryTest: the probe runs the case on a task of its own and captures SDA / SCL while it runs; the
-  case's lines carry the probe's clock (ProbeLog). It holds 13 cases, run by number (8 is this one).
-  env_collect.py is the host side that records the wireskein run.
+collect:
+  sketch: m5stack/u001-c
+  number: 8
+  lines: [SDA, SCL]

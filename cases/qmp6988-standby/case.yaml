@@ -10,9 +10,7 @@ phases:
     intent: "t x1, p x8, IIR 4, standby 5 ms; 0xF7-0xFC every 1 ms for 120 ms"
   - name: standby-50ms
     intent: "the same at standby 50 ms; every 5 ms for 400 ms"
-source: [EnvCases.cpp, env_collect.py]
-notes: |
-  EnvCases.cpp is a file beside oep-probe-arduino's firmware (examples/Firmware/OepProbe), as its
-  extras/LibraryTest: the probe runs the case on a task of its own and captures SDA / SCL while it runs; the
-  case's lines carry the probe's clock (ProbeLog). It holds 13 cases, run by number (5 is this one).
-  env_collect.py is the host side that records the wireskein run.
+collect:
+  sketch: m5stack/u001-c
+  number: 5
+  lines: [SDA, SCL]

@@ -445,7 +445,7 @@ def validate_cases(report, chips_by_key, products_by_key, libraries_by_key) -> d
             report.add(path, f"case key must be [a-z0-9-], found {data.get('key')!r}")
         check_fields(report, path, data,
                      required={"schema_version", "key", "kind", "intent", "targets"},
-                     optional={"library", "phases", "source", "notes"},
+                     optional={"library", "phases", "collect", "notes"},
                      may_be_empty={"targets"})
         if data.get("schema_version") != SCHEMA_VERSION:
             report.add(path, f"schema_version must be {SCHEMA_VERSION}")
@@ -460,9 +460,16 @@ def validate_cases(report, chips_by_key, products_by_key, libraries_by_key) -> d
         for index, phase in enumerate(data.get("phases") or []):
             check_fields(report, path, phase, required={"name", "intent"}, optional=set(),
                          where=f"phases[{index}]")
-        for source in data.get("source") or []:
-            if not (directory / source).exists():
-                report.add(path, f"source: {source} is not in the case directory")
+        collect = data.get("collect")
+        if collect is not None:
+            check_fields(report, path, collect, required={"sketch", "number", "lines"}, optional={"timeout_s"},
+                         where="collect")
+            if not (REPO_ROOT / "collect" / str(collect.get("sketch", "")) / "sketch.yaml").exists():
+                report.add(path, f"collect.sketch: collect/{collect.get('sketch')}/sketch.yaml is missing")
+            if not isinstance(collect.get("number"), int) or not 1 <= collect["number"] <= 255:
+                report.add(path, f"collect.number is the case's number on the firmware (1-255), found {collect.get('number')!r}")
+            if not collect.get("lines") or not all(isinstance(x, str) for x in collect["lines"]):
+                report.add(path, "collect.lines names the captured lines' roles")
         cases[data.get("key")] = data
     return cases
 
