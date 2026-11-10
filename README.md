@@ -29,7 +29,7 @@ guides/chips/<chip>.md     human-readable device guides (Japanese)
 cases/<case>/              collection cases: case.yaml and the OEP LibraryTest source
 runs/<run-id>/             one recording: run.json, capture, decode, provenance.yaml
 knowledge/<chip>.yaml      behaviour tables (registers, commands, timing), citing runs
-tools/                     validate, run naming, index build, knowledge export (EmbedBench tables, wireskein declarations)
+tools/                     validate, run naming, index build (converters to EmbedBench tables and wireskein declarations live in those repositories)
 docs/DATA_MODEL.ja.md      the shape and rules of every file (authoritative, Japanese)
 ```
 

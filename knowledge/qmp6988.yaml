@@ -126,5 +126,6 @@ decode_artefacts:
       it is not a transfer of its own. Whether the part (resetting while E6 is on the bus) or the controller makes
       the extra frame is not separated yet.
 notes: |
-  The EmbedBench model is devices/src/qmp6988_model.*, checked in tests/model_replay/; tools/knowledge_table.py writes the
-  register table this file describes in its RegTableSpec form.
+  The EmbedBench model is devices/src/qmp6988_model.*, checked in tests/model_replay/; EmbedBench's devices/tools/knowledge_table.py
+  writes the register table this file describes in its RegTableSpec form, and tests/knowledge_table/ checks that the model's
+  table matches it.

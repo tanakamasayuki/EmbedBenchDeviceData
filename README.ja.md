@@ -23,7 +23,7 @@ guides/chips/<chip>.md     人が読むデバイスの解説（日本語）
 cases/<case>/              収集のケース: case.yaml（意図・対象・段階）と、OEP の LibraryTest のソース
 runs/<run-id>/             1 回の記録: run.json、キャプチャ、復号、provenance.yaml
 knowledge/<chip>.yaml      振る舞いの表（レジスタ・コマンド・時間）。根拠の run を引く
-tools/                     validate、run の名前、索引の build、knowledge の書き出し（EmbedBench の表・wireskein の定義）
+tools/                     validate、run の名前、索引の build（EmbedBench の表・wireskein の定義への変換は、それぞれのリポジトリにある）
 docs/DATA_MODEL.ja.md      各ファイルの形と規則（正本）
 ```
 

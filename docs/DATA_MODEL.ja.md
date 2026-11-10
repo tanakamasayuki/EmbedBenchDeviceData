@@ -108,9 +108,8 @@ runs/<run-id>/
 run.json は `wireskein-run/1`。host の時刻は単調時計の ns（`log[].host_ns`、`captures[].host_ns`）で、
 EmbedBench の `skein2trace.py` はこの形だけを読む。
 
-OEP の run は `c0001.analysis.json`（wireskein decode の `wireskein-analysis/1`。版・指定・未解釈の区間・lost / gap を含む）も
-置いている。`c0001.i2c.json` はその `transactions` を取り出したもの。EmbedBench の `skein2trace.py` が analysis.json を
-直接読めるようになったら、`decode` をそちらに切り替える。
+`c0001.analysis.json`（wireskein decode の `wireskein-analysis/1`。版・指定・未解釈の区間・lost / gap を含む）は任意。
+`c0001.i2c.json` はその `transactions` を取り出したもの。
 
 ## 5. 振る舞い: knowledge/<chip>.yaml
 
@@ -127,8 +126,9 @@ OEP の run は `c0001.analysis.json`（wireskein decode の `wireskein-analysis
 
 `evidence` は `runs/` の run の名前、`i2cdevicedb-pilot:<observation id>`、または `datasheet`。
 validate は、chip がカタログにあることと、根拠がどれかに当たることを検査する。
-`tools/knowledge_table.py <chip>` がレジスタの表を EmbedBench の `RegTableSpec` に書き出す（レジスタのある部品だけ）。
-`tools/knowledge_decl.py OUT` が wireskein の `decl/devices/<bus>/<メーカー>/<chip>.toml`（部品の見分け）を書き出す。
+knowledge は使う側の形を知らない。使う側の形への変換は、使う側が持つ:
+EmbedBench の `devices/tools/knowledge_table.py`（`RegTableSpec` の表）、wireskein の `tools/knowledge_decl.py`
+（`decl/devices/<bus>/<メーカー>/<chip>.toml`、部品の見分け。`--check` で生成し直した結果と比べる）。
 
 ## 6. ガイド: guides/chips/<chip>.md
 
