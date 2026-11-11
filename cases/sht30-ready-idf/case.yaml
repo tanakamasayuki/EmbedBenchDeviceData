@@ -23,6 +23,6 @@ phases:
   - name: read-only
     intent: "reads with no command"
 collect:
-  sketch: m5stack/u001-c
-  number: 12
   lines: [SDA, SCL]
+  sketches:
+    - {sketch: m5stack/u001-c, number: 12}

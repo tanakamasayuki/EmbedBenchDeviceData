@@ -5,6 +5,7 @@ intent: |
   SHT30 without a library: soft reset, the status register with its CRC, and a single-shot measurement at each repeatability (high, medium, low) by polling (NACK until ready) and by clock stretching.
 targets:
   - {chip: sht30, product: m5stack-u001-c, bus: i2c, addr: "0x44"}
+  - {chip: sht30, product: m5stack-u001-b, bus: i2c, addr: "0x44"}
 phases:
   - name: soft-reset
     intent: "0x30A2 and the time to the next command"
@@ -23,6 +24,7 @@ phases:
   - name: stretch-low
     intent: "the read address ACKed, SCL held low until the result (low repeatability)"
 collect:
-  sketch: m5stack/u001-c
-  number: 3
   lines: [SDA, SCL]
+  sketches:
+    - {sketch: m5stack/u001-c, number: 3}
+    - {sketch: m5stack/u001-b, number: 3}

@@ -1,0 +1,19 @@
+schema_version: 1
+key: pololu-vl53l0x-u010-basic
+kind: library
+library: pololu-vl53l0x-arduino
+intent: |
+  How the Pololu VL53L0X library drives Unit ToF: init, three single-shot ranges, then back-to-back ranging for three readings.
+targets:
+  - {chip: vl53l0x, product: m5stack-u010, bus: i2c, addr: "0x29"}
+phases:
+  - name: init
+    intent: "VL53L0X::init: ST's initialisation (tuning settings, SPAD and reference calibration)"
+  - name: single
+    intent: "readRangeSingleMillimeters: the start, the polling and the read"
+  - name: continuous
+    intent: "startContinuous(0), three readRangeContinuousMillimeters, stopContinuous"
+collect:
+  lines: [SDA, SCL]
+  sketches:
+    - {sketch: m5stack/u010, number: 2}

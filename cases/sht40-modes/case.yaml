@@ -1,0 +1,24 @@
+schema_version: 1
+key: sht40-modes
+kind: characterization
+intent: |
+  SHT40 without a library: soft reset and how soon a command is taken again, the serial number with its CRC, a measurement at each precision (high, medium, low) by polling (NACK until ready), and the lowest heater pulse (20 mW, 0.1 s, a measurement at its end).
+targets:
+  - {chip: sht40, product: m5stack-u001-d, bus: i2c, addr: "0x44"}
+phases:
+  - name: soft-reset
+    intent: "0x94, then the serial number command every 100 us until it is taken; its answer"
+  - name: serial
+    intent: "0x89 then 6 bytes, CRC checked"
+  - name: polling-high
+    intent: "0xFD, the read NACKed until the result is ready"
+  - name: polling-medium
+    intent: "0xF6, the read NACKed until the result is ready"
+  - name: polling-low
+    intent: "0xE0, the read NACKed until the result is ready"
+  - name: heater-20mw-100ms
+    intent: "0x15: the heater for 0.1 s, then a measurement; the read NACKed until then"
+collect:
+  lines: [SDA, SCL]
+  sketches:
+    - {sketch: m5stack/u001-d, number: 3}

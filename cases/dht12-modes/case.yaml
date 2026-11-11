@@ -1,0 +1,22 @@
+schema_version: 1
+key: dht12-modes
+kind: characterization
+intent: |
+  DHT12 without a library: its five registers read with a repeated start, with a stop after the pointer, and with no pointer; then read every 100 ms and every 1 s, to see how often the reading changes.
+targets:
+  - {chip: dht12, product: m5stack-u001, bus: i2c, addr: "0x5c"}
+phases:
+  - name: read-repeated-start
+    intent: "pointer 00, a repeated start, 5 bytes; the sum checked"
+  - name: read-stop
+    intent: "pointer 00 with a stop, then a read of 5 bytes"
+  - name: read-no-pointer
+    intent: "a read of 5 bytes with no pointer written"
+  - name: cadence-100ms
+    intent: "the registers read every 100 ms for 6 s; a line for each new reading"
+  - name: cadence-1000ms
+    intent: "the registers read every 1 s for 8 s; a line for each new reading"
+collect:
+  lines: [SDA, SCL]
+  sketches:
+    - {sketch: m5stack/u001, number: 3}

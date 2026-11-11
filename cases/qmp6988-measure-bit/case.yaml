@@ -69,6 +69,6 @@ phases:
   - name: delay-600us
     intent: "the status read 600 us after CTRL_MEAS forced (the read takes its own bus time on top)"
 collect:
-  sketch: m5stack/u001-c
-  number: 6
   lines: [SDA, SCL]
+  sketches:
+    - {sketch: m5stack/u001-c, number: 6}

@@ -3,4 +3,4 @@ key: m5stack-m5unit-env
 name: M5Unit-ENV
 repo: https://github.com/m5stack/M5Unit-ENV
 supports:
-  chips: [dht12, bmp280, sht30, qmp6988, scd40]
+  chips: [dht12, bmp280, sht30, sht40, qmp6988, scd40]

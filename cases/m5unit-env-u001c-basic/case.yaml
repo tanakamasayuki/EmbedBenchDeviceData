@@ -17,6 +17,6 @@ phases:
   - name: qmp6988-update
     intent: "QMP6988::update: the registers read for one measurement"
 collect:
-  sketch: m5stack/u001-c
-  number: 2
   lines: [SDA, SCL]
+  sketches:
+    - {sketch: m5stack/u001-c, number: 2}

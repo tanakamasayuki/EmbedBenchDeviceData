@@ -1,0 +1,19 @@
+schema_version: 1
+key: adafruit-tcs34725-u009-basic
+kind: library
+library: adafruit-tcs34725
+intent: |
+  How the Adafruit TCS34725 library drives Unit Color at 24 ms and 4x: begin, three raw readings, the colour temperature and lux from the last.
+targets:
+  - {chip: tcs34725, product: m5stack-u009, bus: i2c, addr: "0x29"}
+phases:
+  - name: begin
+    intent: "Adafruit_TCS34725::begin: the id read and the setup it writes"
+  - name: get-raw-data
+    intent: "getRawData: its wait and the four channels read"
+  - name: color-temperature
+    intent: "calculateColorTemperature_dn40 and calculateLux (no bus traffic)"
+collect:
+  lines: [SDA, SCL]
+  sketches:
+    - {sketch: m5stack/u009, number: 2}

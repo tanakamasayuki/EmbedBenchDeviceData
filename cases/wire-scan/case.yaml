@@ -2,15 +2,28 @@ schema_version: 1
 key: wire-scan
 kind: characterization
 intent: |
-  A scan of every 7-bit address with Wire.beginTransmission / endTransmission on a bus with Unit ENV III: which addresses answer on the wire, and what Wire reports for each.
+  A scan of every 7-bit address with Wire.beginTransmission / endTransmission on a bus with one unit: which addresses answer on the wire, and what Wire reports for each.
 targets:
   - {chip: sht30, product: m5stack-u001-c, bus: i2c, addr: "0x44"}
   - {chip: qmp6988, product: m5stack-u001-c, bus: i2c, addr: "0x70"}
+  - {chip: sht30, product: m5stack-u001-b, bus: i2c, addr: "0x44"}
+  - {chip: bmp280, product: m5stack-u001-b, bus: i2c, addr: "0x76"}
+  - {chip: sht40, product: m5stack-u001-d, bus: i2c, addr: "0x44"}
+  - {chip: bmp280, product: m5stack-u001-d, bus: i2c, addr: "0x76"}
+  - {chip: dht12, product: m5stack-u001, bus: i2c, addr: "0x5c"}
+  - {chip: bmp280, product: m5stack-u001, bus: i2c, addr: "0x76"}
+  - {chip: tcs34725, product: m5stack-u009, bus: i2c, addr: "0x29"}
+  - {chip: vl53l0x, product: m5stack-u010, bus: i2c, addr: "0x29"}
 collect:
-  sketch: m5stack/u001-c
-  number: 1
   lines: [SDA, SCL]
+  sketches:
+    - {sketch: m5stack/u001-c, number: 1}
+    - {sketch: m5stack/u001-b, number: 1}
+    - {sketch: m5stack/u001-d, number: 1}
+    - {sketch: m5stack/u001, number: 1}
+    - {sketch: m5stack/u009, number: 1}
+    - {sketch: m5stack/u010, number: 1}
 notes: |
-  On the ESP32-P4 (arduino-esp32 3.3.12) Wire's answers do not match the wire: endTransmission sometimes ends
-  without putting anything on the wire after a transfer that did, and reports refused addresses as answering. It
-  comes and goes from run to run; see each run's notes.
+  With the bus begun on the probe's worker (docs/COLLECTION.ja.md §4), Wire's answers match the wire: only the
+  unit's parts answer. Begun on loop()'s core it reported refused addresses as answering
+  (esp32p4-i2c-nack-answers).

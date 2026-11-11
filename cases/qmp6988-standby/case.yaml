@@ -11,6 +11,6 @@ phases:
   - name: standby-50ms
     intent: "the same at standby 50 ms; every 5 ms for 400 ms"
 collect:
-  sketch: m5stack/u001-c
-  number: 5
   lines: [SDA, SCL]
+  sketches:
+    - {sketch: m5stack/u001-c, number: 5}

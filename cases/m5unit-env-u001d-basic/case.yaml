@@ -1,0 +1,22 @@
+schema_version: 1
+key: m5unit-env-u001d-basic
+kind: library
+library: m5stack-m5unit-env
+intent: |
+  How the M5Unit-ENV library (SHT4X, BMP280 classes) drives Unit ENV IV: begin of each part, then three rounds of update 100 ms apart.
+targets:
+  - {chip: sht40, product: m5stack-u001-d, bus: i2c, addr: "0x44"}
+  - {chip: bmp280, product: m5stack-u001-d, bus: i2c, addr: "0x76"}
+phases:
+  - name: sht40-begin
+    intent: "SHT4X::begin: what it sends to 0x44 before any measurement"
+  - name: bmp280-begin
+    intent: "BMP280::begin: what it sends to 0x76 before any measurement"
+  - name: sht40-update
+    intent: "SHT4X::update: the commands and reads for one measurement, and how long it takes"
+  - name: bmp280-update
+    intent: "BMP280::update: the registers read for one measurement"
+collect:
+  lines: [SDA, SCL]
+  sketches:
+    - {sketch: m5stack/u001-d, number: 2}

@@ -1,0 +1,30 @@
+schema_version: 1
+key: bmp280-modes
+kind: characterization
+intent: |
+  BMP280 without a library: chip id, soft reset to the end of its NVM copy, calibration, a forced measurement at three oversampling settings (status polled to the end), and normal mode at the shortest standby read back to back.
+targets:
+  - {chip: bmp280, product: m5stack-u001-b, bus: i2c, addr: "0x76"}
+  - {chip: bmp280, product: m5stack-u001-d, bus: i2c, addr: "0x76"}
+  - {chip: bmp280, product: m5stack-u001, bus: i2c, addr: "0x76"}
+phases:
+  - name: chip-id
+    intent: "D0 (0x58)"
+  - name: reset
+    intent: "E0 = B6, then status polled until the NVM copy ends; F3-F5 after"
+  - name: calibration
+    intent: "88-9F, 24 bytes"
+  - name: forced-t1-p1
+    intent: "CTRL_MEAS 25 (T x1, P x1, forced), status polled to the end, the data"
+  - name: forced-t1-p8
+    intent: "CTRL_MEAS 31 (T x1, P x8, forced), status polled to the end, the data"
+  - name: forced-t2-p16
+    intent: "CTRL_MEAS 55 (T x2, P x16, forced), status polled to the end, the data"
+  - name: normal
+    intent: "CONFIG 00 (standby 0.5 ms), CTRL_MEAS 27 (normal), the data read back to back for 200 ms"
+collect:
+  lines: [SDA, SCL]
+  sketches:
+    - {sketch: m5stack/u001-b, number: 4}
+    - {sketch: m5stack/u001-d, number: 4}
+    - {sketch: m5stack/u001, number: 4}

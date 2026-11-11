@@ -1,0 +1,22 @@
+schema_version: 1
+key: tcs34725-modes
+kind: characterization
+intent: |
+  TCS34725 without a library: the id, the registers as found, and three integration times (2.4, 24, 101 ms): when the first cycle is valid after the ADC is enabled, and the period of new readings.
+targets:
+  - {chip: tcs34725, product: m5stack-u009, bus: i2c, addr: "0x29"}
+phases:
+  - name: id
+    intent: "12 (0x44)"
+  - name: registers
+    intent: "ENABLE, ATIME, WTIME, CONTROL as found"
+  - name: integration-2400us
+    intent: "ATIME FF, gain 4x: PON, 3 ms, AEN; STATUS polled to AVALID, the data read until 10 new readings"
+  - name: integration-24ms
+    intent: "ATIME F6: the same, 6 new readings"
+  - name: integration-101ms
+    intent: "ATIME D6: the same, 4 new readings"
+collect:
+  lines: [SDA, SCL]
+  sketches:
+    - {sketch: m5stack/u009, number: 3}

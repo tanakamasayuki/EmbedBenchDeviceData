@@ -18,9 +18,9 @@ phases:
   - {name: idf-read-wait-20000-gap-0us, intent: "i2c_master_receive, scl_wait_us 20000, back to back"}
   - {name: idf-read-wait-20000-gap-500us, intent: "i2c_master_receive, scl_wait_us 20000, 500 us apart"}
 collect:
-  sketch: m5stack/u001-c
-  number: 15
   lines: [SDA, SCL]
+  sketches:
+    - {sketch: m5stack/u001-c, number: 15}
 notes: |
   No part is at 0x50, so there is no target. Each phase's line answers=... gives the driver's answer to every call in
   order (o: success, f: failure).

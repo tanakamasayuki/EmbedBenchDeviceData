@@ -11,6 +11,6 @@ phases:
   - name: normal
     intent: "F4 0x33 and 2 s of reads every 5 ms"
 collect:
-  sketch: m5stack/u001-c
-  number: 9
   lines: [SDA, SCL]
+  sketches:
+    - {sketch: m5stack/u001-c, number: 9}

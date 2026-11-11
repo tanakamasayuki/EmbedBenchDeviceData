@@ -1,0 +1,6 @@
+schema_version: 1
+key: adafruit-tcs34725
+name: Adafruit TCS34725
+repo: https://github.com/adafruit/Adafruit_TCS34725
+supports:
+  chips: [tcs34725]

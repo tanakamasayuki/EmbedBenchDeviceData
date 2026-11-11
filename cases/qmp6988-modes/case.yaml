@@ -17,6 +17,6 @@ phases:
   - name: normal
     intent: "IIR 4, standby 1 ms, normal mode; data every 10 ms: when the values change"
 collect:
-  sketch: m5stack/u001-c
-  number: 4
   lines: [SDA, SCL]
+  sketches:
+    - {sketch: m5stack/u001-c, number: 4}

@@ -1,0 +1,15 @@
+probe: oep://80f1b2d719c5
+lines:
+  SDA: GPIO14
+  SCL: GPIO15
+pins:
+  SDA: 14
+  SCL: 15
+dut:
+  board: ESP32-P4X (Unit Color on its Grove GPIO14 / 15)
+  controller: esp32p4
+  bench:
+    name: p4x-grove
+    position: 3-3 / 3-4
+targets: []
+pullups: unknown (only Unit Color on the Grove; none added on the board side)

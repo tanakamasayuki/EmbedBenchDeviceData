@@ -11,6 +11,6 @@ phases:
   - name: wire-timeout-1000ms
     intent: "Wire with a 1000 ms timeout: whether the 6.7 ms give-up moves"
 collect:
-  sketch: m5stack/u001-c
-  number: 7
   lines: [SDA, SCL]
+  sketches:
+    - {sketch: m5stack/u001-c, number: 7}

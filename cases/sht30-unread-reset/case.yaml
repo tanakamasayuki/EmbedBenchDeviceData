@@ -21,6 +21,6 @@ phases:
   - name: after-measurement
     intent: "for comparison: after a measurement read to its end"
 collect:
-  sketch: m5stack/u001-c
-  number: 13
   lines: [SDA, SCL]
+  sketches:
+    - {sketch: m5stack/u001-c, number: 13}

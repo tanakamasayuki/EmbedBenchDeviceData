@@ -1,0 +1,9 @@
+schema_version: 1
+key: pololu-vl53l0x-arduino
+name: VL53L0X
+repo: https://github.com/pololu/vl53l0x-arduino
+supports:
+  chips: [vl53l0x]
+notes: |
+  The library name is the one library.properties declares (VL53L0X, by Pololu); the key records the
+  maker, since several libraries share the part's name.

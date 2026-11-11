@@ -1,0 +1,27 @@
+schema_version: 1
+key: vl53l0x-ranging
+kind: characterization
+intent: |
+  VL53L0X ranging by registers: the ids, then single shots at three timing budgets (20, 33, 200 ms) and back-to-back ranging at 33 ms: how long a range takes from SYSRANGE_START to the interrupt status.
+targets:
+  - {chip: vl53l0x, product: m5stack-u010, bus: i2c, addr: "0x29"}
+phases:
+  - name: id
+    intent: "C0-C2 (EE AA 10)"
+  - name: init
+    intent: "the Pololu library's init (the part ranges only after it), then the stop variable read"
+  - name: single-20ms
+    intent: "budget 20 ms: three single shots, the interrupt status polled to the range"
+  - name: single-33ms
+    intent: "budget 33 ms: the same"
+  - name: single-200ms
+    intent: "budget 200 ms: the same"
+  - name: continuous-33ms
+    intent: "back to back at 33 ms: ten readings"
+collect:
+  lines: [SDA, SCL]
+  sketches:
+    - {sketch: m5stack/u010, number: 3}
+notes: |
+  The initialisation is the Pololu VL53L0X library's (VL53L0X::init): ST's sequence of tuning settings and
+  calibrations, without which the part does not range. Everything after it is written by the case.

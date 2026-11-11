@@ -9,14 +9,15 @@ probe のファームは oep-probe-arduino の `OepFirmware.h` そのもので�
 ## 1. 構成
 
 ```text
-cases/<case>/case.yaml          何を録るか。collect: {sketch, number, lines} でどのスケッチの何番かを指す（DATA_MODEL §3）
+cases/<case>/case.yaml          何を録るか。collect: {lines, sketches: [{sketch, number}]} で、どのスケッチの何番かを指す（DATA_MODEL §3）
 collect/                        収集の pytest の作業場所（pyproject.toml、uv.lock、conftest.py）
   libraries/ProbeCases/         共通のファームウェア: ケースを番号で起こすインターフェース（oep::SimpleInterface）、ワーカー、目印のログ
+  libraries/DeviceCases/        部品ごとのケース（部品のライブラリを使わないもの）と wire-scan。その部品が載る製品のスケッチが呼ぶ
   devicedata_collect.py         共通の Python: キャプチャ、記録、復号、provenance、run の名前
-  benches/<bench>.yaml          ベンチの事実: probe の OEP アドレス、録る線、ボード、台帳の名前と位置、プルアップ
+  benches/<bench>.yaml          ベンチの事実: probe の OEP アドレス、録る線、ボード、台帳の名前と位置、プルアップ。ユニットを付け替えるベンチは、付けたユニットごとに 1 つ（p4x-grove-<sku>）
   <vendor>/<sku>/               製品ごとのスケッチ（計測する実物 1 つにつき 1 つ）
     <sku>.ino                   OepFirmware.h を読み込み、casesBegin() のあとで oep::firmware.begin() を呼ぶ
-    Cases.cpp                   ケースの関数と番号、使うピン、casesBegin()
+    Cases.cpp                   ケースの番号（DeviceCases の関数、ライブラリのケース）、使うピン、casesBegin()
     sketch.yaml                 probe のボードごとの profile（名前と fqbn は oep-probe-arduino の OepProbe の profile に合わせる）
     <sku>.py                    その製品のケースを録る pytest
 ```
@@ -31,6 +32,7 @@ cd collect
 uv sync
 uv run pytest m5stack/u001-c/u001-c.py --profile esp32p4x \
   --port /run/board-identify/by-id/esp32-series-80f1b2d719c5 --bench p4x-grove [-k sht30] [--bus-hz 400000]
+# ほかのユニット: m5stack/<sku>/<sku>.py と --bench p4x-grove-<sku>（そのユニットだけを Grove に付けて）
 ```
 
 - `--port`: 書き込みに使う口（probe の USB-Serial/JTAG の側）。
@@ -54,7 +56,9 @@ uv run pytest m5stack/u001-c/u001-c.py --profile esp32p4x \
 
 ## 3. 足す
 
-- **ケース:** `Cases.cpp` に関数を書いて、番号の表に足す。`cases/<case>/case.yaml` を書き、`collect.sketch` と `collect.number` で指す。
+- **ケース:** 部品を直接叩くケースは `libraries/DeviceCases/` に `<部品>::<ケース>(TwoWire &, addr)` として書き、その部品が載る製品のスケッチの `Cases.cpp` から番号を付けて呼ぶ。部品のライブラリを使うケースは、その製品の `Cases.cpp` に書く。
+  - `cases/<case>/case.yaml` を書き、`collect.sketches` に録るスケッチとその番号を並べる。targets は製品ごとに書く（run には、録ったスケッチの製品の targets だけが入る）。
+  - 同じ部品の同じケースは、どの製品で録っても同じ case にする（run の名前と provenance で製品が分かれる）。
   - 関数は `# <case>` で始めて `#` で閉じ、段階ごとに `## <phase>` と `##` を書く。phase の名前は case.yaml の `phases` と同じにする。
   - 段階の結果は 1 行で書く（`end=0 got=6 bytes=...`）。
   - 細かいことは生のキャプチャから分析できるので、目印は「何をしたか」が分かれば足りる。
@@ -67,9 +71,9 @@ uv run pytest m5stack/u001-c/u001-c.py --profile esp32p4x \
     - 吸着先は目印の前に終わった最後の転送で、3 ms 以内でなければならない。同じ計測の中で同じ転送に 2 度は吸着しない。呼び出しが線に何も出さなかったときは、分析が止まる。
     - 計測は、同じ timing の次の `start`、または段階の終わりまで続く。
 - **製品:** `collect/<vendor>/<sku>/` を作る。
-  - `<sku>.ino`、`Cases.cpp`、`sketch.yaml`、`<sku>.py` を置く（u001-c が見本）。
+  - `<sku>.ino`、`Cases.cpp`、`sketch.yaml`、`<sku>.py` を置く（u001-b や u009 が見本）。スケッチの `<vendor>/<sku>` は `products/<vendor>-<sku>.yaml` に当たる。
   - `Cases.cpp` の `casesBegin()` は、使うピンを `oep::firmware.onSetup` で `oep::owners::kSketch` として取り、`probe_cases::begin` に自分の名前空間のインターフェース名（48 バイト以内）を渡す。
-- **ベンチ:** `collect/benches/<bench>.yaml` を書く。名前は oep-bench の台帳の略称。
+- **ベンチ:** `collect/benches/<bench>.yaml` を書く。名前は oep-bench の台帳の略称（ユニットを付け替えるベンチは `<略称>-<sku>`）。
 
 ## 4. 決まり
 

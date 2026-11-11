@@ -1,0 +1,22 @@
+schema_version: 1
+key: bmp280-standby
+kind: characterization
+intent: |
+  BMP280 normal mode (T x1, P x1) for 2 s at three standby times, the data read every 5 ms: the period each standby gives.
+targets:
+  - {chip: bmp280, product: m5stack-u001-b, bus: i2c, addr: "0x76"}
+  - {chip: bmp280, product: m5stack-u001-d, bus: i2c, addr: "0x76"}
+  - {chip: bmp280, product: m5stack-u001, bus: i2c, addr: "0x76"}
+phases:
+  - name: standby-62500us
+    intent: "CONFIG 20"
+  - name: standby-125ms
+    intent: "CONFIG 40"
+  - name: standby-250ms
+    intent: "CONFIG 60"
+collect:
+  lines: [SDA, SCL]
+  sketches:
+    - {sketch: m5stack/u001-b, number: 5}
+    - {sketch: m5stack/u001-d, number: 5}
+    - {sketch: m5stack/u001, number: 5}

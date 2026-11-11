@@ -66,7 +66,7 @@ survey は `sku_pattern` でラインの境界を決め、`out_of_line`（ライ
 | intent | ○ | 何を確かめるか |
 | targets | ○ | `[{chip, bus, addr, product?}]`。空なら notes に何を相手にするかを書く |
 | phases | | `[{name, intent}]`。`name` は ProbeLog の `## <name>` と同じ文字列 |
-| collect | | 収集のしかた: `{sketch, number, lines, timeout_s?}`。`sketch` は `collect/` の下のスケッチ（`m5stack/u001-c`）、`number` はそのスケッチでのケースの番号、`lines` は録る線の役割（I2C は `[SDA, SCL]`）、`timeout_s` はケースの終わりを待つ秒（既定 60） |
+| collect | | 収集のしかた: `{lines, sketches: [{sketch, number}], timeout_s?}`。`lines` は録る線の役割（I2C は `[SDA, SCL]`）、`sketches` はこのケースを録るスケッチ（`collect/` の下の `m5stack/u001-c`。`products/m5stack-u001-c.yaml` の製品に当たる）とそこでの番号、`timeout_s` はケースの終わりを待つ秒（既定 60）。targets に製品を書くなら、どのスケッチの製品にも target がある |
 | notes | | |
 
 ## 4. 記録: runs/<run-id>/

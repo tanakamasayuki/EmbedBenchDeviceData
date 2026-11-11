@@ -59,13 +59,23 @@ def load_case(key: str) -> dict:
 
 
 def cases_of(sketch: str) -> list[dict]:
-    """The cases whose collect.sketch is this sketch (vendor/sku), in number order."""
+    """The cases collect.sketches names this sketch (vendor/sku) in, in its number order."""
     out = []
     for path in sorted((REPO_ROOT / "cases").glob("*/case.yaml")):
         case = yaml.safe_load(path.read_text(encoding="utf-8"))
-        if (case.get("collect") or {}).get("sketch") == sketch:
-            out.append(case)
-    return sorted(out, key=lambda c: c["collect"]["number"])
+        for entry in (case.get("collect") or {}).get("sketches", []):
+            if entry["sketch"] == sketch:
+                out.append((entry["number"], case))
+    return [case for _, case in sorted(out, key=lambda pair: pair[0])]
+
+
+def number_on(case: dict, sketch: str) -> int:
+    return next(e["number"] for e in case["collect"]["sketches"] if e["sketch"] == sketch)
+
+
+def product_of(sketch: str) -> str:
+    """The product a sketch is for: collect/<vendor>/<sku> -> products/<vendor>-<sku>.yaml."""
+    return sketch.replace("/", "-")
 
 
 def bus_kind(case: dict) -> str:
@@ -110,14 +120,17 @@ def profile_versions(sketch_dir: Path, profile: str | None) -> dict[str, str]:
     return versions
 
 
-def provenance(case: dict, s: Settings, kind: str, sketch_dir: Path, profile: str | None,
+def provenance(case: dict, s: Settings, kind: str, sketch: str, profile: str | None,
                captures: list[dict]) -> dict:
     import oep_client
     import wireskein
+    sketch_dir = COLLECT_ROOT / sketch
     versions = profile_versions(sketch_dir, profile)
     benches = {t["chip"]: t.get("bench") for t in s.bench.get("targets", [])}
     targets = []
     for target in case["targets"]:
+        if target.get("product") not in (None, product_of(sketch)):
+            continue   # the case's targets on other products: collected by their own sketches
         entry = dict(target)
         if benches.get(target["chip"]):
             entry["bench"] = dict(benches[target["chip"]])
@@ -134,7 +147,7 @@ def provenance(case: dict, s: Settings, kind: str, sketch_dir: Path, profile: st
                 "core": {"name": "arduino-esp32", "version": versions.get("esp32:esp32", "unknown")},
                 "controller": dut.get("controller", "unknown")},
         "probe": {"id": s.port, "bench": dict(dut["bench"]),
-                  "firmware": f"EmbedBenchDeviceData collect/{case['collect']['sketch']}",
+                  "firmware": f"EmbedBenchDeviceData collect/{sketch}",
                   "version": f"{git_commit(sketch_dir)} (OpenEmbeddedProbe {versions.get('OpenEmbeddedProbe', 'unknown')})"},
         "wireskein": {"version": wireskein.__version__},
         "captures": captures,
@@ -147,8 +160,9 @@ def provenance(case: dict, s: Settings, kind: str, sketch_dir: Path, profile: st
 
 
 # ---- one case --------------------------------------------------------------------------------------------------------
-def collect_case(hst, case: dict, s: Settings, interface: str, profile: str | None = None) -> Path:
-    """Run `case` on the probe held by `hst` and write its run directory; returns the directory."""
+def collect_case(hst, case: dict, s: Settings, sketch: str, interface: str, profile: str | None = None) -> Path:
+    """Run `case` as `sketch` (vendor/sku) numbers it, on the probe held by `hst`, and write its run directory;
+    returns the directory."""
     from oep_client import acquire
     from oep_client import call as oep_call
     from oep_client.probe_log import ProbeLog, rows
@@ -157,8 +171,8 @@ def collect_case(hst, case: dict, s: Settings, interface: str, profile: str | No
     from wireskein.sources.oep import capture_of
 
     spec = case["collect"]
+    number = number_on(case, sketch)
     kind = bus_kind(case)
-    sketch_dir = COLLECT_ROOT / spec["sketch"]
     roles = spec["lines"]
     log = ProbeLog(hst, interface)
     oep_call.call(hst, interface, "configure", hz=s.hz)
@@ -175,7 +189,7 @@ def collect_case(hst, case: dict, s: Settings, interface: str, profile: str | No
     def steps(wait):
         wait(0.05)   # the stream runs before the case's first transfer
         try:
-            oep_call.call_wait(hst, interface, "run", case=spec["number"], timeout=spec.get("timeout_s", 60),
+            oep_call.call_wait(hst, interface, "run", case=number, timeout=spec.get("timeout_s", 60),
                                wait=wait, interval=0.01)
             result["value"] = 0
         except oep_call.JobFailed as e:   # the case's own result, not 0: kept in the run's notes
@@ -209,7 +223,7 @@ def collect_case(hst, case: dict, s: Settings, interface: str, profile: str | No
     timebase = {"tick_hz": list(head["tick_hz"]), "tick0": part.get("tick0", 0),
                 "start_ns": (part.get("meta") or {}).get("start_ns")}
     captures = [{"file": "c0001.wireskein", "decode": f"c0001.{kind}.json", "timebase": timebase}]
-    prov = provenance(case, s, kind, sketch_dir, profile, captures)
+    prov = provenance(case, s, kind, sketch, profile, captures)
     (work / "provenance.yaml").write_text(yaml.safe_dump(prov, sort_keys=False, allow_unicode=True), encoding="utf-8")
 
     final = s.out / run_id_tool.run_id(prov, [work / captures[0]["decode"]])
