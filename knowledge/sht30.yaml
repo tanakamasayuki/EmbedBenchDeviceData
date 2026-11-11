@@ -7,17 +7,17 @@ addressing:
   notes: |
     No registers: a 16-bit command, then a read of words, each word followed by its CRC-8 (polynomial 0x31, initial
     0xFF). Every answer in the runs carried a matching CRC.
-  evidence: [sht30-modes__i2c-100k__c8024988e9dab99f, sht30-ready-idf__i2c-100k__305d14e0174cc580]
+  evidence: [sht30-modes__i2c-100k__85b6b552756235f2, sht30-ready-idf__i2c-100k__b6910e61523fbe1f]
 registers: []
 commands:
-  - {code: "0x2400", name: "single shot, high repeatability, polling", answer_bytes: 6, timing: measure-high, evidence: [sht30-modes__i2c-100k__c8024988e9dab99f]}
-  - {code: "0x240B", name: "single shot, medium repeatability, polling", answer_bytes: 6, timing: measure-medium, evidence: [sht30-modes__i2c-100k__c8024988e9dab99f]}
-  - {code: "0x2416", name: "single shot, low repeatability, polling", answer_bytes: 6, timing: measure-low, evidence: [sht30-modes__i2c-100k__c8024988e9dab99f]}
-  - {code: "0x2C06", name: "single shot, high repeatability, clock stretching", answer_bytes: 6, timing: measure-high, evidence: [sht30-modes__i2c-100k__c8024988e9dab99f, m5unit-env-u001c-basic__i2c-100k__c553167c6f54e3f4]}
-  - {code: "0x2C0D", name: "single shot, medium repeatability, clock stretching", answer_bytes: 6, timing: measure-medium, evidence: [sht30-modes__i2c-100k__c8024988e9dab99f]}
-  - {code: "0x2C10", name: "single shot, low repeatability, clock stretching", answer_bytes: 6, timing: measure-low, evidence: [sht30-modes__i2c-100k__c8024988e9dab99f]}
-  - {code: "0xF32D", name: "read status", answer_bytes: 3, evidence: [sht30-modes__i2c-100k__c8024988e9dab99f], notes: 8010 after a soft reset (alert and reset bits).}
-  - {code: "0x30A2", name: "soft reset", answer_bytes: 0, timing: soft-reset, evidence: [sht30-modes__i2c-100k__c8024988e9dab99f, sht30-ready-idf__i2c-100k__305d14e0174cc580]}
+  - {code: "0x2400", name: "single shot, high repeatability, polling", answer_bytes: 6, timing: measure-high, evidence: [sht30-modes__i2c-100k__85b6b552756235f2]}
+  - {code: "0x240B", name: "single shot, medium repeatability, polling", answer_bytes: 6, timing: measure-medium, evidence: [sht30-modes__i2c-100k__85b6b552756235f2]}
+  - {code: "0x2416", name: "single shot, low repeatability, polling", answer_bytes: 6, timing: measure-low, evidence: [sht30-modes__i2c-100k__85b6b552756235f2]}
+  - {code: "0x2C06", name: "single shot, high repeatability, clock stretching", answer_bytes: 6, timing: measure-high, evidence: [sht30-modes__i2c-100k__85b6b552756235f2, m5unit-env-u001c-basic__i2c-100k__4a80a691f0241878]}
+  - {code: "0x2C0D", name: "single shot, medium repeatability, clock stretching", answer_bytes: 6, timing: measure-medium, evidence: [sht30-modes__i2c-100k__85b6b552756235f2]}
+  - {code: "0x2C10", name: "single shot, low repeatability, clock stretching", answer_bytes: 6, timing: measure-low, evidence: [sht30-modes__i2c-100k__85b6b552756235f2]}
+  - {code: "0xF32D", name: "read status", answer_bytes: 3, evidence: [sht30-modes__i2c-100k__85b6b552756235f2], notes: 8010 after a soft reset (alert and reset bits).}
+  - {code: "0x30A2", name: "soft reset", answer_bytes: 0, timing: soft-reset, evidence: [sht30-modes__i2c-100k__85b6b552756235f2, sht30-ready-idf__i2c-100k__b6910e61523fbe1f]}
   - {code: "0x3041", name: "clear status", answer_bytes: 0, evidence: [datasheet]}
   - {code: "0x306D", name: "heater on", answer_bytes: 0, evidence: [datasheet]}
   - {code: "0x3066", name: "heater off", answer_bytes: 0, evidence: [datasheet]}
@@ -27,61 +27,65 @@ timing:
   - key: measure-high
     value_us: "12400"
     windows:
-      - {setting: "0x2400, 100 and 400 kHz", low_us: 12325, high_us: 12552, evidence: sht30-ready-idf__i2c-100k__305d14e0174cc580}
-    evidence: [sht30-modes__i2c-100k__c8024988e9dab99f, sht30-modes__i2c-400k__1238c3e36543b53e, sht30-unread-reset__i2c-100k__86ee7c3cf9e97b69]
+      - {setting: "0x2400, 100 and 400 kHz", low_us: 12324, high_us: 12521, evidence: sht30-ready__i2c-100k__ba9a49c8133c5368}
+    evidence: [sht30-modes__i2c-400k__441df8c3968bdfc0, sht30-stretch-wait__i2c-100k__92c6b2dd5d8e8113, sht30-ready-idf__i2c-100k__b6910e61523fbe1f, sht30-unread-reset__i2c-100k__2e494dbb482d3066]
     notes: |
-      From the start of the command to the start of a read: refused before the window, answered after it. The window
-      is the intersection over every polled measurement in the runs (the low end from sht30-ready-idf, the high end
-      from sht30-modes at 400 kHz). The datasheet says up to 15 ms.
+      From the start of the command to the start of a read: refused before the window, answered after it. It varies
+      from one measurement to the next: a stretched one let SCL go 12351 us after its command (sht30-modes, 400 kHz),
+      a polled one was still refused at 12502 us (sht30-stretch-wait). The window is over every other polled
+      measurement (the low end from sht30-ready, the high end from sht30-modes at 400 kHz). The datasheet says up to
+      15 ms.
   - key: measure-medium
     value_us: "4500"
     windows:
-      - {setting: "0x240B, 100 and 400 kHz", low_us: 4175, high_us: 4641, evidence: sht30-modes__i2c-100k__c8024988e9dab99f}
-    evidence: [sht30-modes__i2c-400k__1238c3e36543b53e]
+      - {setting: "0x240B, 100 and 400 kHz", low_us: 4166, high_us: 4608, evidence: sht30-modes__i2c-100k__85b6b552756235f2}
+    evidence: [sht30-modes__i2c-400k__441df8c3968bdfc0]
     notes: The high end from the 400 kHz run.
   - key: measure-low
     value_us: "2500"
     windows:
-      - {setting: "0x2416, 100 and 400 kHz", low_us: 2361, high_us: 2902, evidence: sht30-modes__i2c-400k__1238c3e36543b53e}
-    evidence: [sht30-modes__i2c-100k__c8024988e9dab99f]
+      - {setting: "0x2416, 100 and 400 kHz", low_us: 2354, high_us: 2901, evidence: sht30-modes__i2c-400k__441df8c3968bdfc0}
+    evidence: [sht30-modes__i2c-100k__85b6b552756235f2]
     notes: The high end from the 100 kHz run.
   - key: soft-reset
     value_us: "1500"
     windows:
-      - {setting: "0x30A2, then 0x2400", low_us: 338, high_us: 2007, evidence: sht30-ready-idf__i2c-100k__305d14e0174cc580}
+      - {setting: "0x30A2, then 0x2400", low_us: 401, high_us: 1989, evidence: sht30-ready-idf__i2c-100k__b6910e61523fbe1f}
+    evidence: [sht30-ready__i2c-100k__ba9a49c8133c5368]
     notes: |
-      A command 338 us after the reset's start took the address and was refused at its data byte (status 3, nothing
-      measured); one 2007 us after was measured. Inside the window the part takes its address, unlike a measurement.
+      A command 401 us after the reset's start took the address and was refused at its data byte (status 3, nothing
+      measured); one 1989 us after was measured (sht30-ready). Inside the window the part takes its address, unlike a
+      measurement.
 behaviours:
   - key: stretches-until-the-result
-    evidence: [sht30-stretch-wait__i2c-100k__1251c4c8c7c04122]
-    notes: A stretching read holds SCL low until the result is there (ESP-IDF's master, waiting, got it 13.0 ms after the command).
+    evidence: [sht30-stretch-wait__i2c-100k__92c6b2dd5d8e8113]
+    notes: A stretching read holds SCL low until the result is there (ESP-IDF's master, waiting, got it 12.9 ms after the command).
   - key: refuses-address-while-measuring
-    evidence: [sht30-modes__i2c-100k__c8024988e9dab99f, sht30-modes__i2c-400k__1238c3e36543b53e]
+    evidence: [sht30-modes__i2c-100k__85b6b552756235f2, sht30-modes__i2c-400k__441df8c3968bdfc0]
     notes: While measuring (polling commands) the part refuses its address, to reads and to commands alike.
   - key: unread-result-goes-to-the-next-read
-    evidence: [sht30-ready-idf__i2c-100k__305d14e0174cc580, sht30-unread-reset__i2c-100k__86ee7c3cf9e97b69]
+    evidence: [sht30-ready-idf__i2c-100k__b6910e61523fbe1f, sht30-unread-reset__i2c-100k__2e494dbb482d3066]
     notes: |
-      A finished result left unread is kept, and the first read after the next command gets it (4 us after that
+      A finished result left unread is kept, and the first read after the next command gets it (a few us after that
       command); the new result comes a measurement later. A read with no command before it gets nothing. The kept
       result survives a soft reset.
   - key: reads-after-soft-reset
-    evidence: [sht30-unread-reset__i2c-100k__86ee7c3cf9e97b69]
+    evidence: [sht30-unread-reset__i2c-100k__2e494dbb482d3066]
     notes: |
       After a soft reset and before any command, every read is ACKed and gets 00 00 81 (0x0000 and its CRC) then FF,
       the same every time.
   - key: clocks-after-giving-up-send-the-result
-    evidence: [sht30-modes__i2c-100k__c8024988e9dab99f, sht30-modes__i2c-400k__1238c3e36543b53e]
+    evidence: [sht30-modes__i2c-100k__85b6b552756235f2, sht30-modes__i2c-400k__441df8c3968bdfc0]
     notes: |
       When the controller gives up on a stretch and later clocks a bus clear through the part, the part sends its
       result out on those clocks (one byte reaches the decode); the result counts as read.
 controllers:
   - key: stretch-limit
     controller: arduino-esp32 3.3.12 Wire, ESP32-P4
-    evidence: [sht30-modes__i2c-100k__c8024988e9dab99f, sht30-stretch-wait__i2c-100k__1251c4c8c7c04122]
+    evidence: [sht30-modes__i2c-100k__85b6b552756235f2, sht30-stretch-wait__i2c-100k__92c6b2dd5d8e8113]
     notes: |
       Gives up a stretched read after about 6.7 ms, whatever setTimeOut says; the high repeatability needs 12.4 ms.
       ESP-IDF's master with scl_wait_us 20000 waits it out. How long to wait is the controller's, not the part's.
 notes: |
-  The EmbedBench model is devices/src/sht30_model.*, checked in tests/model_replay/. The windows put the model's 12.4 / 4.5 / 2.5 ms inside
-  every recorded measurement.
+  The EmbedBench model is devices/src/sht30_model.*, checked in tests/model_replay/. The model's 12.4 / 4.5 / 2.5 ms sit inside the
+  windows; high's spread from one measurement to the next is wider than one value.
