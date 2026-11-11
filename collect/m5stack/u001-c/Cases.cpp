@@ -54,8 +54,12 @@ constexpr uint8_t kSht = 0x44, kQmp = 0x70;
 TwoWire &bus = Wire;
 constexpr uint8_t kOwner = oep::owners::kSketch;
 
+using probe_cases::after;
+using probe_cases::afterRelease;
+using probe_cases::before;
 using probe_cases::mark;
 using probe_cases::markf;
+using probe_cases::start;
 
 void hex(char *out, const uint8_t *b, size_t n) {
   for (size_t i = 0; i < n; ++i) sprintf(out + 2 * i, "%02x", b[i]);
@@ -166,15 +170,21 @@ int32_t shtModes() {
   static const struct { const char *name; uint16_t polling, stretch; } kRep[] = {
       {"high", 0x2400, 0x2C06}, {"medium", 0x240B, 0x2C0D}, {"low", 0x2416, 0x2C10}};
   for (const auto &rep : kRep) {
+    char timing[24];
+    snprintf(timing, sizeof timing, "measure-%s", rep.name);   // knowledge/sht30.yaml's timing keys
     markf("## polling-%s", rep.name);
     r = command(kSht, rep.polling);
+    if (r == 0) start(timing, "via=polling");
     const uint32_t t0 = micros();
     int tries = 0;
     got = 0;
     while (micros() - t0 < 50000) {   // a NACK while it measures; 15.5 ms at the most (datasheet table 4)
       ++tries;
       got = readN(kSht, b, 6);
-      if (got == 6) break;
+      if (got == 6) {
+        if (r == 0) after(timing);
+        break;
+      }
       delayMicroseconds(500);
     }
     hex(h, b, got);
@@ -185,8 +195,10 @@ int32_t shtModes() {
     delay(5);
     markf("## stretch-%s", rep.name);
     r = command(kSht, rep.stretch);
+    if (r == 0) start(timing, "via=stretch");
     const uint32_t t1 = micros();
     got = readN(kSht, b, 6);   // the read's address ACKed, SCL held low until the result is there
+    if (r == 0 && got == 6) afterRelease(timing);   // the controller gave up otherwise: no time
     hex(h, b, got);
     markf("end=%d elapsed_us=%lu got=%u bytes=%s crc=%d", r, static_cast<unsigned long>(micros() - t1),
           static_cast<unsigned>(got), h, got == 6 && crcOk(b, 6));
@@ -240,12 +252,25 @@ int32_t qmpModes() {
   mark("##");
   mark("## forced");
   markf("end=%d", writeReg(0xF4, (1 << 5) | (4 << 2) | 1));   // temperature x1, pressure x8, forced
+  start("conversion", "ctrl_meas=0x31");
+  start("status-delay", "ctrl_meas=0x31");
   const uint32_t t0 = micros();
   int polls = 0;
   uint8_t stat = 0xff;
+  bool rose = false;   // the measure bit rises some 200 us after the write: clear before that is not the end
   while (micros() - t0 < 100000) {
     ++polls;
-    if (readRegs(0xF3, &stat, 1) == 1 && !(stat & 0x08)) break;   // measure bit
+    if (readRegs(0xF3, &stat, 1) == 1) {
+      if (stat & 0x08) {   // measure bit
+        if (!rose) after("status-delay");
+        rose = true;
+      } else if (rose) {
+        after("conversion");
+        break;
+      } else {
+        before("status-delay");
+      }
+    }
     delayMicroseconds(500);
   }
   markf("polls=%d elapsed_us=%lu status=0x%02x", polls, static_cast<unsigned long>(micros() - t0), stat);
@@ -259,10 +284,18 @@ int32_t qmpModes() {
   mark("## normal");
   writeReg(0xF1, 0x02);              // IIR coefficient 4
   writeReg(0xF5, 0x00);              // standby 1 ms
+  uint8_t last[6];
+  readRegs(0xF7, last, 6);           // the forced sample: a new one differs from it
   markf("end=%d", writeReg(0xF4, (1 << 5) | (4 << 2) | 3));   // normal
+  start("normal-period", "ctrl_meas=0x33 io_setup=0x00 from=forced");
   const uint32_t t1 = micros();
+  int samples = 0;
   while (micros() - t1 < 120000) {
     got = readRegs(0xF7, b, 6);
+    if (got == 6 && memcmp(b, last, 6) != 0) {   // read every 10 ms, a sample every 11.6: none is missed
+      after("normal-period", ++samples);
+      memcpy(last, b, 6);
+    }
     hex(h, b, got);
     markf("t_us=%lu got=%u data=%s", static_cast<unsigned long>(micros() - t1), static_cast<unsigned>(got), h);
     bad += got != 6;
@@ -286,19 +319,32 @@ int32_t qmpStandby() {
   for (const auto &r : kRuns) {
     markf("## %s", r.name);
     writeReg(0xF4, 0x00);   // sleep before the change
+    delay(20);              // a conversion the last phase started ends first: from sleep means no sample on its way
     writeReg(0xF1, 0x02);   // IIR 4
     writeReg(0xF5, r.io);
+    uint8_t last[6];
+    readRegs(0xF7, last, 6);   // the sample before: a new one differs from it
     markf("end=%d", writeReg(0xF4, (1 << 5) | (4 << 2) | 3));   // t x1, p x8, normal
+    char cond[64];
+    snprintf(cond, sizeof cond, "ctrl_meas=0x33 io_setup=0x%02X from=sleep", r.io);
+    start("normal-period", cond);
     const uint32_t t0 = micros();
     uint32_t next = 0;
+    int samples = 0;
     while (micros() - t0 < r.for_us) {
       while (micros() - t0 < next) {}
+      const uint32_t at = micros() - t0;
       const size_t got = readRegs(0xF7, b, 6);
-      hex(h, b, got);
-      markf("t_us=%lu data=%s", static_cast<unsigned long>(micros() - t0), h);
       bad += got != 6;
+      if (got == 6 && memcmp(b, last, 6) != 0) {   // a line only for a new sample
+        after("normal-period", ++samples);
+        memcpy(last, b, 6);
+        hex(h, b, got);
+        markf("t_us=%lu data=%s", static_cast<unsigned long>(at), h);
+      }
       next += r.every_us;
     }
+    markf("samples=%d", samples);
     writeReg(0xF4, 0x00);
     mark("##");
   }
@@ -315,10 +361,18 @@ int32_t qmpMeasureBit() {
   for (uint32_t d = 0; d <= 600; d += 20) {
     markf("## delay-%luus", static_cast<unsigned long>(d));
     writeReg(0xF4, (1 << 5) | (4 << 2) | 1);   // forced
+    start("status-delay", "ctrl_meas=0x31");
     const uint32_t t0 = micros();
     while (micros() - t0 < d) {}
     uint8_t stat = 0xff;
     const size_t got = readRegs(0xF3, &stat, 1);
+    if (got == 1) {
+      if (stat & 0x08) {
+        after("status-delay");
+      } else {
+        before("status-delay");
+      }
+    }
     markf("after_us=%lu status=0x%02x", static_cast<unsigned long>(micros() - t0), stat);
     bad += got != 1;
     delay(15);   // the measurement ends (about 10.8 ms at t x1, p x8)
@@ -371,9 +425,11 @@ int32_t shtStretchWait() {
   if (e == ESP_OK) {
     const uint8_t cmd[2] = {0x2C, 0x06};
     const esp_err_t ew = i2c_master_transmit(dev, cmd, 2, 100);
+    if (ew == ESP_OK) start("measure-high", "via=stretch");
     t1 = micros();
     memset(b, 0, sizeof b);
     const esp_err_t er = i2c_master_receive(dev, b, 6, 100);
+    if (ew == ESP_OK && er == ESP_OK) afterRelease("measure-high");
     hex(h, b, 6);
     markf("transmit=%d receive=%d elapsed_us=%lu bytes=%s crc=%d", ew, er, static_cast<unsigned long>(micros() - t1), h,
           er == ESP_OK && crcOk(b, 6));
@@ -392,8 +448,10 @@ int32_t shtStretchWait() {
   const uint16_t was = bus.getTimeOut();
   bus.setTimeOut(1000);
   r = command(kSht, 0x2C06);
+  if (r == 0) start("measure-high", "via=stretch");
   t1 = micros();
   got = readN(kSht, b, 6);
+  if (r == 0 && got == 6) afterRelease("measure-high");
   hex(h, b, got);
   markf("end=%d elapsed_us=%lu got=%u bytes=%s crc=%d", r, static_cast<unsigned long>(micros() - t1),
         static_cast<unsigned>(got), h, got == 6 && crcOk(b, 6));
@@ -418,7 +476,11 @@ int32_t qmpStandbyLong(uint8_t io, const char *name) {
   delay(200);
   mark("##");
   mark("## normal");
+  readRegs(0xF7, last, 6);   // the sample before: a new one differs from it
   markf("end=%d", writeReg(0xF4, 0x33));   // t x1, p x8, normal
+  char cond[64];
+  snprintf(cond, sizeof cond, "ctrl_meas=0x33 io_setup=0x%02X from=sleep", io);
+  start("normal-period", cond);
   const uint32_t t0 = micros();
   uint32_t next = 0;
   int reads = 0, changes = 0;
@@ -428,11 +490,11 @@ int32_t qmpStandbyLong(uint8_t io, const char *name) {
     const size_t got = readRegs(0xF7, b, 6);
     ++reads;
     bad += got != 6;
-    if (got == 6 && (reads == 1 || memcmp(b, last, 6) != 0)) {
+    if (got == 6 && memcmp(b, last, 6) != 0) {   // read every 5 ms, a sample every 16 ms or more: none is missed
+      after("normal-period", ++changes);
       hex(h, b, 6);
       markf("t_us=%lu data=%s", static_cast<unsigned long>(at), h);
       memcpy(last, b, 6);
-      ++changes;
     }
     next += 5000;
   }
@@ -446,11 +508,42 @@ int32_t qmpStandbyLong(uint8_t io, const char *name) {
 // ---- case 11: when SHT30 answers a polling measurement at once -----------------------------------------------------
 bool booted = true;   // no command to SHT30 since this boot (only cleared by this case)
 
-int32_t shtPoll15(const char *phase) {
+// What a 15 ms poll measures, inside its phase: a soft reset first (its wait, then the command tells whether the reset
+// is over), and the measurement the command starts when its first answer is that measurement's (from: what came
+// before it; null when the first answer may be an older result, or when there is no command)
+struct Poll {
+  const char *from = nullptr;
+  bool reset = false;
+  uint32_t wait_ms = 0;
+  bool command = true;
+};
+
+void pollStart(const Poll &p, int r) {
+  if (p.reset) {
+    if (r == 0) {
+      after("soft-reset");
+    } else {
+      before("soft-reset");
+    }
+  }
+  if (r == 0 && p.from != nullptr) {
+    char cond[48];
+    snprintf(cond, sizeof cond, "via=polling from=%s", p.from);
+    start("measure-high", cond);
+  }
+}
+
+int32_t shtPoll15(const char *phase, const Poll &p) {
   uint8_t b[6];
   char h[13];
   markf("## %s", phase);
+  if (p.reset) {
+    markf("reset=%d", command(kSht, 0x30A2));
+    start("soft-reset");
+    delay(p.wait_ms);
+  }
   const int r = command(kSht, 0x2400);
+  pollStart(p, r);
   const uint32_t t0 = micros();
   uint32_t next = 0;
   int nacks = 0, answers = 0;
@@ -459,6 +552,7 @@ int32_t shtPoll15(const char *phase) {
     const uint32_t at = micros() - t0;
     const size_t got = readN(kSht, b, 6);
     if (got == 6) {
+      if (answers == 0 && r == 0 && p.from != nullptr) after("measure-high");
       hex(h, b, 6);
       markf("t_us=%lu bytes=%s crc=%d", static_cast<unsigned long>(at), h, crcOk(b, 6));
       ++answers;
@@ -479,22 +573,26 @@ int32_t shtReady() {
   mark("# sht30-ready");
   if (booted) {
     markf("since_boot_ms=%lu", static_cast<unsigned long>(millis()));
-    bad += shtPoll15("power-on");
+    bad += shtPoll15("power-on", Poll());   // nothing timed: the part may hold a result from before this boot
     booted = false;
   }
   static const uint32_t kWaits[] = {0, 2, 10, 100};
   for (uint32_t w : kWaits) {
-    command(kSht, 0x30A2);
-    delay(w);
     char name[24];
     snprintf(name, sizeof name, "reset-wait-%lums", static_cast<unsigned long>(w));
-    bad += shtPoll15(name);
+    Poll p;
+    p.from = "reset";
+    p.reset = true;
+    p.wait_ms = w;
+    bad += shtPoll15(name, p);
   }
   command(kSht, 0x2400);   // a measurement read to its end
   const uint32_t t0 = micros();
   while (micros() - t0 < 50000 && readN(kSht, b, 6) != 6) delayMicroseconds(500);
   delay(5);
-  bad += shtPoll15("after-measurement");
+  Poll p;
+  p.from = "read";
+  bad += shtPoll15("after-measurement", p);
   mark("#");
   return bad;
 }
@@ -503,12 +601,19 @@ int32_t shtReady() {
 // ---- case 12: case 11 on the ESP-IDF driver ------------------------------------------------------------------------
 i2c_master_dev_handle_t idfSht = nullptr;
 
-int32_t idfPoll15(const char *phase, bool command_it = true) {
+int32_t idfPoll15(const char *phase, const Poll &p) {
   uint8_t b[6];
   char h[13];
   markf("## %s", phase);
+  if (p.reset) {
+    const uint8_t reset[2] = {0x30, 0xA2};
+    markf("reset=%d", i2c_master_transmit(idfSht, reset, 2, 50));
+    start("soft-reset");
+    delay(p.wait_ms);
+  }
   const uint8_t cmd[2] = {0x24, 0x00};
-  const esp_err_t ew = command_it ? i2c_master_transmit(idfSht, cmd, 2, 50) : ESP_OK;
+  const esp_err_t ew = p.command ? i2c_master_transmit(idfSht, cmd, 2, 50) : ESP_OK;
+  if (p.command) pollStart(p, ew);
   const uint32_t t0 = micros();
   uint32_t next = 0;
   int nacks = 0, answers = 0;
@@ -517,6 +622,7 @@ int32_t idfPoll15(const char *phase, bool command_it = true) {
     const uint32_t at = micros() - t0;
     memset(b, 0, sizeof b);
     if (i2c_master_receive(idfSht, b, 6, 50) == ESP_OK) {
+      if (answers == 0 && p.command && ew == ESP_OK && p.from != nullptr) after("measure-high");
       hex(h, b, 6);
       markf("t_us=%lu bytes=%s crc=%d", static_cast<unsigned long>(at), h, crcOk(b, 6));
       ++answers;
@@ -582,10 +688,14 @@ int32_t shtUnreadReset() {
         char name[40];
         snprintf(name, sizeof name, "%s-reset-wait-%lums", with_command ? "command" : "read-only",
                  static_cast<unsigned long>(w));
-        bad += idfPoll15(name, with_command) && with_command;
+        Poll p;   // nothing timed: the first answer may be the unread result
+        p.command = with_command;
+        bad += idfPoll15(name, p) && with_command;
       }
     }
-    bad += idfPoll15("after-measurement");   // a measurement read to its end, for comparison
+    Poll p;
+    p.from = "read";
+    bad += idfPoll15("after-measurement", p);   // a measurement read to its end, for comparison
     return bad;
   });
   mark("#");
@@ -619,24 +729,29 @@ int32_t shtReadyIdf() {
   } else {
     if (booted) {
       markf("since_boot_ms=%lu", static_cast<unsigned long>(millis()));
-      bad += idfPoll15("power-on");
+      bad += idfPoll15("power-on", Poll());   // nothing timed: the part may hold a result from before this boot
       booted = false;
     }
     static const uint32_t kWaits[] = {0, 2, 10, 100};
-    const uint8_t reset[2] = {0x30, 0xA2};
     for (uint32_t w : kWaits) {
-      markf("reset=%d", i2c_master_transmit(idfSht, reset, 2, 50));
-      delay(w);
       char name[24];
       snprintf(name, sizeof name, "reset-wait-%lums", static_cast<unsigned long>(w));
-      bad += idfPoll15(name);
+      Poll p;
+      p.from = "reset";
+      p.reset = true;
+      p.wait_ms = w;
+      bad += idfPoll15(name, p);
     }
-    bad += idfPoll15("after-measurement");   // the one before was read to its end
+    Poll read;
+    read.from = "read";
+    bad += idfPoll15("after-measurement", read);   // the one before was read to its end
     const uint8_t cmd[2] = {0x24, 0x00};
     i2c_master_transmit(idfSht, cmd, 2, 50);   // a measurement left unread
     delay(20);
-    bad += idfPoll15("after-unread-measurement");
-    bad += idfPoll15("read-only", false);       // no command: what a read gets now
+    bad += idfPoll15("after-unread-measurement", Poll());   // nothing timed: the first answer is the unread result
+    Poll none;
+    none.command = false;
+    bad += idfPoll15("read-only", none);       // no command: what a read gets now
   }
   if (idfSht) i2c_master_bus_rm_device(idfSht);
   idfSht = nullptr;

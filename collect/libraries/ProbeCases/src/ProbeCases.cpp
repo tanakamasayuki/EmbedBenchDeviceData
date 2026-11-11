@@ -73,4 +73,20 @@ void markf(const char *format, ...) {
   mark(text);
 }
 
+void start(const char *timing, const char *conditions) {
+  markf("### start %s%s%s", timing, *conditions ? " " : "", conditions);
+}
+
+void before(const char *timing) { markf("### before %s", timing); }
+
+void after(const char *timing, int k) {
+  if (k == 1) {
+    markf("### after %s", timing);
+  } else {
+    markf("### after %s n=%d", timing, k);
+  }
+}
+
+void afterRelease(const char *timing) { markf("### after %s at=release", timing); }
+
 }  // namespace probe_cases

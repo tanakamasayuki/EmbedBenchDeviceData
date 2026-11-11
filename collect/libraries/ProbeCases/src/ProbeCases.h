@@ -23,6 +23,15 @@
 //
 // Markers: "# <case>" opens a case and "#" closes it, "## <phase>" opens a phase and "##" closes it (wireskein's
 // headings); any other line is the case's own result for the phase it is in.
+//
+// Events (tools/measure.py in the data repository): inside a phase, written right after the call whose transfer they
+// are about; the analysis places each at the last transfer before it and takes the time from the wire. The case says
+// what the transfer meant, nothing more:
+//   start("measure-high", "via=polling")   a measurement of a timing (a knowledge key) starts at this transfer
+//   before("measure-high")                 this transfer saw the state before the event
+//   after("measure-high")                  the first transfer to see it after (the same-shaped one before it saw
+//                                          before); after(timing, k) for the k-th event of a series
+//   afterRelease("measure-high")           the part let a clock stretch in this transfer go at the event
 #pragma once
 
 #include <stddef.h>
@@ -41,5 +50,10 @@ bool begin(const char *name, const Case *cases, size_t count, void (*configure)(
 
 void mark(const char *text);
 void markf(const char *format, ...) __attribute__((format(printf, 1, 2)));
+
+void start(const char *timing, const char *conditions = "");   // conditions: "name=value name=value"
+void before(const char *timing);
+void after(const char *timing, int k = 1);
+void afterRelease(const char *timing);
 
 }  // namespace probe_cases

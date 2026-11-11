@@ -28,7 +28,7 @@ cases/<case>/              収集のケース: case.yaml（意図・対象・段
 collect/                   収集: 製品ごとのスケッチ（<vendor>/<sku>/）、共通のファームウェアと Python、ベンチ、pytest
 runs/<run-id>/             1 回の記録: run.json、生のキャプチャ、復号、provenance.yaml
 knowledge/<chip>.yaml      振る舞いの表（レジスタ・コマンド・時間）。根拠の run を引く
-tools/                     validate、run の名前、索引の build（EmbedBench の表・wireskein の定義への変換は、それぞれのリポジトリにある）
+tools/                     validate、run の名前、索引の build、時間の計測（measure）（EmbedBench の表・wireskein の定義への変換は、それぞれのリポジトリにある）
 docs/DATA_MODEL.ja.md      各ファイルの形と規則（正本）
 docs/COLLECTION.ja.md      収集の手順
 ```
@@ -39,6 +39,7 @@ docs/COLLECTION.ja.md      収集の手順
 python3 tools/validate.py            # 形と参照の検査。編集のたびに
 python3 tools/run_id.py runs/<dir>   # run のディレクトリが持つべき名前
 python3 tools/build.py               # 逆引きの索引を build/ に（コミットしない）
+python3 tools/measure.py [--each]    # ケースの出来事の目印から時間の窓を計る
 ```
 
 必要なもの: Python 3.9 以上と PyYAML。収集には、さらに arduino-cli と uv（`collect/` で `uv sync`）。

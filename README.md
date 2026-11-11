@@ -39,7 +39,7 @@ cases/<case>/              collection cases: case.yaml (intent, targets, phases,
 collect/                   collection: one sketch per product (<vendor>/<sku>/), the common firmware and Python, benches, pytest
 runs/<run-id>/             one recording: run.json, the raw capture, decode, provenance.yaml
 knowledge/<chip>.yaml      behaviour tables (registers, commands, timing), citing runs
-tools/                     validate, run naming, index build (converters to EmbedBench tables and wireskein declarations live in those repositories)
+tools/                     validate, run naming, index build, time measurement (converters to EmbedBench tables and wireskein declarations live in those repositories)
 docs/DATA_MODEL.ja.md      the shape and rules of every file (authoritative, Japanese)
 docs/COLLECTION.ja.md      how runs are collected (Japanese)
 ```
@@ -50,6 +50,7 @@ docs/COLLECTION.ja.md      how runs are collected (Japanese)
 python3 tools/validate.py            # check shapes and references
 python3 tools/run_id.py runs/<dir>   # the name a run directory should have
 python3 tools/build.py               # reverse indexes into build/ (not committed)
+python3 tools/measure.py [--each]    # time windows from the cases' event markers
 ```
 
 Requires Python 3.9+ and PyYAML. Collection also needs arduino-cli and uv (`uv sync` in `collect/`).

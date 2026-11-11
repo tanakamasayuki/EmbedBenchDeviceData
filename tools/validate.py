@@ -709,13 +709,48 @@ def validate_knowledge(report, chips_by_key) -> None:
         for index, item in enumerate(data.get("timing") or []):
             items.append((f"timing[{index}]", item))
             for number, window in enumerate(item.get("windows") or []):
-                items.append((f"timing[{index}].windows[{number}]", window))
+                where = f"timing[{index}].windows[{number}]"
+                items.append((where, window))
+                check_fields(report, path, window, required={"setting", "low_us", "high_us", "evidence"},
+                             optional={"measured"}, where=where)
+                if window.get("measured") is not None:
+                    check_measured(report, path, where, item.get("key"), window, runs)
         for index, item in enumerate(data.get("behaviours") or []):
             items.append((f"behaviours[{index}]", item))
         for where, item in items:
             for ref in evidence_of(item):
                 if ref not in runs and not EXTERNAL_EVIDENCE.fullmatch(str(ref)):
                     report.add(path, f"{where}: evidence {ref!r} is neither a run nor a known source")
+
+
+def check_measured(report, path, where, key, window, runs) -> None:
+    """A window that says how it was measured (tools/measure.py) must be what its evidence runs give."""
+    import measure
+    selections = window["measured"]
+    if not isinstance(selections, list) or not selections:
+        report.add(path, f"{where}: measured is a list of {{timing?, where?, of?}}")
+        return
+    names = [ref for ref in evidence_of(window) if ref in runs]
+    try:
+        measurements = [m for name in names for m in measure.measure_run(REPO_ROOT / "runs" / name)]
+    except (OSError, measure.MeasureError) as e:
+        report.add(path, f"{where}: measuring its evidence failed: {e}")
+        return
+    windows = []
+    for number, sel in enumerate(selections):
+        unknown = set(sel) - {"timing", "where", "of"}
+        if unknown:
+            report.add(path, f"{where}.measured[{number}]: unknown {sorted(unknown)}")
+            return
+        chosen = measure.select(measurements, sel.get("timing", key), sel.get("where"))
+        if not chosen:
+            report.add(path, f"{where}.measured[{number}]: no measurement in its evidence matches")
+            return
+        windows.append(measure.window_of(chosen, str(sel.get("of", "first"))))
+    low, high = measure.intersect(windows)
+    if (low, high) != (window.get("low_us"), window.get("high_us")):
+        report.add(path, f"{where}: its evidence measures [{low}, {high}], not [{window.get('low_us')}, "
+                         f"{window.get('high_us')}]")
 
 
 # ---------------------------------------------------------------- guides

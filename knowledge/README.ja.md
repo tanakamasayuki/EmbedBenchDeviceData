@@ -5,6 +5,8 @@
 
 - 値ごとに根拠（`evidence`）を書く: `runs/` の run の名前、`i2cdevicedb-pilot:<observation id>`、または `datasheet`。
 - 時間は値と窓を分ける。`value_us` は模型が使う値（式でもよい）、`windows` は記録が許す範囲。
+  - 窓は、できるだけケースの出来事の目印から `tools/measure.py` で計り、`measured` で何を計ったかを書く（validate が計算し直す）。
+    目印の timing の名前は、ここの key と同じにする。
 - 使う側の形への変換は使う側が持つ。どちらもこのリポジトリの clone を引数（`--devicedata DIR`）で受ける。
   - EmbedBench の `devices/tools/knowledge_table.py <chip>`: レジスタの表を `RegTableSpec` に書き出す（模型の雛形）。
   - wireskein の `tools/knowledge_decl.py`: `decl/devices`（部品の見分け）を書き出す。`--check` が、置いてある定義と

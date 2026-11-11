@@ -85,6 +85,7 @@ run.json の目印（`#` ケース、`##` 段階）が何をしたかを、ケ�
 
 **run-id** は `tools/run_id.py` が決める。転送の列（`addr、rw、addr_ack、bytes、acks、start_cond、end_cond`。時刻は除く）を
 全キャプチャぶん並べた JSON の sha256 の先頭 16 桁。同じバイトが同じ順に動いた run は同じ名前になる。
+run.json にケースの出来事の目印（`### ` の行。時刻は除く）があれば、それも含める（転送が同じでも、ケースがそれぞれの転送の意味を言った run は別のもの）。
 置くときは `<case>__i2c-<kHz>k__pending` でもよい。validate が正しい名前を言う。
 
 ### provenance.yaml
@@ -124,7 +125,7 @@ EmbedBench の `skein2trace.py` はこの形だけを読む。
 | addressing | | `pointer_bits`、`repeated_start_required`、`read_auto_increment`、`crc?: {poly, init, word}`（答えの word ごとの CRC-8）、`evidence`、`notes` |
 | registers | ○（空でよい） | `[{addr, width, access: r / w / rw, reset, name?, volatile?, per_specimen?, identifies?, evidence?, notes?}]`。`identifies: true` はその値が読めたらこの部品と決まるレジスタ（個体ごとの値や変わる値には付けない）。`addr` は `0x` ＋ 大文字の 16 進 2 桁、`reset` は width バイトの 16 進 |
 | commands | | コマンド型の部品: `[{code, name, answer_bytes, timing?, evidence, notes?}]`。`code` は `0x` ＋ 大文字の 16 進、`timing` は timing の key。registers と commands のどちらかは空でない |
-| timing | | `[{key, value_us, windows?: [{setting, low_us, high_us, evidence}], evidence?, notes?}]`。`value_us` は模型が使う値（式でよい）、`windows` は記録が許す範囲 |
+| timing | | `[{key, value_us, windows?: [{setting, low_us, high_us, evidence, measured?}], evidence?, notes?}]`。`value_us` は模型が使う値（式でよい）、`windows` は記録が許す範囲。`measured: [{timing?, where?, of?}]` は窓を `tools/measure.py` の計測から取ったことを言う: evidence（run の名前の並び）の計測のうち、timing（省略で親の key）と条件 where に合うものの窓（of: `first`（既定）、`period`、出来事の番号）を、並べたもの同士で交わらせた値。validate が計算し直して low_us / high_us と比べる |
 | behaviours | | `[{key, evidence, notes}]`。表で言えない振る舞い |
 | controllers | | `[{key, controller, evidence, notes}]`。この部品で見えた、controller の側の性質（部品の性質と分ける） |
 | decode_artefacts | | `[{key, write, then: {addr, rw, bytes?}, cause: part / controller / unknown, evidence, notes}]`。部品への書込み `write`（16 進）の直後に decode が出す、転送ではないもの。decode はそれを正しく出し、読む側（EmbedBench の `skein2trace.py --knowledge`）が畳む |

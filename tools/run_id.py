@@ -7,6 +7,9 @@ The hash is the first 16 hex digits of the sha256 of the decoded transfers,
 times left out, so two runs that moved the same bytes in the same order get
 the same name whenever they were taken. A run whose measured values differ
 gets a different name; grouping those is the job of a mask, not of the id.
+The case's event markers (### lines in run.json, tools/measure.py), times
+left out, are part of what happened: what the case saw each transfer mean.
+A run with none is named by its transfers alone.
 
     python3 tools/run_id.py runs/<dir>      # print the name the run should have
 """
@@ -29,8 +32,18 @@ def transfers(decode: Path) -> list[dict]:
     return [{field: x.get(field) for field in FIELDS} for x in data["transactions"]]
 
 
+def events(run_json: Path) -> list[str]:
+    if not run_json.exists():
+        return []
+    log = json.loads(run_json.read_text(encoding="utf-8")).get("log", [])
+    return [line["text"] for line in log if line.get("text", "").startswith("### ")]
+
+
 def content_hash(decodes: list[Path]) -> str:
     sequence = [transfers(path) for path in decodes]
+    marks = events(decodes[0].parent / "run.json") if decodes else []
+    if marks:
+        sequence = {"transfers": sequence, "events": marks}
     text = json.dumps(sequence, sort_keys=True, separators=(",", ":"))
     return hashlib.sha256(text.encode("utf-8")).hexdigest()[:16]
 
