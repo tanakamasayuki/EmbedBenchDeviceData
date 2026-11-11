@@ -1,0 +1,29 @@
+schema_version: 1
+key: esp32p4-i2c-nack-answers
+kind: characterization
+intent: |
+  What the ESP32-P4's I2C master driver (ESP-IDF i2c_master, arduino-esp32's Wire on top of it) answers when the
+  address is not acknowledged: 100 calls to 0x50, where nothing answers, for each way of calling. Every "success"
+  is a false ACK; a call that put nothing on the wire shows as a missing transfer.
+targets: []
+phases:
+  - {name: wire-read-gap-0us, intent: "Wire.requestFrom(0x50, 6) back to back"}
+  - {name: wire-probe-gap-0us, intent: "beginTransmission(0x50); endTransmission() back to back"}
+  - {name: wire-read-gap-500us, intent: "Wire.requestFrom(0x50, 6), 500 us apart"}
+  - {name: wire-probe-gap-500us, intent: "beginTransmission(0x50); endTransmission(), 500 us apart"}
+  - {name: idf-read-wait-0-gap-0us, intent: "i2c_master_receive, device scl_wait_us 0 (Wire's), back to back"}
+  - {name: idf-probe-gap-0us, intent: "i2c_master_probe back to back"}
+  - {name: idf-read-wait-0-gap-500us, intent: "i2c_master_receive, scl_wait_us 0, 500 us apart"}
+  - {name: idf-probe-gap-500us, intent: "i2c_master_probe, 500 us apart"}
+  - {name: idf-read-wait-20000-gap-0us, intent: "i2c_master_receive, scl_wait_us 20000, back to back"}
+  - {name: idf-read-wait-20000-gap-500us, intent: "i2c_master_receive, scl_wait_us 20000, 500 us apart"}
+collect:
+  sketch: m5stack/u001-c
+  number: 15
+  lines: [SDA, SCL]
+notes: |
+  No part is at 0x50, so there is no target. Each phase's line answers=... gives the driver's answer to every call in
+  order (o: success, f: failure).
+  The bus is begun on the probe's worker (core 0), as every case's is (docs/COLLECTION.ja.md §4). Begun on the core
+  of loop() - the endpoint's and USB's interrupts - about half the calls after a NACK answered success and the probe
+  then crashed in the driver's receive interrupt (ESP-IDF 5.5.5 i2c_master, arduino-esp32 3.3.12).

@@ -1,10 +1,9 @@
 // SPDX-License-Identifier: MIT
-// Collecting cases for M5Stack Unit ENV III (U001-C: SHT30 at 0x44, QMP6988 at 0x70), run on an OEP probe as
-// oep-probe-arduino's extras/LibraryTest runs its cases: a file beside the firmware's .ino, the probe captures the same
-// lines while a case runs, and every line the case writes (mark) carries the probe's clock. The interface, the task
-// and the log are the ProbeCases library's; this file holds the cases and their numbers.
+// Collecting cases for M5Stack Unit ENV III (U001-C: SHT30 at 0x44, QMP6988 at 0x70), run on an OEP probe: the probe
+// captures the same lines while a case runs, and every line the case writes (mark) carries the probe's clock. The
+// interface, the worker and the log are the ProbeCases library's; this file holds the cases and their numbers.
 //
-//   (ops: ProbeCases.h; op 0x14 configure sets the bus speed in Hz for the cases that follow)
+//   (ops: ProbeCases.h; configure sets the bus speed in Hz for the cases that follow, beginning the bus on the worker)
 //
 // Cases (the heading names are the phases the data repository's case.yaml lists):
 //   1 wire-scan                    every 7-bit address, the ones that answer
@@ -27,14 +26,15 @@
 //   13 sht30-unread-reset          a measurement left unread, then a soft reset: whether a read after it still gets the
 //                                  old result (no command; then with a command), on the ESP-IDF driver
 //   14 wire-absent-address         2 bytes written to 0x50, where nothing answers: the address NACK and what Wire says
-#include <OepEndpoint.h>
+//   15 esp32p4-i2c-nack-answers    100 calls to 0x50 (nothing there) for each way of calling: Wire and ESP-IDF i2c_master,
+//                                  read and probe, scl_wait_us 0 / 20000, back to back or 500 us apart; what the driver
+//                                  answered each time (o: success, f: failure), to set against the wire
+#include <OepFirmwareParts.h>
 #include <OepPinTable.h>
 #include <ProbeCases.h>
 #include <M5UnitENV.h>
 #include <Wire.h>
 #include <driver/i2c_master.h>
-
-#include "OepFeatures.h"
 
 #ifndef ENV_SDA
 #define ENV_SDA 14
@@ -49,7 +49,7 @@
 namespace {
 
 constexpr int kSda = ENV_SDA, kScl = ENV_SCL;
-uint32_t kHz = ENV_HZ;   // the bus speed: configure (op 0x14) changes it between cases
+uint32_t kHz = ENV_HZ;   // the bus speed: configure changes it between cases
 constexpr uint8_t kSht = 0x44, kQmp = 0x70;
 TwoWire &bus = Wire;
 constexpr uint8_t kOwner = oep::owners::kSketch;
@@ -75,7 +75,7 @@ int32_t scan() {
   }
   markf("found=%ld", static_cast<long>(found));
   mark("#");
-  return found;
+  return 0;
 }
 
 // ---- case 2: the library -------------------------------------------------------------------------------------------
@@ -660,6 +660,110 @@ int32_t absentAddress() {
   return end == 2 ? 0 : 1;
 }
 
+// ---- case 15: what the driver answers for an address nothing answers ------------------------------------------------
+constexpr uint8_t kAbsent = 0x50;
+constexpr int kCalls = 100;
+
+// The answers as lines of at most 100 characters (o: the driver said success, f: failure).
+void answers(const char *outcome, int n) {
+  char line[120];
+  for (int i = 0; i < n; i += 100) {
+    const int k = n - i < 100 ? n - i : 100;
+    snprintf(line, sizeof line, "answers=%.*s", k, outcome + i);
+    mark(line);
+  }
+}
+
+template <typename F>
+void calls(const char *phase, uint32_t gap_us, F call) {
+  static char outcome[kCalls + 1];
+  markf("## %s", phase);
+  for (int i = 0; i < kCalls; ++i) {
+    outcome[i] = call() ? 'o' : 'f';
+    if (gap_us) delayMicroseconds(gap_us);
+  }
+  outcome[kCalls] = 0;
+  answers(outcome, kCalls);
+  mark("##");
+  delay(20);   // a late interrupt of the last call lands here, not in the next phase
+}
+
+// A fresh Wire bus between phases: what one phase leaves in the driver is not carried into the next.
+void freshWire() {
+  bus.end();
+  bus.begin(kSda, kScl, kHz);
+}
+
+// Wire as the application uses it, the bus begun again before each phase.
+void wirePhases() {
+  for (uint32_t gap : {0u, 500u}) {
+    char name[40];
+    snprintf(name, sizeof name, "wire-read-gap-%luus", static_cast<unsigned long>(gap));
+    freshWire();
+    calls(name, gap, [] { return bus.requestFrom(kAbsent, static_cast<size_t>(6)) == 6; });
+    snprintf(name, sizeof name, "wire-probe-gap-%luus", static_cast<unsigned long>(gap));
+    freshWire();
+    calls(name, gap, [] {
+      bus.beginTransmission(kAbsent);
+      return bus.endTransmission() == 0;
+    });
+  }
+}
+
+// ESP-IDF i2c_master directly, on a bus of its own (the Wire bus ended meanwhile), its device at scl_wait_us.
+void idfPhases(uint32_t scl_wait_us) {
+  bus.end();
+  i2c_master_bus_config_t bc = {};
+  bc.i2c_port = I2C_NUM_0;
+  bc.sda_io_num = static_cast<gpio_num_t>(kSda);
+  bc.scl_io_num = static_cast<gpio_num_t>(kScl);
+  bc.clk_source = I2C_CLK_SRC_DEFAULT;
+  bc.glitch_ignore_cnt = 7;
+  bc.flags.enable_internal_pullup = 1;
+  static i2c_master_bus_handle_t mb;
+  static i2c_master_dev_handle_t dev;
+  mb = nullptr;
+  dev = nullptr;
+  esp_err_t e = i2c_new_master_bus(&bc, &mb);
+  if (e == ESP_OK) {
+    i2c_device_config_t dc = {};
+    dc.dev_addr_length = I2C_ADDR_BIT_LEN_7;
+    dc.device_address = kAbsent;
+    dc.scl_speed_hz = kHz;
+    dc.scl_wait_us = scl_wait_us;
+    e = i2c_master_bus_add_device(mb, &dc, &dev);
+  }
+  if (e != ESP_OK) {
+    markf("setup=%d", e);
+  } else {
+    for (uint32_t gap : {0u, 500u}) {
+      char name[48];
+      snprintf(name, sizeof name, "idf-read-wait-%lu-gap-%luus", static_cast<unsigned long>(scl_wait_us),
+               static_cast<unsigned long>(gap));
+      calls(name, gap, [] {
+        static uint8_t b[6];   // static: a late receive interrupt may still write here after the call returned
+        return i2c_master_receive(dev, b, 6, 50) == ESP_OK;
+      });
+      if (scl_wait_us == 0) {   // probe has no device: scl_wait_us does not apply to it
+        snprintf(name, sizeof name, "idf-probe-gap-%luus", static_cast<unsigned long>(gap));
+        calls(name, gap, [] { return i2c_master_probe(mb, kAbsent, 50) == ESP_OK; });
+      }
+    }
+  }
+  if (dev) i2c_master_bus_rm_device(dev);
+  if (mb) i2c_del_master_bus(mb);
+  bus.begin(kSda, kScl, kHz);
+}
+
+int32_t nackAnswers() {
+  mark("# esp32p4-i2c-nack-answers");
+  wirePhases();
+  idfPhases(0);
+  idfPhases(20000);
+  mark("#");
+  return 0;
+}
+
 // ---- the table ------------------------------------------------------------------------------------------------------
 int32_t qmpStandbyLong5() { return qmpStandbyLong(0x20, "5ms"); }
 int32_t qmpStandbyLong50() { return qmpStandbyLong(0x40, "50ms"); }
@@ -668,9 +772,10 @@ int32_t qmpStandbyLong250() { return qmpStandbyLong(0x60, "250ms"); }
 const probe_cases::Case kCases[] = {
     {1, scan},           {2, basic},          {3, shtModes},          {4, qmpModes},          {5, qmpStandby},
     {6, qmpMeasureBit},  {7, shtStretchWait}, {8, qmpStandbyLong5},   {9, qmpStandbyLong50},  {10, qmpStandbyLong250},
-    {11, shtReady},      {12, shtReadyIdf},   {13, shtUnreadReset},   {14, absentAddress},
+    {11, shtReady},      {12, shtReadyIdf},   {13, shtUnreadReset},   {14, absentAddress},        {15, nackAnswers},
 };
 
+// On the worker (ProbeCases): the bus's interrupt is allocated on the core that begins it, the worker's
 void configure(uint32_t hz) {
   if (hz < 10000 || hz > 1000000) return;
   kHz = hz;
@@ -680,10 +785,11 @@ void configure(uint32_t hz) {
 
 }  // namespace
 
-void oepUserSetup(oep::Endpoint &endpoint, oep::PinTable &pins) {
-  probe_cases::begin(endpoint, "io.github.tanakamasayuki.devicedata.env-cases", kCases,
-                     sizeof kCases / sizeof kCases[0], configure);
-  pins.claim(kSda, kOwner);
-  pins.claim(kScl, kOwner);
-  bus.begin(kSda, kScl, kHz);
+void casesBegin() {
+  oep::firmware.onSetup([](oep::Endpoint &, oep::PinTable &pins) {
+    pins.claim(kSda, kOwner);
+    pins.claim(kScl, kOwner);
+  });
+  probe_cases::begin("io.github.tanakamasayuki.devicedata.env-cases", kCases, sizeof kCases / sizeof kCases[0],
+                     configure);
 }

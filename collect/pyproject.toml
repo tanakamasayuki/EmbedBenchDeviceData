@@ -14,6 +14,10 @@ dependencies = [
 [tool.uv]
 package = false
 
+[tool.uv.sources]
+# oep-client-python's call / call_wait (oep::SimpleInterface jobs): the local clone until a release carries them
+oep-client-python = { path = "/home/mt/dev_oep/oep-client-python", editable = true }
+
 [tool.pytest.ini_options]
 # A collection runs only when its .py is named on the command line (its files carry no test_ prefix).
 python_files = []

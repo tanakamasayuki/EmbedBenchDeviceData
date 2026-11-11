@@ -28,7 +28,7 @@ dependencies = [
 
 [package.metadata]
 requires-dist = [
-    { name = "oep-client-python", extras = ["usb-async"], specifier = "==0.0.53" },
+    { name = "oep-client-python", extras = ["usb-async"], editable = "/home/mt/dev_oep/oep-client-python" },
     { name = "pytest-embedded-arduino-cli", specifier = "==1.4.1" },
     { name = "pyyaml", specifier = ">=6" },
     { name = "wireskein", specifier = "==0.0.27" },
@@ -224,19 +224,33 @@ wheels = [
 [[package]]
 name = "oep-client-python"
 version = "0.0.53"
-source = { registry = "https://pypi.org/simple" }
+source = { editable = "/home/mt/dev_oep/oep-client-python" }
 dependencies = [
     { name = "pyserial" },
     { name = "pyusb" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/85/35/42de4d177b72103a95f66cb47d6bfbd338a7147736b1cb7701caf931ba92/oep_client_python-0.0.53.tar.gz", hash = "sha256:5701210725a0e47171cc351d2df6bcc93cde92afaa33139427cbf2d6fc026e17", size = 2040537, upload-time = "2026-11-09T22:48:15.467Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/23/54/671be2d6f9df7cc4a1078e07aad55264971b81e01f3bd1119651575e558e/oep_client_python-0.0.53-py3-none-any.whl", hash = "sha256:2a8781bfddc43e6cf7da5f8bfb7fc620d73ddfacbc8ba68103e4dcf42320c36a", size = 938133, upload-time = "2026-11-09T22:48:14.031Z" },
 ]
 
 [package.optional-dependencies]
 usb-async = [
     { name = "libusb1" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "hidapi", marker = "extra == 'hid'", specifier = ">=0.14" },
+    { name = "libusb1", marker = "extra == 'usb-async'", specifier = ">=3" },
+    { name = "numpy", marker = "extra == 'acquire'", specifier = ">=2.0" },
+    { name = "pyserial", specifier = ">=3.5" },
+    { name = "pyusb", specifier = ">=1.3" },
+    { name = "tomli", marker = "python_full_version < '3.11'", specifier = ">=2" },
+    { name = "zeroconf", marker = "extra == 'mdns'", specifier = ">=0.131" },
+]
+provides-extras = ["usb-async", "hid", "mdns", "acquire"]
+
+[package.metadata.requires-dev]
+dev = [
+    { name = "pytest", specifier = ">=8" },
+    { name = "pytest-xdist", specifier = ">=3" },
 ]
 
 [[package]]

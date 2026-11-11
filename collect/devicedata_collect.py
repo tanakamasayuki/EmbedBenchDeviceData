@@ -1,12 +1,13 @@
 """The host side of a collection, shared by every sketch under collect/: run one case on the probe, capture its lines,
 and write the run directory (docs/COLLECTION.ja.md).
 
-A sketch's firmware runs on the probe itself and serves the ProbeCases interface (collect/libraries/ProbeCases): op
-0x10 run, 0x14 configure, 0x20 status, and the case's log of markers and results on the probe's clock. On a session
-the caller holds (the probe's lease), collect_case:
+A sketch's firmware runs on the probe itself and serves the ProbeCases interface (collect/libraries/ProbeCases), an
+oep::SimpleInterface called by its ops' names (oep_client.call): configure, the job run with its status, and the
+case's log of markers and results on the probe's clock. On a session the caller holds (the probe's lease),
+collect_case:
 
-  1. configures the bus speed and clears the log;
-  2. streams the case's lines (oep_client.acquire, mode "stream") while it starts the case and waits for it to end;
+  1. configures the bus speed (the bus begun on the probe's worker) and clears the log;
+  2. streams the case's lines (oep_client.acquire, mode "stream") while it runs the case as a job to its end;
   3. writes run.json (the case's lines) and c0001.wireskein with wireskein's Recorder;
   4. decodes the capture with wireskein (c0001.analysis.json, c0001.i2c.json) and writes provenance.yaml;
   5. renames the directory to its run id (tools/run_id.py).
@@ -20,7 +21,6 @@ import datetime
 import json
 import re
 import shutil
-import struct
 import subprocess
 import sys
 import time
@@ -35,7 +35,6 @@ COLLECT_ROOT = REPO_ROOT / "collect"
 sys.path.insert(0, str(REPO_ROOT / "tools"))
 import run_id as run_id_tool  # noqa: E402
 
-OP_RUN, OP_CONFIGURE, OP_STATUS = 0x10, 0x14, 0x20
 OWNER = "embedbench-device-data.collect"
 
 # How each bus kind is captured and decoded: the roles a case's collect.lines names, and wireskein's decode spec.
@@ -97,6 +96,13 @@ def profile_versions(sketch_dir: Path, profile: str | None) -> dict[str, str]:
     chosen = data["profiles"][profile or data["default_profile"]]
     versions = {}
     for entry in chosen.get("platforms", []) + chosen.get("libraries", []):
+        if isinstance(entry, dict) and "dir" in entry:   # a library from a folder: its library.properties and commit
+            folder = (sketch_dir / entry["dir"]).resolve()
+            props = folder / "library.properties"
+            if props.exists():
+                info = dict(line.split("=", 1) for line in props.read_text(encoding="utf-8").splitlines() if "=" in line)
+                versions[info["name"]] = f"{info.get('version', 'unknown')} @ {git_commit(folder)}"
+            continue
         text = entry if isinstance(entry, str) else entry.get("platform", "")
         m = re.match(r"^(.*?) \((.+)\)$", text)
         if m:
@@ -144,6 +150,7 @@ def provenance(case: dict, s: Settings, kind: str, sketch_dir: Path, profile: st
 def collect_case(hst, case: dict, s: Settings, interface: str, profile: str | None = None) -> Path:
     """Run `case` on the probe held by `hst` and write its run directory; returns the directory."""
     from oep_client import acquire
+    from oep_client import call as oep_call
     from oep_client.probe_log import ProbeLog, rows
     from wireskein import decode
     from wireskein.runlog import Recorder
@@ -154,7 +161,7 @@ def collect_case(hst, case: dict, s: Settings, interface: str, profile: str | No
     sketch_dir = COLLECT_ROOT / spec["sketch"]
     roles = spec["lines"]
     log = ProbeLog(hst, interface)
-    hst.call(log.fn, OP_CONFIGURE, struct.pack("<I", s.hz))
+    oep_call.call(hst, interface, "configure", hz=s.hz)
     log.clear()
 
     speed = f"{s.hz // 1000}k"
@@ -167,18 +174,13 @@ def collect_case(hst, case: dict, s: Settings, interface: str, profile: str | No
 
     def steps(wait):
         wait(0.05)   # the stream runs before the case's first transfer
-        hst.call(log.fn, OP_RUN, bytes([spec["number"]]))
-        deadline = time.monotonic() + spec.get("timeout_s", 60)
-        while time.monotonic() < deadline:
-            state, which, value = struct.unpack("<BBi", hst.call(log.fn, OP_STATUS, locked=False).payload[:6])
-            if state == 2:
-                if which != spec["number"]:
-                    raise RuntimeError(f"{case['key']}: the probe finished case {which}, not {spec['number']}")
-                result["value"] = value
-                wait(0.05)
-                return
-            wait(0.01)
-        raise TimeoutError(f"{case['key']}: still running after {spec.get('timeout_s', 60)} s")
+        try:
+            oep_call.call_wait(hst, interface, "run", case=spec["number"], timeout=spec.get("timeout_s", 60),
+                               wait=wait, interval=0.01)
+            result["value"] = 0
+        except oep_call.JobFailed as e:   # the case's own result, not 0: kept in the run's notes
+            result["value"] = e.code
+        wait(0.05)
 
     armed = rec.armed()
     res = acquire.capture(hst, acquire.Request([(role, s.lines[role]) for role in roles], s.rate, 0,
