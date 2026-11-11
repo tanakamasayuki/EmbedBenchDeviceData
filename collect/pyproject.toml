@@ -6,17 +6,13 @@ requires-python = ">=3.11"
 # Pinned so a run says what took it; raise them deliberately (oep-client-python is 0.0.x and may break before v1).
 dependencies = [
     "pytest-embedded-arduino-cli==1.4.1",
-    "oep-client-python[usb-async]==0.0.53",
+    "oep-client-python[usb-async]==0.0.54",
     "wireskein==0.0.27",
     "pyyaml>=6",
 ]
 
 [tool.uv]
 package = false
-
-[tool.uv.sources]
-# oep-client-python's call / call_wait (oep::SimpleInterface jobs): the local clone until a release carries them
-oep-client-python = { path = "/home/mt/dev_oep/oep-client-python", editable = true }
 
 [tool.pytest.ini_options]
 # A collection runs only when its .py is named on the command line (its files carry no test_ prefix).

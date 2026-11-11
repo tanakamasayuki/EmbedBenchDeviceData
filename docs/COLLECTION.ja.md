@@ -70,6 +70,6 @@ uv run pytest m5stack/u001-c/u001-c.py --profile esp32p4x \
   - 割込みは begin したコアに付く。ESP32-P4 の probe では loop のコア（コア 1）に endpoint と USB の割込みが集まる。
   - そこに I2C master の割込みが付くと、割込みが遅れる。アドレスの NACK が成功として返り、そのあと落ちることもある。
   - ワーカー（コア 0）で作れば起きない（`esp32p4-i2c-nack-answers`）。
-- OpenEmbeddedProbe（sketch.yaml）と oep-client-python（`collect/pyproject.toml`）は、ジョブとログの口（oep::SimpleInterface の job / addWorker / addLog、oep_client.call）が入った版を使う。
-  - それが出るまでは、`/home/mt/dev_oep` の手元の clone を指す。provenance には、その版と commit が残る。
+- OpenEmbeddedProbe（sketch.yaml）と oep-client-python（`collect/pyproject.toml`）は、ジョブとログの口（oep::SimpleInterface の job / addWorker / addLog、oep_client.call）が入った 0.0.54 以降を使う。
+  - OpenEmbeddedProbe 0.0.54 が Arduino のライブラリ一覧に載るまでは、sketch.yaml は `/home/mt/dev_oep` の手元の clone を指す。provenance には、その版と commit が残る。
 - oep-client-python と wireskein の版は `collect/pyproject.toml` で固定し、上げるときは意図して上げる。
