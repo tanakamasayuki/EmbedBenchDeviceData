@@ -428,6 +428,37 @@ def check_targets(report, path, data, chips_by_key, products_by_key, where="targ
                 report.add(path, f"{at}: {product} does not carry {target.get('chip')} at {target.get('addr')}")
 
 
+def sketch_product(sketch: str) -> str:
+    """The product a collection sketch is for: collect/<vendor>/<sku> -> <vendor>-<sku>."""
+    return str(sketch).replace("/", "-")
+
+
+def check_collect(report, path, data, collect, products_by_key) -> None:
+    check_fields(report, path, collect, required={"lines", "sketches"}, optional={"timeout_s"}, where="collect")
+    if not collect.get("lines") or not all(isinstance(x, str) for x in collect["lines"]):
+        report.add(path, "collect.lines names the captured lines' roles")
+    entries = collect.get("sketches")
+    if not isinstance(entries, list) or not entries:
+        report.add(path, "collect.sketches lists the sketches that collect the case: [{sketch, number}]")
+        return
+    products = {t.get("product") for t in data.get("targets") or []}
+    seen = set()
+    for index, entry in enumerate(entries):
+        where = f"collect.sketches[{index}]"
+        check_fields(report, path, entry, required={"sketch", "number"}, optional=set(), where=where)
+        sketch = str(entry.get("sketch", ""))
+        if sketch in seen:
+            report.add(path, f"{where}: {sketch} twice")
+        seen.add(sketch)
+        if not (REPO_ROOT / "collect" / sketch / "sketch.yaml").exists():
+            report.add(path, f"{where}: collect/{sketch}/sketch.yaml is missing")
+        if not isinstance(entry.get("number"), int) or not 1 <= entry["number"] <= 255:
+            report.add(path, f"{where}: number is the case's number on the firmware (1-255), found {entry.get('number')!r}")
+        product = sketch_product(sketch)
+        if product in products_by_key and products - {None} and product not in products:
+            report.add(path, f"{where}: no target is on {product}, the product {sketch} is for")
+
+
 def validate_cases(report, chips_by_key, products_by_key, libraries_by_key) -> dict[str, dict]:
     cases = {}
     for directory in sorted(p for p in (REPO_ROOT / "cases").iterdir() if p.is_dir()):
@@ -462,14 +493,7 @@ def validate_cases(report, chips_by_key, products_by_key, libraries_by_key) -> d
                          where=f"phases[{index}]")
         collect = data.get("collect")
         if collect is not None:
-            check_fields(report, path, collect, required={"sketch", "number", "lines"}, optional={"timeout_s"},
-                         where="collect")
-            if not (REPO_ROOT / "collect" / str(collect.get("sketch", "")) / "sketch.yaml").exists():
-                report.add(path, f"collect.sketch: collect/{collect.get('sketch')}/sketch.yaml is missing")
-            if not isinstance(collect.get("number"), int) or not 1 <= collect["number"] <= 255:
-                report.add(path, f"collect.number is the case's number on the firmware (1-255), found {collect.get('number')!r}")
-            if not collect.get("lines") or not all(isinstance(x, str) for x in collect["lines"]):
-                report.add(path, "collect.lines names the captured lines' roles")
+            check_collect(report, path, data, collect, products_by_key)
         cases[data.get("key")] = data
     return cases
 
