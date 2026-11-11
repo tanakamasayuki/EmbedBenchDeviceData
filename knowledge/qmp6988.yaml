@@ -79,25 +79,26 @@ timing:
     value_us: "2986 + 847 * (samples_t + samples_p)"
     windows:
       - {setting: "CTRL_MEAS=25 (T x1, P x1)", low_us: 4128, high_us: 4840, evidence: i2cdevicedb-pilot:qmp6988-p0-100k-nominal-0283eb57c7a7c010}
-      - {setting: "CTRL_MEAS=31 / 33 (T x1, P x8)", low_us: 10554, high_us: 10891, evidence: qmp6988-modes__i2c-100k__46bef135f230219c}
+      - {setting: "CTRL_MEAS=31 / 33 (T x1, P x8): forced, and the first normal sample from sleep", low_us: 10584, high_us: 10742, evidence: [qmp6988-modes__i2c-100k__5191405721467aa1, qmp6988-modes__i2c-400k__00cc50fc431b3ba6, qmp6988-standby-long-5ms__i2c-100k__f84dd88a20a69760, qmp6988-standby-long-50ms__i2c-100k__2d997e3f5a00ee54, qmp6988-standby-long-250ms__i2c-100k__07d1897d945ff8a1, qmp6988-standby__i2c-100k__10cc6d46cab87fd8], measured: [{where: {ctrl_meas: "0x31"}}, {timing: normal-period, where: {from: sleep}, of: first}]}
     evidence: [qmp6988-standby-long-50ms__i2c-100k__40d4f613590db8e7, qmp6988-standby-long-5ms__i2c-100k__aec4395e0424a89c]
     notes: |
       A line through the pilot's P x1 (4680 us) and the OEP runs' P x8 (10609 us); the slope is near the datasheet's
       (5.5 ms at P x2, T x1 to 33.7 ms at P x32, T x4). The P x8 window: a forced conversion's status bit still set
-      9953 us after the write and clear at 10891 us (qmp6988-modes, 100 kHz); the first normal sample from sleep not
-      there 10554 us after the write (standby-long-50ms). 10609 us is where, with the standby below, every normal
-      sample of the three standby runs lands where it was read.
-      Once, normal mode written 3 ms after a forced conversion had ended (qmp6988-modes, 100 kHz) had no sample yet
-      10665 us after the write; from sleep the first sample was there by 10570 us. Not explained.
+      9984 / 10532 us after the write and clear at 10922 / 11173 us (100 / 400 kHz), and the first normal sample from
+      sleep, solved with the whole series (lo_k <= first + (k - 1) * period <= hi_k), between 10584 and 10742 us.
+      The first normal sample after a forced conversion can come later (behaviours: normal-after-forced).
   - key: normal-period
     value_us: "conversion + standby(IO_SETUP bits 7:5)"
     windows:
-      - {setting: "CTRL_MEAS=33, IO_SETUP=00 (standby 1 ms)", low_us: 11491, high_us: 11738, evidence: qmp6988-modes__i2c-400k__5b724043c8ead032}
-    evidence: [qmp6988-modes__i2c-100k__46bef135f230219c, m5unit-env-u001c-basic__i2c-100k__4a80a691f0241878]
+      - {setting: "CTRL_MEAS=33, IO_SETUP=00 (standby 1 ms), after a forced conversion", low_us: 10005, high_us: 11667, evidence: [qmp6988-modes__i2c-100k__5191405721467aa1, qmp6988-modes__i2c-400k__00cc50fc431b3ba6], measured: [{where: {from: forced}, of: period}]}
+      - {setting: "CTRL_MEAS=33, IO_SETUP=20 (standby 5 ms), from sleep", low_us: 16121, high_us: 16124, evidence: [qmp6988-standby-long-5ms__i2c-100k__f84dd88a20a69760, qmp6988-standby__i2c-100k__10cc6d46cab87fd8], measured: [{where: {from: sleep, io_setup: "0x20"}, of: period}]}
+      - {setting: "CTRL_MEAS=33, IO_SETUP=40 (standby 50 ms), from sleep", low_us: 57083, high_us: 57115, evidence: [qmp6988-standby-long-50ms__i2c-100k__2d997e3f5a00ee54, qmp6988-standby__i2c-100k__10cc6d46cab87fd8], measured: [{where: {from: sleep, io_setup: "0x40"}, of: period}]}
+      - {setting: "CTRL_MEAS=33, IO_SETUP=60 (standby 250 ms), from sleep", low_us: 234375, high_us: 235625, evidence: [qmp6988-standby-long-250ms__i2c-100k__07d1897d945ff8a1], measured: [{where: {from: sleep, io_setup: "0x60"}, of: period}]}
     notes: |
-      About 11.6 ms at T x1, P x8, standby 1 ms; read every 10 ms, the same value comes back about once in seven
-      reads. The window is the conversion above plus the standby the 400 kHz run's normal mode (and the library run's)
-      allows.
+      The period every pair of new samples allows (a new sample: the data differ from the read before). Read every
+      10 ms at standby 1 ms, every 5 ms (1 ms in qmp6988-standby at 5 ms) otherwise. The 50 ms period moves within
+      a day: the same solve over the morning's standby-long-50ms (qmp6988-standby-long-50ms__i2c-100k__40d4f613590db8e7)
+      gives 56964 to 57031 us; the 5 ms one stayed at 16121 to 16122.
   - key: standby
     value_us: "IO_SETUP 000: 972, 001: 5512, 010: 46405, 011: 224696, others the datasheet's (unmeasured)"
     windows:
@@ -106,19 +107,30 @@ timing:
       - {setting: "IO_SETUP=40 (nominal 50 ms)", low_us: 46390, high_us: 46420, evidence: qmp6988-standby-long-50ms__i2c-100k__40d4f613590db8e7}
       - {setting: "IO_SETUP=60 (nominal 250 ms)", low_us: 224384, high_us: 225008, evidence: qmp6988-standby-long-250ms__i2c-100k__52357fff65c9e3c5}
     notes: |
-      The normal period minus the conversion (10609 us at T x1, P x8), over 2 s of reads every 5 ms with the first
-      sample at the conversion time; each window is what leaves every read on its side of every sample, the conversion
-      held. Not the datasheet's 1 / 5 / 50 / 250 ms in any fixed ratio. The periods are one day's: they are not stable
+      The model's: the normal period minus the conversion (10609 us at T x1, P x8), fitted through the EmbedBench
+      model to the morning's runs (2 s of reads every 5 ms, the first sample at the conversion time); each window is
+      what leaves every read on its side of every sample, the conversion held. The periods themselves, measured, are
+      under normal-period (the afternoon's). Not the datasheet's 1 / 5 / 50 / 250 ms in any fixed ratio. The periods are one day's: they are not stable
       from day to day (another day's runs of the same part fitted 5391, 45600 and 219640 us with a 10665 us
       conversion), so a model checked against runs of another day needs its own values.
   - key: status-delay
     value_us: "215"
     windows:
-      - {setting: "after CTRL_MEAS=31, 400 kHz", low_us: 205, high_us: 224, evidence: qmp6988-measure-bit__i2c-400k__0c09be5b47d601d3}
+      - {setting: "after CTRL_MEAS=31, 400 kHz", low_us: 214, high_us: 234, evidence: [qmp6988-measure-bit__i2c-400k__ea307da668ef1127, qmp6988-modes__i2c-400k__00cc50fc431b3ba6], measured: [{where: {hz: "400000"}}]}
+    evidence: [qmp6988-measure-bit__i2c-100k__b5594dcb68fe03df]
     notes: |
-      From the start of the CTRL_MEAS write to the start of the status read: 00 up to 204 us, 08 from 224 us
-      (a sweep in about 20 us steps). At 100 kHz the earliest read (537 us) already had it.
+      From the start of the CTRL_MEAS write to the start of the status read: 00 up to 214 us, 08 from 234 us (a sweep
+      in about 20 us steps; the morning's sweep, qmp6988-measure-bit__i2c-400k__0c09be5b47d601d3, had 00 up to 204
+      and 08 from 224). At 100 kHz the earliest read (554 us) already had it.
 behaviours:
+  - key: normal-after-forced
+    evidence: [qmp6988-modes__i2c-100k__5191405721467aa1, qmp6988-modes__i2c-100k__46bef135f230219c, qmp6988-standby-long-5ms__i2c-100k__aec4395e0424a89c]
+    notes: |
+      Normal mode written 3 ms after a forced conversion ended had no new sample 10718 us after the write (10665 us
+      in the morning's run). From sleep, the morning's 5 ms standby run had its first sample between 10544 and 10631
+      us (the series solved as above, its first read not counted): later after a forced conversion than from sleep,
+      by 34 us or more. The afternoon's runs (first from sleep 10584 to 10742 us) do not separate the two. Not
+      explained.
   - key: forced-then-normal
     evidence: [qmp6988-modes__i2c-400k__5b724043c8ead032]
     notes: Normal mode written while a forced conversion runs does not restart it; the normal cycle continues from it.

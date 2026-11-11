@@ -1,0 +1,740 @@
+{
+ "transactions": [
+  {
+   "s": 112451,
+   "e": 112586,
+   "addr": 68,
+   "rw": "write",
+   "addr_ack": true,
+   "bytes": "30a2",
+   "acks": [
+    true,
+    true
+   ],
+   "start_cond": "S",
+   "end_cond": "P",
+   "scl_low_ticks": 2.0,
+   "scl_waits": []
+  },
+  {
+   "s": 116522,
+   "e": 116657,
+   "addr": 68,
+   "rw": "write",
+   "addr_ack": true,
+   "bytes": "f32d",
+   "acks": [
+    true,
+    true
+   ],
+   "start_cond": "S",
+   "end_cond": "P",
+   "scl_low_ticks": 2.0,
+   "scl_waits": []
+  },
+  {
+   "s": 116826,
+   "e": 117006,
+   "addr": 68,
+   "rw": "read",
+   "addr_ack": true,
+   "bytes": "8010e1",
+   "acks": [
+    true,
+    true,
+    false
+   ],
+   "start_cond": "S",
+   "end_cond": "P",
+   "scl_low_ticks": 3.0,
+   "scl_waits": []
+  },
+  {
+   "s": 117338,
+   "e": 117473,
+   "addr": 68,
+   "rw": "write",
+   "addr_ack": true,
+   "bytes": "2400",
+   "acks": [
+    true,
+    true
+   ],
+   "start_cond": "S",
+   "end_cond": "P",
+   "scl_low_ticks": 3.0,
+   "scl_waits": []
+  },
+  {
+   "s": 117599,
+   "e": 117644,
+   "addr": 68,
+   "rw": "read",
+   "addr_ack": false,
+   "bytes": "",
+   "acks": [],
+   "start_cond": "S",
+   "end_cond": "P",
+   "scl_low_ticks": 3.0,
+   "scl_waits": []
+  },
+  {
+   "s": 118729,
+   "e": 118774,
+   "addr": 68,
+   "rw": "read",
+   "addr_ack": false,
+   "bytes": "",
+   "acks": [],
+   "start_cond": "S",
+   "end_cond": "P",
+   "scl_low_ticks": 3.0,
+   "scl_waits": []
+  },
+  {
+   "s": 119854,
+   "e": 119899,
+   "addr": 68,
+   "rw": "read",
+   "addr_ack": false,
+   "bytes": "",
+   "acks": [],
+   "start_cond": "S",
+   "end_cond": "P",
+   "scl_low_ticks": 3.0,
+   "scl_waits": []
+  },
+  {
+   "s": 120979,
+   "e": 121024,
+   "addr": 68,
+   "rw": "read",
+   "addr_ack": false,
+   "bytes": "",
+   "acks": [],
+   "start_cond": "S",
+   "end_cond": "P",
+   "scl_low_ticks": 3.0,
+   "scl_waits": []
+  },
+  {
+   "s": 122102,
+   "e": 122147,
+   "addr": 68,
+   "rw": "read",
+   "addr_ack": false,
+   "bytes": "",
+   "acks": [],
+   "start_cond": "S",
+   "end_cond": "P",
+   "scl_low_ticks": 3.0,
+   "scl_waits": []
+  },
+  {
+   "s": 123225,
+   "e": 123270,
+   "addr": 68,
+   "rw": "read",
+   "addr_ack": false,
+   "bytes": "",
+   "acks": [],
+   "start_cond": "S",
+   "end_cond": "P",
+   "scl_low_ticks": 2.0,
+   "scl_waits": []
+  },
+  {
+   "s": 124349,
+   "e": 124394,
+   "addr": 68,
+   "rw": "read",
+   "addr_ack": false,
+   "bytes": "",
+   "acks": [],
+   "start_cond": "S",
+   "end_cond": "P",
+   "scl_low_ticks": 3.0,
+   "scl_waits": []
+  },
+  {
+   "s": 125524,
+   "e": 125569,
+   "addr": 68,
+   "rw": "read",
+   "addr_ack": false,
+   "bytes": "",
+   "acks": [],
+   "start_cond": "S",
+   "end_cond": "P",
+   "scl_low_ticks": 3.0,
+   "scl_waits": []
+  },
+  {
+   "s": 126649,
+   "e": 126694,
+   "addr": 68,
+   "rw": "read",
+   "addr_ack": false,
+   "bytes": "",
+   "acks": [],
+   "start_cond": "S",
+   "end_cond": "P",
+   "scl_low_ticks": 3.0,
+   "scl_waits": []
+  },
+  {
+   "s": 127772,
+   "e": 127817,
+   "addr": 68,
+   "rw": "read",
+   "addr_ack": false,
+   "bytes": "",
+   "acks": [],
+   "start_cond": "S",
+   "end_cond": "P",
+   "scl_low_ticks": 3.0,
+   "scl_waits": []
+  },
+  {
+   "s": 128895,
+   "e": 128940,
+   "addr": 68,
+   "rw": "read",
+   "addr_ack": false,
+   "bytes": "",
+   "acks": [],
+   "start_cond": "S",
+   "end_cond": "P",
+   "scl_low_ticks": 2.0,
+   "scl_waits": []
+  },
+  {
+   "s": 130023,
+   "e": 130068,
+   "addr": 68,
+   "rw": "read",
+   "addr_ack": false,
+   "bytes": "",
+   "acks": [],
+   "start_cond": "S",
+   "end_cond": "P",
+   "scl_low_ticks": 3.0,
+   "scl_waits": []
+  },
+  {
+   "s": 131146,
+   "e": 131191,
+   "addr": 68,
+   "rw": "read",
+   "addr_ack": false,
+   "bytes": "",
+   "acks": [],
+   "start_cond": "S",
+   "end_cond": "P",
+   "scl_low_ticks": 3.0,
+   "scl_waits": []
+  },
+  {
+   "s": 132270,
+   "e": 132315,
+   "addr": 68,
+   "rw": "read",
+   "addr_ack": false,
+   "bytes": "",
+   "acks": [],
+   "start_cond": "S",
+   "end_cond": "P",
+   "scl_low_ticks": 3.0,
+   "scl_waits": []
+  },
+  {
+   "s": 133394,
+   "e": 133439,
+   "addr": 68,
+   "rw": "read",
+   "addr_ack": false,
+   "bytes": "",
+   "acks": [],
+   "start_cond": "S",
+   "end_cond": "P",
+   "scl_low_ticks": 2.0,
+   "scl_waits": []
+  },
+  {
+   "s": 134518,
+   "e": 134563,
+   "addr": 68,
+   "rw": "read",
+   "addr_ack": false,
+   "bytes": "",
+   "acks": [],
+   "start_cond": "S",
+   "end_cond": "P",
+   "scl_low_ticks": 3.0,
+   "scl_waits": []
+  },
+  {
+   "s": 135642,
+   "e": 135687,
+   "addr": 68,
+   "rw": "read",
+   "addr_ack": false,
+   "bytes": "",
+   "acks": [],
+   "start_cond": "S",
+   "end_cond": "P",
+   "scl_low_ticks": 3.0,
+   "scl_waits": []
+  },
+  {
+   "s": 136765,
+   "e": 136810,
+   "addr": 68,
+   "rw": "read",
+   "addr_ack": false,
+   "bytes": "",
+   "acks": [],
+   "start_cond": "S",
+   "end_cond": "P",
+   "scl_low_ticks": 3.0,
+   "scl_waits": []
+  },
+  {
+   "s": 137888,
+   "e": 137933,
+   "addr": 68,
+   "rw": "read",
+   "addr_ack": false,
+   "bytes": "",
+   "acks": [],
+   "start_cond": "S",
+   "end_cond": "P",
+   "scl_low_ticks": 3.0,
+   "scl_waits": []
+  },
+  {
+   "s": 139010,
+   "e": 139055,
+   "addr": 68,
+   "rw": "read",
+   "addr_ack": false,
+   "bytes": "",
+   "acks": [],
+   "start_cond": "S",
+   "end_cond": "P",
+   "scl_low_ticks": 3.0,
+   "scl_waits": []
+  },
+  {
+   "s": 140134,
+   "e": 140179,
+   "addr": 68,
+   "rw": "read",
+   "addr_ack": false,
+   "bytes": "",
+   "acks": [],
+   "start_cond": "S",
+   "end_cond": "P",
+   "scl_low_ticks": 3.0,
+   "scl_waits": []
+  },
+  {
+   "s": 141257,
+   "e": 141302,
+   "addr": 68,
+   "rw": "read",
+   "addr_ack": false,
+   "bytes": "",
+   "acks": [],
+   "start_cond": "S",
+   "end_cond": "P",
+   "scl_low_ticks": 2.0,
+   "scl_waits": []
+  },
+  {
+   "s": 142382,
+   "e": 142697,
+   "addr": 68,
+   "rw": "read",
+   "addr_ack": true,
+   "bytes": "5e8d3da1aaad",
+   "acks": [
+    true,
+    true,
+    true,
+    true,
+    true,
+    false
+   ],
+   "start_cond": "S",
+   "end_cond": "P",
+   "scl_low_ticks": 2.0,
+   "scl_waits": []
+  },
+  {
+   "s": 152513,
+   "e": 152648,
+   "addr": 68,
+   "rw": "write",
+   "addr_ack": true,
+   "bytes": "2c06",
+   "acks": [
+    true,
+    true
+   ],
+   "start_cond": "S",
+   "end_cond": "P",
+   "scl_low_ticks": 3.0,
+   "scl_waits": []
+  },
+  {
+   "s": 152758,
+   "e": 177296,
+   "addr": 68,
+   "rw": "read",
+   "addr_ack": true,
+   "bytes": "5e",
+   "acks": [
+    false
+   ],
+   "start_cond": "S",
+   "end_cond": "Sr",
+   "scl_low_ticks": 2.0,
+   "scl_waits": [
+    {
+     "after_word": 0,
+     "bit": 0,
+     "ticks": 24456,
+     "s": 152801
+    }
+   ]
+  },
+  {
+   "s": 177337,
+   "e": 177472,
+   "addr": 68,
+   "rw": "write",
+   "addr_ack": true,
+   "bytes": "240b",
+   "acks": [
+    true,
+    true
+   ],
+   "start_cond": "Sr",
+   "end_cond": "P",
+   "scl_low_ticks": 2.0,
+   "scl_waits": []
+  },
+  {
+   "s": 177642,
+   "e": 177687,
+   "addr": 68,
+   "rw": "read",
+   "addr_ack": false,
+   "bytes": "",
+   "acks": [],
+   "start_cond": "S",
+   "end_cond": "P",
+   "scl_low_ticks": 3.0,
+   "scl_waits": []
+  },
+  {
+   "s": 178768,
+   "e": 178813,
+   "addr": 68,
+   "rw": "read",
+   "addr_ack": false,
+   "bytes": "",
+   "acks": [],
+   "start_cond": "S",
+   "end_cond": "P",
+   "scl_low_ticks": 3.0,
+   "scl_waits": []
+  },
+  {
+   "s": 179892,
+   "e": 179937,
+   "addr": 68,
+   "rw": "read",
+   "addr_ack": false,
+   "bytes": "",
+   "acks": [],
+   "start_cond": "S",
+   "end_cond": "P",
+   "scl_low_ticks": 3.0,
+   "scl_waits": []
+  },
+  {
+   "s": 181017,
+   "e": 181062,
+   "addr": 68,
+   "rw": "read",
+   "addr_ack": false,
+   "bytes": "",
+   "acks": [],
+   "start_cond": "S",
+   "end_cond": "P",
+   "scl_low_ticks": 3.0,
+   "scl_waits": []
+  },
+  {
+   "s": 182139,
+   "e": 182184,
+   "addr": 68,
+   "rw": "read",
+   "addr_ack": false,
+   "bytes": "",
+   "acks": [],
+   "start_cond": "S",
+   "end_cond": "P",
+   "scl_low_ticks": 2.0,
+   "scl_waits": []
+  },
+  {
+   "s": 183265,
+   "e": 183310,
+   "addr": 68,
+   "rw": "read",
+   "addr_ack": false,
+   "bytes": "",
+   "acks": [],
+   "start_cond": "S",
+   "end_cond": "P",
+   "scl_low_ticks": 3.0,
+   "scl_waits": []
+  },
+  {
+   "s": 184387,
+   "e": 184432,
+   "addr": 68,
+   "rw": "read",
+   "addr_ack": false,
+   "bytes": "",
+   "acks": [],
+   "start_cond": "S",
+   "end_cond": "P",
+   "scl_low_ticks": 3.0,
+   "scl_waits": []
+  },
+  {
+   "s": 185528,
+   "e": 185573,
+   "addr": 68,
+   "rw": "read",
+   "addr_ack": false,
+   "bytes": "",
+   "acks": [],
+   "start_cond": "S",
+   "end_cond": "P",
+   "scl_low_ticks": 3.0,
+   "scl_waits": []
+  },
+  {
+   "s": 186650,
+   "e": 186965,
+   "addr": 68,
+   "rw": "read",
+   "addr_ack": true,
+   "bytes": "5ea295a1aaad",
+   "acks": [
+    true,
+    true,
+    true,
+    true,
+    true,
+    false
+   ],
+   "start_cond": "S",
+   "end_cond": "P",
+   "scl_low_ticks": 3.0,
+   "scl_waits": []
+  },
+  {
+   "s": 196509,
+   "e": 196644,
+   "addr": 68,
+   "rw": "write",
+   "addr_ack": true,
+   "bytes": "2c0d",
+   "acks": [
+    true,
+    true
+   ],
+   "start_cond": "S",
+   "end_cond": "P",
+   "scl_low_ticks": 3.0,
+   "scl_waits": []
+  },
+  {
+   "s": 196746,
+   "e": 205619,
+   "addr": 68,
+   "rw": "read",
+   "addr_ack": true,
+   "bytes": "5e988ba1a7e1",
+   "acks": [
+    true,
+    true,
+    true,
+    true,
+    true,
+    false
+   ],
+   "start_cond": "S",
+   "end_cond": "P",
+   "scl_low_ticks": 3.0,
+   "scl_waits": [
+    {
+     "after_word": 0,
+     "bit": 0,
+     "ticks": 8561,
+     "s": 196788
+    }
+   ]
+  },
+  {
+   "s": 214494,
+   "e": 214629,
+   "addr": 68,
+   "rw": "write",
+   "addr_ack": true,
+   "bytes": "2416",
+   "acks": [
+    true,
+    true
+   ],
+   "start_cond": "S",
+   "end_cond": "P",
+   "scl_low_ticks": 3.0,
+   "scl_waits": []
+  },
+  {
+   "s": 214733,
+   "e": 214778,
+   "addr": 68,
+   "rw": "read",
+   "addr_ack": false,
+   "bytes": "",
+   "acks": [],
+   "start_cond": "S",
+   "end_cond": "P",
+   "scl_low_ticks": 3.0,
+   "scl_waits": []
+  },
+  {
+   "s": 215856,
+   "e": 215901,
+   "addr": 68,
+   "rw": "read",
+   "addr_ack": false,
+   "bytes": "",
+   "acks": [],
+   "start_cond": "S",
+   "end_cond": "P",
+   "scl_low_ticks": 3.0,
+   "scl_waits": []
+  },
+  {
+   "s": 216981,
+   "e": 217026,
+   "addr": 68,
+   "rw": "read",
+   "addr_ack": false,
+   "bytes": "",
+   "acks": [],
+   "start_cond": "S",
+   "end_cond": "P",
+   "scl_low_ticks": 3.0,
+   "scl_waits": []
+  },
+  {
+   "s": 218103,
+   "e": 218148,
+   "addr": 68,
+   "rw": "read",
+   "addr_ack": false,
+   "bytes": "",
+   "acks": [],
+   "start_cond": "S",
+   "end_cond": "P",
+   "scl_low_ticks": 3.0,
+   "scl_waits": []
+  },
+  {
+   "s": 219226,
+   "e": 219271,
+   "addr": 68,
+   "rw": "read",
+   "addr_ack": false,
+   "bytes": "",
+   "acks": [],
+   "start_cond": "S",
+   "end_cond": "P",
+   "scl_low_ticks": 2.0,
+   "scl_waits": []
+  },
+  {
+   "s": 220349,
+   "e": 220664,
+   "addr": 68,
+   "rw": "read",
+   "addr_ack": true,
+   "bytes": "5e88c8a1d1bf",
+   "acks": [
+    true,
+    true,
+    true,
+    true,
+    true,
+    false
+   ],
+   "start_cond": "S",
+   "end_cond": "P",
+   "scl_low_ticks": 3.0,
+   "scl_waits": []
+  },
+  {
+   "s": 230491,
+   "e": 230626,
+   "addr": 68,
+   "rw": "write",
+   "addr_ack": true,
+   "bytes": "2c10",
+   "acks": [
+    true,
+    true
+   ],
+   "start_cond": "S",
+   "end_cond": "P",
+   "scl_low_ticks": 3.0,
+   "scl_waits": []
+  },
+  {
+   "s": 230730,
+   "e": 235891,
+   "addr": 68,
+   "rw": "read",
+   "addr_ack": true,
+   "bytes": "5e784aa16f1f",
+   "acks": [
+    true,
+    true,
+    true,
+    true,
+    true,
+    false
+   ],
+   "start_cond": "S",
+   "end_cond": "P",
+   "scl_low_ticks": 3.0,
+   "scl_waits": [
+    {
+     "after_word": 0,
+     "bit": 0,
+     "ticks": 4848,
+     "s": 230773
+    }
+   ]
+  }
+ ]
+}

@@ -18,8 +18,10 @@ did not stretch is an after at its start). Nothing here
 knows a part: a case's markers say what each transfer meant.
 
 A measurement's window for event k is [the latest before, the earliest after]. A measurement with events 1..N is a
-series t_k = first + (k - 1) * period, and its period window is what every pair of events allows. Over several
-measurements, a window is the intersection of theirs; an empty one says the time varies from one to the next.
+series t_k = first + (k - 1) * period: its period window is what every pair of events allows, and its first window
+what every event allows with the period eliminated (both exact: the constraints are linear in two unknowns). Over
+several measurements, a window is the intersection of theirs; an empty one says the time varies from one to the
+next.
 
     python3 tools/measure.py [RUN ...] [--timing KEY] [--where NAME=VALUE ...] [--each]
 
@@ -221,11 +223,32 @@ def period(m: Measurement) -> tuple:
     return low, high
 
 
+def first(m: Measurement) -> tuple:
+    """Event 1's time as the whole series allows it: lo_k <= first + (k - 1) * period <= hi_k for every k, the period
+    eliminated pair by pair (with one event, its own window)."""
+    low, high = m.window(1)
+    ks = sorted(set(m.before) | set(m.after))
+    for a in ks:
+        for b in ks:
+            if a < 2 or b < 2 or a == b or m.before.get(a) is None or m.after.get(b) is None:
+                continue
+            # (lo_a - first) / (a - 1) <= period <= (hi_b - first) / (b - 1)
+            v = (m.before[a] * (b - 1) - m.after[b] * (a - 1)) / (b - a)
+            if b > a:
+                low = v if low is None else max(low, v)
+            else:
+                high = v if high is None else min(high, v)
+    return low, high
+
+
 def window_of(measurements: list, of: str = "first") -> tuple:
-    """The window over measurements: of 'first' (event 1), 'period' (of a series), or an event number."""
+    """The window over measurements: of 'first' (event 1, with the rest of a series), 'period' (of a series), or an
+    event number (that event's own window)."""
     if of == "period":
         return tuple(_r(v) for v in intersect([period(m) for m in measurements]))
-    k = 1 if of == "first" else int(of)
+    if of == "first":
+        return tuple(_r(v) for v in intersect([first(m) for m in measurements]))
+    k = int(of)
     return tuple(_r(v) for v in intersect([m.window(k) for m in measurements]))
 
 
@@ -247,7 +270,7 @@ def describe(measurements: list, each: bool = False) -> str:
         lines.append(text)
         if each:
             for m in group:
-                a, b = m.window(1)
+                a, b = first(m)
                 extra = ""
                 if n > 1:
                     p = period(m)

@@ -1,0 +1,47 @@
+schema_version: 1
+case: sht30-unread-reset
+date: '2026-11-11'
+targets:
+- chip: sht30
+  product: m5stack-u001-c
+  bus: i2c
+  addr: '0x44'
+  bench:
+    name: env3
+    position: 3-3 / 3-4
+bus:
+  kind: i2c
+  hz: 100000
+  pins:
+    SDA: 14
+    SCL: 15
+  pullups: unknown (only Unit ENV III on the Grove; none added on the board side)
+dut:
+  board: ESP32-P4X (Unit ENV III on its Grove GPIO14 / 15)
+  id: oep://80f1b2d719c5
+  bench:
+    name: p4x-grove
+    position: 3-3 / 3-4
+  core:
+    name: arduino-esp32
+    version: 3.3.12
+  controller: esp32p4
+probe:
+  id: oep://80f1b2d719c5
+  bench:
+    name: p4x-grove
+    position: 3-3 / 3-4
+  firmware: EmbedBenchDeviceData collect/m5stack/u001-c
+  version: 3b2b6f8 (OpenEmbeddedProbe 0.0.54 @ c52b012)
+wireskein:
+  version: 0.0.27
+captures:
+- file: c0001.wireskein
+  decode: c0001.i2c.json
+  timebase:
+    tick_hz:
+    - 2000000
+    - 1
+    tick0: 0
+    start_ns: 22883470000
+notes: collected with oep-client-python 0.0.54; the case ran on the probe itself

@@ -27,39 +27,39 @@ timing:
   - key: measure-high
     value_us: "12400"
     windows:
-      - {setting: "0x2400, 100 and 400 kHz", low_us: 12324, high_us: 12521, evidence: sht30-ready__i2c-100k__ba9a49c8133c5368}
-    evidence: [sht30-modes__i2c-400k__441df8c3968bdfc0, sht30-stretch-wait__i2c-100k__92c6b2dd5d8e8113, sht30-ready-idf__i2c-100k__b6910e61523fbe1f, sht30-unread-reset__i2c-100k__2e494dbb482d3066]
+      - {setting: "0x2400, polled, 100 and 400 kHz", low_us: 12346, high_us: 12514, evidence: [sht30-modes__i2c-100k__ebba71d7be69b5b3, sht30-modes__i2c-400k__2cd5e8bae3fd4244, sht30-ready__i2c-100k__5639229e3f209ec8, sht30-ready-idf__i2c-100k__ebf1f38ced96b414, sht30-unread-reset__i2c-100k__aed2622dcd48ccd6], measured: [{where: {via: polling}}]}
+      - {setting: "0x2C06, stretched (ESP-IDF, scl_wait_us 20000), 100 kHz", low_us: 12574, high_us: 12574, evidence: [sht30-stretch-wait__i2c-100k__f0d1c873975568ab], measured: [{where: {via: stretch}}]}
+    evidence: [sht30-stretch-wait__i2c-100k__92c6b2dd5d8e8113]
     notes: |
-      From the start of the command to the start of a read: refused before the window, answered after it. It varies
-      from one measurement to the next: a stretched one let SCL go 12351 us after its command (sht30-modes, 400 kHz),
-      a polled one was still refused at 12502 us (sht30-stretch-wait). The window is over every other polled
-      measurement (the low end from sht30-ready, the high end from sht30-modes at 400 kHz). The datasheet says up to
-      15 ms.
+      From the start of the command to the start of a read: refused before the window, answered after it (a
+      stretched read: where the part let SCL go). It varies from one measurement to the next: the stretched one
+      took 12574 us, past every polled one's window, and another day's polled one was still refused at 12502 us
+      (sht30-stretch-wait, 2026-11-11 morning). Nine polled measurements agree on the first window. The datasheet
+      says up to 15 ms.
   - key: measure-medium
     value_us: "4500"
     windows:
-      - {setting: "0x240B, 100 and 400 kHz", low_us: 4166, high_us: 4608, evidence: sht30-modes__i2c-100k__85b6b552756235f2}
-    evidence: [sht30-modes__i2c-400k__441df8c3968bdfc0]
-    notes: The high end from the 400 kHz run.
+      - {setting: "0x240B, polled, 100 and 400 kHz", low_us: 4188, high_us: 4656, evidence: [sht30-modes__i2c-100k__ebba71d7be69b5b3, sht30-modes__i2c-400k__2cd5e8bae3fd4244], measured: [{where: {via: polling}}]}
+    evidence: [sht30-modes__i2c-100k__ebba71d7be69b5b3, sht30-modes__i2c-400k__2cd5e8bae3fd4244]
+    notes: Stretched (0x2C0D), the part let SCL go 4620 us (100 kHz) and 4420 us (400 kHz) after the command.
   - key: measure-low
     value_us: "2500"
     windows:
-      - {setting: "0x2416, 100 and 400 kHz", low_us: 2354, high_us: 2901, evidence: sht30-modes__i2c-400k__441df8c3968bdfc0}
-    evidence: [sht30-modes__i2c-100k__85b6b552756235f2]
-    notes: The high end from the 100 kHz run.
+      - {setting: "0x2416, polled, 100 and 400 kHz", low_us: 2366, high_us: 2922, evidence: [sht30-modes__i2c-100k__ebba71d7be69b5b3, sht30-modes__i2c-400k__2cd5e8bae3fd4244], measured: [{where: {via: polling}}]}
+    evidence: [sht30-modes__i2c-100k__ebba71d7be69b5b3, sht30-modes__i2c-400k__2cd5e8bae3fd4244]
+    notes: Stretched (0x2C10), the part let SCL go 2764 us (100 kHz) and 2565 us (400 kHz) after the command.
   - key: soft-reset
     value_us: "1500"
     windows:
-      - {setting: "0x30A2, then 0x2400", low_us: 401, high_us: 1989, evidence: sht30-ready-idf__i2c-100k__b6910e61523fbe1f}
-    evidence: [sht30-ready__i2c-100k__ba9a49c8133c5368]
+      - {setting: "0x30A2, then 0x2400 (Wire and ESP-IDF)", low_us: 363, high_us: 1988, evidence: [sht30-ready__i2c-100k__5639229e3f209ec8, sht30-ready-idf__i2c-100k__ebf1f38ced96b414], measured: [{}]}
     notes: |
-      A command 401 us after the reset's start took the address and was refused at its data byte (status 3, nothing
-      measured); one 1989 us after was measured (sht30-ready). Inside the window the part takes its address, unlike a
-      measurement.
+      From the reset's start to the next command's start. A command 363 us after was refused at its data byte (Wire:
+      endTransmission 3; nothing measured); one 1988 us after was measured. Inside the window the part takes its
+      address, unlike a measurement.
 behaviours:
   - key: stretches-until-the-result
-    evidence: [sht30-stretch-wait__i2c-100k__92c6b2dd5d8e8113]
-    notes: A stretching read holds SCL low until the result is there (ESP-IDF's master, waiting, got it 12.9 ms after the command).
+    evidence: [sht30-stretch-wait__i2c-100k__f0d1c873975568ab]
+    notes: A stretching read holds SCL low until the result is there (ESP-IDF's master, waiting, got it 12.6 ms after the command).
   - key: refuses-address-while-measuring
     evidence: [sht30-modes__i2c-100k__85b6b552756235f2, sht30-modes__i2c-400k__441df8c3968bdfc0]
     notes: While measuring (polling commands) the part refuses its address, to reads and to commands alike.
@@ -88,4 +88,5 @@ controllers:
       ESP-IDF's master with scl_wait_us 20000 waits it out. How long to wait is the controller's, not the part's.
 notes: |
   The EmbedBench model is devices/src/sht30_model.*, checked in tests/model_replay/. The model's 12.4 / 4.5 / 2.5 ms sit inside the
-  windows; high's spread from one measurement to the next is wider than one value.
+  polled windows; a measurement's own length spreads wider than one value (the stretched ones). The windows are measured by
+  tools/measure.py from the cases' event markers.
