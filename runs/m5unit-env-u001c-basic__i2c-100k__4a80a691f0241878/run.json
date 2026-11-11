@@ -1,0 +1,237 @@
+{
+ "format": "wireskein-run/1",
+ "meta": {
+  "case": "m5unit-env-u001c-basic",
+  "probe": "oep://80f1b2d719c5",
+  "pins": {
+   "SDA": "GPIO14",
+   "SCL": "GPIO15"
+  }
+ },
+ "log": [
+  {
+   "host_ns": 2329035587571059,
+   "src": "marker",
+   "text": "# m5unit-env-u001c-basic",
+   "probe_ns": 5735738000,
+   "boot_id": 1384491707,
+   "probe": "oep://80f1b2d719c5"
+  },
+  {
+   "host_ns": 2329035587600059,
+   "src": "marker",
+   "text": "## sht30-begin",
+   "probe_ns": 5735767000,
+   "boot_id": 1384491707,
+   "probe": "oep://80f1b2d719c5"
+  },
+  {
+   "host_ns": 2329035587993055,
+   "src": "dut",
+   "text": "ok=1",
+   "probe_ns": 5736160000,
+   "boot_id": 1384491707,
+   "probe": "oep://80f1b2d719c5"
+  },
+  {
+   "host_ns": 2329035587996055,
+   "src": "marker",
+   "text": "##",
+   "probe_ns": 5736163000,
+   "boot_id": 1384491707,
+   "probe": "oep://80f1b2d719c5"
+  },
+  {
+   "host_ns": 2329035587998055,
+   "src": "marker",
+   "text": "## qmp6988-begin",
+   "probe_ns": 5736165000,
+   "boot_id": 1384491707,
+   "probe": "oep://80f1b2d719c5"
+  },
+  {
+   "host_ns": 2329035750600489,
+   "src": "dut",
+   "text": "ok=1",
+   "probe_ns": 5898769000,
+   "boot_id": 1384491707,
+   "probe": "oep://80f1b2d719c5"
+  },
+  {
+   "host_ns": 2329035750603489,
+   "src": "marker",
+   "text": "##",
+   "probe_ns": 5898772000,
+   "boot_id": 1384491707,
+   "probe": "oep://80f1b2d719c5"
+  },
+  {
+   "host_ns": 2329035750606489,
+   "src": "marker",
+   "text": "## sht30-update",
+   "probe_ns": 5898775000,
+   "boot_id": 1384491707,
+   "probe": "oep://80f1b2d719c5"
+  },
+  {
+   "host_ns": 2329036000871079,
+   "src": "dut",
+   "text": "ok=1 elapsed_us=250014 temperature_c=19.55 humidity_rh=63.85",
+   "probe_ns": 6149042000,
+   "boot_id": 1384491707,
+   "probe": "oep://80f1b2d719c5"
+  },
+  {
+   "host_ns": 2329036000880079,
+   "src": "marker",
+   "text": "##",
+   "probe_ns": 6149051000,
+   "boot_id": 1384491707,
+   "probe": "oep://80f1b2d719c5"
+  },
+  {
+   "host_ns": 2329036000882079,
+   "src": "marker",
+   "text": "## qmp6988-update",
+   "probe_ns": 6149053000,
+   "boot_id": 1384491707,
+   "probe": "oep://80f1b2d719c5"
+  },
+  {
+   "host_ns": 2329036003677052,
+   "src": "dut",
+   "text": "ok=1 elapsed_us=2744 pressure_pa=102343.5 temperature_c=19.51",
+   "probe_ns": 6151848000,
+   "boot_id": 1384491707,
+   "probe": "oep://80f1b2d719c5"
+  },
+  {
+   "host_ns": 2329036003686052,
+   "src": "marker",
+   "text": "##",
+   "probe_ns": 6151857000,
+   "boot_id": 1384491707,
+   "probe": "oep://80f1b2d719c5"
+  },
+  {
+   "host_ns": 2329036103595090,
+   "src": "marker",
+   "text": "## sht30-update",
+   "probe_ns": 6251767000,
+   "boot_id": 1384491707,
+   "probe": "oep://80f1b2d719c5"
+  },
+  {
+   "host_ns": 2329036353639682,
+   "src": "dut",
+   "text": "ok=1 elapsed_us=250002 temperature_c=19.54 humidity_rh=63.88",
+   "probe_ns": 6501814000,
+   "boot_id": 1384491707,
+   "probe": "oep://80f1b2d719c5"
+  },
+  {
+   "host_ns": 2329036353648682,
+   "src": "marker",
+   "text": "##",
+   "probe_ns": 6501823000,
+   "boot_id": 1384491707,
+   "probe": "oep://80f1b2d719c5"
+  },
+  {
+   "host_ns": 2329036353650682,
+   "src": "marker",
+   "text": "## qmp6988-update",
+   "probe_ns": 6501825000,
+   "boot_id": 1384491707,
+   "probe": "oep://80f1b2d719c5"
+  },
+  {
+   "host_ns": 2329036356237657,
+   "src": "dut",
+   "text": "ok=1 elapsed_us=2543 pressure_pa=102343.9 temperature_c=19.56",
+   "probe_ns": 6504412000,
+   "boot_id": 1384491707,
+   "probe": "oep://80f1b2d719c5"
+  },
+  {
+   "host_ns": 2329036356246657,
+   "src": "marker",
+   "text": "##",
+   "probe_ns": 6504421000,
+   "boot_id": 1384491707,
+   "probe": "oep://80f1b2d719c5"
+  },
+  {
+   "host_ns": 2329036455580701,
+   "src": "marker",
+   "text": "## sht30-update",
+   "probe_ns": 6603756000,
+   "boot_id": 1384491707,
+   "probe": "oep://80f1b2d719c5"
+  },
+  {
+   "host_ns": 2329036705627293,
+   "src": "dut",
+   "text": "ok=1 elapsed_us=250005 temperature_c=19.54 humidity_rh=63.87",
+   "probe_ns": 6853805000,
+   "boot_id": 1384491707,
+   "probe": "oep://80f1b2d719c5"
+  },
+  {
+   "host_ns": 2329036705636293,
+   "src": "marker",
+   "text": "##",
+   "probe_ns": 6853814000,
+   "boot_id": 1384491707,
+   "probe": "oep://80f1b2d719c5"
+  },
+  {
+   "host_ns": 2329036705638293,
+   "src": "marker",
+   "text": "## qmp6988-update",
+   "probe_ns": 6853816000,
+   "boot_id": 1384491707,
+   "probe": "oep://80f1b2d719c5"
+  },
+  {
+   "host_ns": 2329036708229268,
+   "src": "dut",
+   "text": "ok=1 elapsed_us=2548 pressure_pa=102343.3 temperature_c=19.58",
+   "probe_ns": 6856407000,
+   "boot_id": 1384491707,
+   "probe": "oep://80f1b2d719c5"
+  },
+  {
+   "host_ns": 2329036708238268,
+   "src": "marker",
+   "text": "##",
+   "probe_ns": 6856416000,
+   "boot_id": 1384491707,
+   "probe": "oep://80f1b2d719c5"
+  },
+  {
+   "host_ns": 2329036807578311,
+   "src": "marker",
+   "text": "#",
+   "probe_ns": 6955757000,
+   "boot_id": 1384491707,
+   "probe": "oep://80f1b2d719c5"
+  },
+  {
+   "host_ns": 2329036950417561,
+   "src": "note",
+   "text": "case result=0"
+  }
+ ],
+ "captures": [
+  {
+   "file": "c0001.wireskein",
+   "host_ns": 2329035529839263,
+   "channels": [
+    "SDA",
+    "SCL"
+   ]
+  }
+ ],
+ "expect": {}
+}
