@@ -83,5 +83,6 @@ uv run pytest m5stack/u001-c/u001-c.py --profile esp32p4x \
   - そこに I2C master の割込みが付くと、割込みが遅れる。アドレスの NACK が成功として返り、そのあと落ちることもある。
   - ワーカー（コア 0）で作れば起きない（`esp32p4-i2c-nack-answers`）。
 - OpenEmbeddedProbe（sketch.yaml）と oep-client-python（`collect/pyproject.toml`）は、ジョブとログの口（oep::SimpleInterface の job / addWorker / addLog、oep_client.call）が入った 0.0.54 以降を使う。
-  - OpenEmbeddedProbe 0.0.54 が Arduino のライブラリ一覧に載るまでは、sketch.yaml は `/home/mt/dev_oep` の手元の clone を指す。provenance には、その版と commit が残る。
-- oep-client-python と wireskein の版は `collect/pyproject.toml` で固定し、上げるときは意図して上げる。
+- 依存の版は sketch.yaml と `collect/pyproject.toml` で固定し、上げるときは意図して上げる。
+  - 区切り（push の前、長い作業の後）で公開の版と比べる。sketch.yaml は pytest-embedded-arduino-cli の TESTING_ADVANCED.ja.md「sketch.yaml の版を保守する」に従う。
+  - 上げたら全スケッチをビルドし、ENV III を録り直して前の run と転送が変わらないことを確かめる。
