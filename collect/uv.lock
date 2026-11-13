@@ -29,7 +29,7 @@ dependencies = [
 [package.metadata]
 requires-dist = [
     { name = "oep-client-python", extras = ["usb-async"], specifier = "==0.0.54" },
-    { name = "pytest-embedded-arduino-cli", specifier = "==1.11.0" },
+    { name = "pytest-embedded-arduino-cli", specifier = "==1.11.1" },
     { name = "pyyaml", specifier = ">=6" },
     { name = "wireskein", specifier = "==0.0.27" },
 ]
@@ -337,7 +337,7 @@ wheels = [
 
 [[package]]
 name = "pytest-embedded-arduino-cli"
-version = "1.11.0"
+version = "1.11.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "portalocker" },
@@ -346,9 +346,9 @@ dependencies = [
     { name = "pytest-embedded-serial" },
     { name = "pyyaml" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/0e/c5/f5d030f419dcb2f1d93638cfe346f9e008046990f30d5acf401975aaa583/pytest_embedded_arduino_cli-1.11.0.tar.gz", hash = "sha256:eaad493327b7dfe5636efdb9dc9abb19543f0f0ba8bc6fd82c29ab4c12e2fa0b", size = 372279, upload-time = "2026-10-31T20:11:13.954Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/fd/dd/7c75795356c6970e697118aa81ab2f2d90211c7f2739d66c88b9b33443c4/pytest_embedded_arduino_cli-1.11.1.tar.gz", hash = "sha256:a042ba9d523b84826e610fc8ecfb3ab56300f67126838e4efb97bef7b4acabd9", size = 372526, upload-time = "2026-11-12T22:56:05.316Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/a8/54/3f3d617dc25fef08c67b56ae74c3194c115ad9218a8369f1928fa02aa6db/pytest_embedded_arduino_cli-1.11.0-py3-none-any.whl", hash = "sha256:e1733fba95e86ac13d60034c05ca1b553634b1fad9d992c250f449139e028743", size = 57957, upload-time = "2026-10-31T20:11:12.527Z" },
+    { url = "https://files.pythonhosted.org/packages/da/3b/7925e65de2d735b798134d1bc900bc96f776c47cd1cb7d9ede5f790e7976/pytest_embedded_arduino_cli-1.11.1-py3-none-any.whl", hash = "sha256:1a703946e20a70ff4f7407785f68c19ca4b3ce24aafe49791ec9441fb8a5840b", size = 58035, upload-time = "2026-11-12T22:56:04.076Z" },
 ]
 
 [[package]]

@@ -5,7 +5,7 @@ description = "Collection of EmbedBenchDeviceData's runs on an OEP probe, run wi
 requires-python = ">=3.11"
 # Pinned so a run says what took it; raise them deliberately (oep-client-python is 0.0.x and may break before v1).
 dependencies = [
-    "pytest-embedded-arduino-cli==1.11.0",
+    "pytest-embedded-arduino-cli==1.11.1",
     "oep-client-python[usb-async]==0.0.54",
     "wireskein==0.0.27",
     "pyyaml>=6",
