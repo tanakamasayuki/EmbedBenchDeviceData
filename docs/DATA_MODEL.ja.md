@@ -23,7 +23,7 @@
 | product | `slug(vendor)-slug(sku)` | `m5stack-u001-c` |
 | library | `slug(owner)-slug(repo)`（repo が owner で始まるなら repo だけ） | `m5stack-m5unit-env` |
 | case | `<対象>-<何を>`、`[a-z0-9-]`。対象はチップ・製品・ライブラリ。バスは入れない | `sht30-modes`、`m5unit-env-u001c-basic` |
-| run | `<case>__<bus>-<速さ>__<hash16>`（I2C は `i2c-<kHz>k`） | `wire-absent-address__i2c-100k__50f8781ef04f2bec` |
+| run | `<case>__<bus>-<速さ>__<hash16>`（I2C は `i2c-<kHz>k`） | `wire-absent-address__i2c-100k__dc9972dad3336fc2` |
 | 収集のスケッチ | `<vendor>/<sku>`（product のキーと対応）。製品の無い部品は `generic/<chip>` | `m5stack/u001-c` |
 | ベンチ | oep-bench の台帳の略称 | `p4x-grove` |
 
@@ -86,6 +86,7 @@ run.json の目印（`#` ケース、`##` 段階）が何をしたかを、ケ�
 **run-id** は `tools/run_id.py` が決める。転送の列（`addr、rw、addr_ack、bytes、acks、start_cond、end_cond`。時刻は除く）を
 全キャプチャぶん並べた JSON の sha256 の先頭 16 桁。同じバイトが同じ順に動いた run は同じ名前になる。
 run.json にケースの出来事の目印（`### ` の行。時刻は除く）があれば、それも含める（転送が同じでも、ケースがそれぞれの転送の意味を言った run は別のもの）。
+キャプチャの取り込みの速さ（captures[].timebase.tick_hz）が 2 MS/s 以外なら、それも含める（同じ転送を速く録った run は、別の記録として残る）。
 置くときは `<case>__i2c-<kHz>k__pending` でもよい。validate が正しい名前を言う。
 
 ### provenance.yaml

@@ -9,7 +9,9 @@ the same name whenever they were taken. A run whose measured values differ
 gets a different name; grouping those is the job of a mask, not of the id.
 The case's event markers (### lines in run.json, tools/measure.py), times
 left out, are part of what happened: what the case saw each transfer mean.
-A run with none is named by its transfers alone.
+A run with none is named by its transfers alone. A capture taken at another
+sample rate than 2 MS/s is another record of the bus, and its rate is part
+of the hash too (so a faster capture of the same transfers is kept).
 
     python3 tools/run_id.py runs/<dir>      # print the name the run should have
 """
@@ -39,11 +41,16 @@ def events(run_json: Path) -> list[str]:
     return [line["text"] for line in log if line.get("text", "").startswith("### ")]
 
 
-def content_hash(decodes: list[Path]) -> str:
+BASE_RATE = 2_000_000   # samples per second the hash leaves out
+
+
+def content_hash(decodes: list[Path], rate: int | None = None) -> str:
     sequence = [transfers(path) for path in decodes]
     marks = events(decodes[0].parent / "run.json") if decodes else []
     if marks:
         sequence = {"transfers": sequence, "events": marks}
+    if rate is not None and rate != BASE_RATE:
+        sequence = {"rate": rate, **(sequence if isinstance(sequence, dict) else {"transfers": sequence})}
     text = json.dumps(sequence, sort_keys=True, separators=(",", ":"))
     return hashlib.sha256(text.encode("utf-8")).hexdigest()[:16]
 
@@ -55,7 +62,18 @@ def run_id(provenance: dict, decodes: list[Path]) -> str:
     hz = int(bus["hz"])
     if hz % 1000:
         raise ValueError(f"bus.hz {hz} is not a whole number of kHz")
-    return f"{provenance['case']}__i2c-{hz // 1000}k__{content_hash(decodes)}"
+    return f"{provenance['case']}__i2c-{hz // 1000}k__{content_hash(decodes, sample_rate(provenance))}"
+
+
+def sample_rate(provenance: dict) -> int | None:
+    """The captures' sample rate (their tick rate), when it is a whole number of samples per second."""
+    rates = set()
+    for capture in provenance.get("captures") or []:
+        num, den = (capture.get("timebase") or {}).get("tick_hz") or (None, None)
+        if num is None or num % den:
+            return None
+        rates.add(num // den)
+    return rates.pop() if len(rates) == 1 else None
 
 
 def main() -> int:
