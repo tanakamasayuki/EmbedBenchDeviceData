@@ -1,0 +1,89 @@
+{
+ "format": "wireskein-analysis/1",
+ "wireskein": "0.0.27",
+ "spec": {
+  "buses": [
+   {
+    "protocol": "i2c",
+    "pins": {
+     "sda": "SDA",
+     "scl": "SCL"
+    },
+    "params": {}
+   }
+  ],
+  "lines": [],
+  "devices": null,
+  "depth": "device"
+ },
+ "capture": {
+  "file": "c0001.wireskein",
+  "sha256": "131e373ec5a5f3c0ac69c3dd1a7d699a0577efe7d7eb1b35faf693f72a5d3339",
+  "id": "a76c9c350ba9f2229011f3f95115898c",
+  "tick_hz": [
+   50000000,
+   1
+  ],
+  "complete": true,
+  "layout": "timeline",
+  "parts": 1
+ },
+ "parts": [
+  {
+   "part": 0,
+   "ticks": 5703936,
+   "tick0": 0,
+   "start_ns": 42344849000,
+   "start_uncertainty_ns": 5000,
+   "buses": [
+    {
+     "protocol": "i2c",
+     "pins": {
+      "sda": "SDA",
+      "scl": "SCL"
+     },
+     "decoded": true,
+     "params": {
+      "sample_edge": "rise",
+      "declared": "i2c.toml"
+     },
+     "fit": {
+      "score": 0.0644,
+      "claimed": false
+     },
+     "result": {
+      "transactions": [
+       {
+        "s": 2999100,
+        "e": 2999629,
+        "addr": 80,
+        "rw": "write",
+        "addr_ack": false,
+        "bytes": "",
+        "acks": [],
+        "start_cond": "S",
+        "end_cond": "P",
+        "scl_low_ticks": 30.0,
+        "scl_waits": []
+       }
+      ]
+     },
+     "uninterpreted": [],
+     "idle_ticks": 944,
+     "reading": {
+      "frames": 1,
+      "ok": 1,
+      "unanswered": 0,
+      "restored": 0,
+      "repaired": 0,
+      "rate_ok": true,
+      "unread": 0,
+      "unread_edges": 0
+     }
+    }
+   ],
+   "lines": [],
+   "undeclared": []
+  }
+ ]
+}

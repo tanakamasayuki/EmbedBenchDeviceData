@@ -27,3 +27,6 @@ notes: |
   With the bus begun on the probe's worker (docs/COLLECTION.ja.md §4), Wire's answers match the wire: only the
   unit's parts answer. Begun on loop()'s core it reported refused addresses as answering
   (esp32p4-i2c-nack-answers).
+  On the ESP32-P4 (arduino-esp32 3.3.12) the scan runs at 100 kHz whatever the bus speed: Wire puts a zero-length
+  write out with ESP-IDF's i2c_master_probe, which takes no speed, and every address takes 90 us on the wire at
+  100k, 400k and 1M alike. The run's i2c-<kHz>k is the speed the bus was begun at, not the scan's.

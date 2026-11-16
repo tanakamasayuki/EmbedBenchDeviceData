@@ -1,0 +1,69 @@
+{
+ "format": "wireskein-run/1",
+ "meta": {
+  "case": "wire-scan",
+  "probe": "oep://80f1b2d719c5",
+  "pins": {
+   "SDA": "GPIO14",
+   "SCL": "GPIO15"
+  }
+ },
+ "log": [
+  {
+   "host_ns": 2838974844938457,
+   "src": "marker",
+   "text": "# wire-scan",
+   "probe_ns": 3994741000,
+   "boot_id": 3339638609,
+   "probe": "oep://80f1b2d719c5"
+  },
+  {
+   "host_ns": 2838974854687243,
+   "src": "dut",
+   "text": "found 0x44",
+   "probe_ns": 4004490000,
+   "boot_id": 3339638609,
+   "probe": "oep://80f1b2d719c5"
+  },
+  {
+   "host_ns": 2838974860833108,
+   "src": "dut",
+   "text": "found 0x70",
+   "probe_ns": 4010636000,
+   "boot_id": 3339638609,
+   "probe": "oep://80f1b2d719c5"
+  },
+  {
+   "host_ns": 2838974862949062,
+   "src": "dut",
+   "text": "found=2",
+   "probe_ns": 4012752000,
+   "boot_id": 3339638609,
+   "probe": "oep://80f1b2d719c5"
+  },
+  {
+   "host_ns": 2838974862952061,
+   "src": "marker",
+   "text": "#",
+   "probe_ns": 4012755000,
+   "boot_id": 3339638609,
+   "probe": "oep://80f1b2d719c5"
+  },
+  {
+   "host_ns": 2838975247578851,
+   "src": "note",
+   "text": "case result=0"
+  }
+ ],
+ "captures": [
+  {
+   "file": "c0001.wireskein",
+   "host_ns": 2838974694977749,
+   "channels": [
+    "SDA",
+    "SCL"
+   ]
+  }
+ ],
+ "expect": {}
+}

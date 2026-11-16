@@ -1,0 +1,117 @@
+{
+ "format": "wireskein-run/1",
+ "meta": {
+  "case": "sht30-stretch-wait",
+  "probe": "oep://80f1b2d719c5",
+  "pins": {
+   "SDA": "GPIO14",
+   "SCL": "GPIO15"
+  }
+ },
+ "log": [
+  {
+   "host_ns": 2839059068081910,
+   "src": "marker",
+   "text": "# sht30-stretch-wait",
+   "probe_ns": 15576795000,
+   "boot_id": 752469438,
+   "probe": "oep://80f1b2d719c5"
+  },
+  {
+   "host_ns": 2839059086017400,
+   "src": "marker",
+   "text": "## idf-scl-wait-20000us",
+   "probe_ns": 15594730000,
+   "boot_id": 752469438,
+   "probe": "oep://80f1b2d719c5"
+  },
+  {
+   "host_ns": 2839059086461412,
+   "src": "marker",
+   "text": "### start measure-high via=stretch",
+   "probe_ns": 15595174000,
+   "boot_id": 752469438,
+   "probe": "oep://80f1b2d719c5"
+  },
+  {
+   "host_ns": 2839059098829750,
+   "src": "marker",
+   "text": "### after measure-high at=release",
+   "probe_ns": 15607542000,
+   "boot_id": 752469438,
+   "probe": "oep://80f1b2d719c5"
+  },
+  {
+   "host_ns": 2839059098932752,
+   "src": "dut",
+   "text": "transmit=0 receive=0 elapsed_us=12399 bytes=610373a9bad9 crc=1",
+   "probe_ns": 15607645000,
+   "boot_id": 752469438,
+   "probe": "oep://80f1b2d719c5"
+  },
+  {
+   "host_ns": 2839059099122758,
+   "src": "marker",
+   "text": "##",
+   "probe_ns": 15607835000,
+   "boot_id": 752469438,
+   "probe": "oep://80f1b2d719c5"
+  },
+  {
+   "host_ns": 2839059137016793,
+   "src": "marker",
+   "text": "## wire-timeout-1000ms",
+   "probe_ns": 15645728000,
+   "boot_id": 752469438,
+   "probe": "oep://80f1b2d719c5"
+  },
+  {
+   "host_ns": 2839059137175797,
+   "src": "marker",
+   "text": "### start measure-high via=stretch",
+   "probe_ns": 15645887000,
+   "boot_id": 752469438,
+   "probe": "oep://80f1b2d719c5"
+  },
+  {
+   "host_ns": 2839059143827979,
+   "src": "dut",
+   "text": "end=0 elapsed_us=6630 got=0 bytes= crc=0",
+   "probe_ns": 15652539000,
+   "boot_id": 752469438,
+   "probe": "oep://80f1b2d719c5"
+  },
+  {
+   "host_ns": 2839059143833979,
+   "src": "marker",
+   "text": "##",
+   "probe_ns": 15652545000,
+   "boot_id": 752469438,
+   "probe": "oep://80f1b2d719c5"
+  },
+  {
+   "host_ns": 2839059143837979,
+   "src": "marker",
+   "text": "#",
+   "probe_ns": 15652549000,
+   "boot_id": 752469438,
+   "probe": "oep://80f1b2d719c5"
+  },
+  {
+   "host_ns": 2839059542870380,
+   "src": "note",
+   "text": "case result=1"
+  }
+ ],
+ "captures": [
+  {
+   "file": "c0001.wireskein",
+   "host_ns": 2839058999267515,
+   "channels": [
+    "SDA",
+    "SCL"
+   ]
+  }
+ ],
+ "expect": {}
+}
