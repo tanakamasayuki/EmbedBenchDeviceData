@@ -7,17 +7,17 @@ addressing:
   notes: |
     No registers: a 16-bit command, then a read of words, each word followed by its CRC-8 (polynomial 0x31, initial
     0xFF). Every answer in the runs carried a matching CRC.
-  evidence: [sht30-modes__i2c-100k__85b6b552756235f2, sht30-ready-idf__i2c-100k__b6910e61523fbe1f]
+  evidence: [sht30-modes__i2c-100k__67ed272b0bdc35a6, sht30-ready-idf__i2c-100k__b6910e61523fbe1f]
 registers: []
 commands:
-  - {code: "0x2400", name: "single shot, high repeatability, polling", answer_bytes: 6, timing: measure-high, evidence: [sht30-modes__i2c-100k__85b6b552756235f2]}
-  - {code: "0x240B", name: "single shot, medium repeatability, polling", answer_bytes: 6, timing: measure-medium, evidence: [sht30-modes__i2c-100k__85b6b552756235f2]}
-  - {code: "0x2416", name: "single shot, low repeatability, polling", answer_bytes: 6, timing: measure-low, evidence: [sht30-modes__i2c-100k__85b6b552756235f2]}
-  - {code: "0x2C06", name: "single shot, high repeatability, clock stretching", answer_bytes: 6, timing: measure-high, evidence: [sht30-modes__i2c-100k__85b6b552756235f2, m5unit-env-u001c-basic__i2c-100k__4a80a691f0241878]}
-  - {code: "0x2C0D", name: "single shot, medium repeatability, clock stretching", answer_bytes: 6, timing: measure-medium, evidence: [sht30-modes__i2c-100k__85b6b552756235f2]}
-  - {code: "0x2C10", name: "single shot, low repeatability, clock stretching", answer_bytes: 6, timing: measure-low, evidence: [sht30-modes__i2c-100k__85b6b552756235f2]}
-  - {code: "0xF32D", name: "read status", answer_bytes: 3, evidence: [sht30-modes__i2c-100k__85b6b552756235f2], notes: 8010 after a soft reset (alert and reset bits).}
-  - {code: "0x30A2", name: "soft reset", answer_bytes: 0, timing: soft-reset, evidence: [sht30-modes__i2c-100k__85b6b552756235f2, sht30-ready-idf__i2c-100k__b6910e61523fbe1f]}
+  - {code: "0x2400", name: "single shot, high repeatability, polling", answer_bytes: 6, timing: measure-high, evidence: [sht30-modes__i2c-100k__67ed272b0bdc35a6]}
+  - {code: "0x240B", name: "single shot, medium repeatability, polling", answer_bytes: 6, timing: measure-medium, evidence: [sht30-modes__i2c-100k__67ed272b0bdc35a6]}
+  - {code: "0x2416", name: "single shot, low repeatability, polling", answer_bytes: 6, timing: measure-low, evidence: [sht30-modes__i2c-100k__67ed272b0bdc35a6]}
+  - {code: "0x2C06", name: "single shot, high repeatability, clock stretching", answer_bytes: 6, timing: measure-high, evidence: [sht30-modes__i2c-100k__67ed272b0bdc35a6, m5unit-env-u001c-basic__i2c-100k__4a80a691f0241878]}
+  - {code: "0x2C0D", name: "single shot, medium repeatability, clock stretching", answer_bytes: 6, timing: measure-medium, evidence: [sht30-modes__i2c-100k__67ed272b0bdc35a6]}
+  - {code: "0x2C10", name: "single shot, low repeatability, clock stretching", answer_bytes: 6, timing: measure-low, evidence: [sht30-modes__i2c-100k__67ed272b0bdc35a6]}
+  - {code: "0xF32D", name: "read status", answer_bytes: 3, evidence: [sht30-modes__i2c-100k__67ed272b0bdc35a6], notes: 8010 after a soft reset (alert and reset bits).}
+  - {code: "0x30A2", name: "soft reset", answer_bytes: 0, timing: soft-reset, evidence: [sht30-modes__i2c-100k__67ed272b0bdc35a6, sht30-ready-idf__i2c-100k__b6910e61523fbe1f]}
   - {code: "0x3041", name: "clear status", answer_bytes: 0, evidence: [datasheet]}
   - {code: "0x306D", name: "heater on", answer_bytes: 0, evidence: [datasheet]}
   - {code: "0x3066", name: "heater off", answer_bytes: 0, evidence: [datasheet]}
@@ -27,7 +27,7 @@ timing:
   - key: measure-high
     value_us: "12400"
     windows:
-      - {setting: "0x2400, polled, 100 and 400 kHz", low_us: 12346, high_us: 12514, evidence: [sht30-modes__i2c-100k__ebba71d7be69b5b3, sht30-modes__i2c-400k__2cd5e8bae3fd4244, sht30-ready__i2c-100k__5639229e3f209ec8, sht30-ready-idf__i2c-100k__ebf1f38ced96b414, sht30-unread-reset__i2c-100k__aed2622dcd48ccd6], measured: [{where: {via: polling}}]}
+      - {setting: "0x2400, polled, 100 and 400 kHz", low_us: 12346, high_us: 12514, evidence: [sht30-modes__i2c-100k__957f1f7f568a03a1, sht30-modes__i2c-400k__83ea87b23484a3f3, sht30-ready__i2c-100k__5639229e3f209ec8, sht30-ready-idf__i2c-100k__ebf1f38ced96b414, sht30-unread-reset__i2c-100k__aed2622dcd48ccd6], measured: [{where: {via: polling}}]}
       - {setting: "0x2C06, stretched (ESP-IDF, scl_wait_us 20000), 100 kHz", low_us: 12574, high_us: 12574, evidence: [sht30-stretch-wait__i2c-100k__f0d1c873975568ab], measured: [{where: {via: stretch}}]}
     evidence: [sht30-stretch-wait__i2c-100k__92c6b2dd5d8e8113]
     notes: |
@@ -39,14 +39,14 @@ timing:
   - key: measure-medium
     value_us: "4500"
     windows:
-      - {setting: "0x240B, polled, 100 and 400 kHz", low_us: 4188, high_us: 4656, evidence: [sht30-modes__i2c-100k__ebba71d7be69b5b3, sht30-modes__i2c-400k__2cd5e8bae3fd4244], measured: [{where: {via: polling}}]}
-    evidence: [sht30-modes__i2c-100k__ebba71d7be69b5b3, sht30-modes__i2c-400k__2cd5e8bae3fd4244]
+      - {setting: "0x240B, polled, 100 and 400 kHz", low_us: 4188, high_us: 4656, evidence: [sht30-modes__i2c-100k__957f1f7f568a03a1, sht30-modes__i2c-400k__83ea87b23484a3f3], measured: [{where: {via: polling}}]}
+    evidence: [sht30-modes__i2c-100k__957f1f7f568a03a1, sht30-modes__i2c-400k__83ea87b23484a3f3]
     notes: Stretched (0x2C0D), the part let SCL go 4620 us (100 kHz) and 4420 us (400 kHz) after the command.
   - key: measure-low
     value_us: "2500"
     windows:
-      - {setting: "0x2416, polled, 100 and 400 kHz", low_us: 2366, high_us: 2922, evidence: [sht30-modes__i2c-100k__ebba71d7be69b5b3, sht30-modes__i2c-400k__2cd5e8bae3fd4244], measured: [{where: {via: polling}}]}
-    evidence: [sht30-modes__i2c-100k__ebba71d7be69b5b3, sht30-modes__i2c-400k__2cd5e8bae3fd4244]
+      - {setting: "0x2416, polled, 100 and 400 kHz", low_us: 2366, high_us: 2922, evidence: [sht30-modes__i2c-100k__957f1f7f568a03a1, sht30-modes__i2c-400k__83ea87b23484a3f3], measured: [{where: {via: polling}}]}
+    evidence: [sht30-modes__i2c-100k__957f1f7f568a03a1, sht30-modes__i2c-400k__83ea87b23484a3f3]
     notes: Stretched (0x2C10), the part let SCL go 2764 us (100 kHz) and 2565 us (400 kHz) after the command.
   - key: soft-reset
     value_us: "1500"
@@ -61,7 +61,7 @@ behaviours:
     evidence: [sht30-stretch-wait__i2c-100k__f0d1c873975568ab]
     notes: A stretching read holds SCL low until the result is there (ESP-IDF's master, waiting, got it 12.6 ms after the command).
   - key: refuses-address-while-measuring
-    evidence: [sht30-modes__i2c-100k__85b6b552756235f2, sht30-modes__i2c-400k__441df8c3968bdfc0]
+    evidence: [sht30-modes__i2c-100k__67ed272b0bdc35a6, sht30-modes__i2c-400k__b574cef8dd784e7b]
     notes: While measuring (polling commands) the part refuses its address, to reads and to commands alike.
   - key: unread-result-goes-to-the-next-read
     evidence: [sht30-ready-idf__i2c-100k__b6910e61523fbe1f, sht30-unread-reset__i2c-100k__2e494dbb482d3066]
@@ -75,14 +75,14 @@ behaviours:
       After a soft reset and before any command, every read is ACKed and gets 00 00 81 (0x0000 and its CRC) then FF,
       the same every time.
   - key: clocks-after-giving-up-send-the-result
-    evidence: [sht30-modes__i2c-100k__85b6b552756235f2, sht30-modes__i2c-400k__441df8c3968bdfc0]
+    evidence: [sht30-modes__i2c-100k__67ed272b0bdc35a6, sht30-modes__i2c-400k__b574cef8dd784e7b]
     notes: |
       When the controller gives up on a stretch and later clocks a bus clear through the part, the part sends its
       result out on those clocks (one byte reaches the decode); the result counts as read.
 controllers:
   - key: stretch-limit
     controller: arduino-esp32 3.3.12 Wire, ESP32-P4
-    evidence: [sht30-modes__i2c-100k__85b6b552756235f2, sht30-stretch-wait__i2c-100k__92c6b2dd5d8e8113]
+    evidence: [sht30-modes__i2c-100k__67ed272b0bdc35a6, sht30-stretch-wait__i2c-100k__92c6b2dd5d8e8113]
     notes: |
       Gives up a stretched read after about 6.7 ms, whatever setTimeOut says; the high repeatability needs 12.4 ms.
       ESP-IDF's master with scl_wait_us 20000 waits it out. How long to wait is the controller's, not the part's.

@@ -1,6 +1,6 @@
 {
  "format": "wireskein-analysis/1",
- "wireskein": "0.0.27",
+ "wireskein": "0.0.39",
  "spec": {
   "buses": [
    {
@@ -48,7 +48,7 @@
       "declared": "i2c.toml"
      },
      "fit": {
-      "score": 0.8955,
+      "score": 0.985,
       "claimed": true,
       "verdict": "confirmed"
      },
@@ -408,10 +408,8 @@
         "addr": 68,
         "rw": "read",
         "addr_ack": true,
-        "bytes": "5e",
-        "acks": [
-         false
-        ],
+        "bytes": "",
+        "acks": [],
         "start_cond": "S",
         "end_cond": "Sr",
         "scl_low_ticks": 10.0,
@@ -422,7 +420,20 @@
           "ticks": 24297,
           "s": 154629
          }
-        ]
+        ],
+        "complete": false,
+        "pending_bits": [
+         0,
+         1,
+         0,
+         1,
+         1,
+         1,
+         1,
+         0,
+         1
+        ],
+        "clock_lost": 154629
        },
        {
         "s": 179138,
@@ -768,12 +779,6 @@
          "command": "single shot, high repeatability, clock stretching"
         },
         {
-         "s": 154459,
-         "response_to": "single shot, high repeatability, clock stretching",
-         "bytes": "5e",
-         "crc_ok": null
-        },
-        {
          "s": 179138,
          "command": "single shot, medium repeatability, polling"
         },
@@ -826,7 +831,18 @@
       "repaired": 0,
       "rate_ok": true,
       "unread": 0,
-      "unread_edges": 0
+      "unread_edges": 0,
+      "line_changes": {
+       "SDA": {
+        "changes": 658,
+        "last": 242397
+       },
+       "SCL": {
+        "changes": 1798,
+        "last": 242382
+       }
+      },
+      "same_sample": 75
      }
     }
    ],

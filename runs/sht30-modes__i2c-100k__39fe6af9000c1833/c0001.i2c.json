@@ -354,10 +354,8 @@
    "addr": 68,
    "rw": "read",
    "addr_ack": true,
-   "bytes": "61",
-   "acks": [
-    false
-   ],
+   "bytes": "",
+   "acks": [],
    "start_cond": "S",
    "end_cond": "Sr",
    "scl_low_ticks": 256.0,
@@ -368,7 +366,20 @@
      "ticks": 607131,
      "s": 3939243
     }
-   ]
+   ],
+   "complete": false,
+   "pending_bits": [
+    0,
+    1,
+    1,
+    0,
+    0,
+    0,
+    0,
+    1,
+    1
+   ],
+   "clock_lost": 3939243
   },
   {
    "s": 4551783,

@@ -354,24 +354,32 @@
    "addr": 68,
    "rw": "read",
    "addr_ack": true,
-   "bytes": "b0",
-   "acks": [
-    true
-   ],
+   "bytes": "",
+   "acks": [],
    "start_cond": "S",
    "end_cond": "Sr",
    "scl_low_ticks": 10.0,
    "scl_waits": [
     {
      "after_word": 0,
-     "bit": 1,
-     "ticks": 24273,
-     "s": 163386
+     "bit": 0,
+     "ticks": 24283,
+     "s": 163376
     }
    ],
-   "restored": [
-    163385
-   ]
+   "complete": false,
+   "pending_bits": [
+    0,
+    1,
+    1,
+    0,
+    0,
+    0,
+    0,
+    0,
+    1
+   ],
+   "clock_lost": 163376
   },
   {
    "s": 187870,

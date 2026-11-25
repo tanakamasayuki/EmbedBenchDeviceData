@@ -1,6 +1,6 @@
 {
  "format": "wireskein-analysis/1",
- "wireskein": "0.0.27",
+ "wireskein": "0.0.39",
  "spec": {
   "buses": [
    {
@@ -18,8 +18,8 @@
  },
  "capture": {
   "file": "c0001.wireskein",
-  "sha256": "2e8902030c152373a056801768a0275072b03aedc1675b3aa9f441e9b1617809",
-  "id": "7313df9c37a265a9d9c100f259c20c43",
+  "sha256": "5dd0179942aea35da7120ee54ac9d6c36b3d7f4e550d5910ed1b24776dd3fd4e",
+  "id": "a7e0fd54dd41706e8c18768512e9c42b",
   "tick_hz": [
    2000000,
    1
@@ -31,9 +31,9 @@
  "parts": [
   {
    "part": 0,
-   "ticks": 342272,
+   "ticks": 422912,
    "tick0": 0,
-   "start_ns": 3593287000,
+   "start_ns": 7284871000,
    "start_uncertainty_ns": 5000,
    "buses": [
     {
@@ -48,15 +48,15 @@
       "declared": "i2c.toml"
      },
      "fit": {
-      "score": 0.8799,
+      "score": 0.9844,
       "claimed": true,
       "verdict": "confirmed"
      },
      "result": {
       "transactions": [
        {
-        "s": 103024,
-        "e": 103159,
+        "s": 113364,
+        "e": 113904,
         "addr": 68,
         "rw": "write",
         "addr_ack": true,
@@ -67,12 +67,12 @@
         ],
         "start_cond": "S",
         "end_cond": "P",
-        "scl_low_ticks": 3.0,
+        "scl_low_ticks": 10.0,
         "scl_waits": []
        },
        {
-        "s": 107054,
-        "e": 107189,
+        "s": 117841,
+        "e": 118381,
         "addr": 68,
         "rw": "write",
         "addr_ack": true,
@@ -83,12 +83,12 @@
         ],
         "start_cond": "S",
         "end_cond": "P",
-        "scl_low_ticks": 2.0,
+        "scl_low_ticks": 10.0,
         "scl_waits": []
        },
        {
-        "s": 107303,
-        "e": 107483,
+        "s": 118516,
+        "e": 119236,
         "addr": 68,
         "rw": "read",
         "addr_ack": true,
@@ -100,12 +100,12 @@
         ],
         "start_cond": "S",
         "end_cond": "P",
-        "scl_low_ticks": 2.0,
+        "scl_low_ticks": 10.0,
         "scl_waits": []
        },
        {
-        "s": 107728,
-        "e": 107863,
+        "s": 119510,
+        "e": 120050,
         "addr": 68,
         "rw": "write",
         "addr_ack": true,
@@ -116,12 +116,12 @@
         ],
         "start_cond": "S",
         "end_cond": "P",
-        "scl_low_ticks": 3.0,
+        "scl_low_ticks": 10.0,
         "scl_waits": []
        },
        {
-        "s": 107953,
-        "e": 107998,
+        "s": 120167,
+        "e": 120347,
         "addr": 68,
         "rw": "read",
         "addr_ack": false,
@@ -129,12 +129,12 @@
         "acks": [],
         "start_cond": "S",
         "end_cond": "P",
-        "scl_low_ticks": 3.0,
+        "scl_low_ticks": 10.0,
         "scl_waits": []
        },
        {
-        "s": 109082,
-        "e": 109127,
+        "s": 121449,
+        "e": 121629,
         "addr": 68,
         "rw": "read",
         "addr_ack": false,
@@ -142,12 +142,12 @@
         "acks": [],
         "start_cond": "S",
         "end_cond": "P",
-        "scl_low_ticks": 3.0,
+        "scl_low_ticks": 11.0,
         "scl_waits": []
        },
        {
-        "s": 110206,
-        "e": 110251,
+        "s": 122728,
+        "e": 122908,
         "addr": 68,
         "rw": "read",
         "addr_ack": false,
@@ -155,12 +155,12 @@
         "acks": [],
         "start_cond": "S",
         "end_cond": "P",
-        "scl_low_ticks": 3.0,
+        "scl_low_ticks": 10.0,
         "scl_waits": []
        },
        {
-        "s": 111330,
-        "e": 111375,
+        "s": 124010,
+        "e": 124190,
         "addr": 68,
         "rw": "read",
         "addr_ack": false,
@@ -168,12 +168,12 @@
         "acks": [],
         "start_cond": "S",
         "end_cond": "P",
-        "scl_low_ticks": 3.0,
+        "scl_low_ticks": 10.0,
         "scl_waits": []
        },
        {
-        "s": 112454,
-        "e": 112499,
+        "s": 125290,
+        "e": 125470,
         "addr": 68,
         "rw": "read",
         "addr_ack": false,
@@ -181,12 +181,12 @@
         "acks": [],
         "start_cond": "S",
         "end_cond": "P",
-        "scl_low_ticks": 2.0,
+        "scl_low_ticks": 10.0,
         "scl_waits": []
        },
        {
-        "s": 113578,
-        "e": 113623,
+        "s": 126571,
+        "e": 126751,
         "addr": 68,
         "rw": "read",
         "addr_ack": false,
@@ -194,12 +194,12 @@
         "acks": [],
         "start_cond": "S",
         "end_cond": "P",
-        "scl_low_ticks": 3.0,
+        "scl_low_ticks": 11.0,
         "scl_waits": []
        },
        {
-        "s": 114702,
-        "e": 114747,
+        "s": 127855,
+        "e": 128035,
         "addr": 68,
         "rw": "read",
         "addr_ack": false,
@@ -207,12 +207,12 @@
         "acks": [],
         "start_cond": "S",
         "end_cond": "P",
-        "scl_low_ticks": 3.0,
+        "scl_low_ticks": 10.0,
         "scl_waits": []
        },
        {
-        "s": 115826,
-        "e": 115871,
+        "s": 129212,
+        "e": 129392,
         "addr": 68,
         "rw": "read",
         "addr_ack": false,
@@ -220,12 +220,12 @@
         "acks": [],
         "start_cond": "S",
         "end_cond": "P",
-        "scl_low_ticks": 3.0,
+        "scl_low_ticks": 10.0,
         "scl_waits": []
        },
        {
-        "s": 116998,
-        "e": 117043,
+        "s": 130494,
+        "e": 130674,
         "addr": 68,
         "rw": "read",
         "addr_ack": false,
@@ -233,12 +233,12 @@
         "acks": [],
         "start_cond": "S",
         "end_cond": "P",
-        "scl_low_ticks": 3.0,
+        "scl_low_ticks": 10.0,
         "scl_waits": []
        },
        {
-        "s": 118122,
-        "e": 118167,
+        "s": 131828,
+        "e": 132008,
         "addr": 68,
         "rw": "read",
         "addr_ack": false,
@@ -246,12 +246,12 @@
         "acks": [],
         "start_cond": "S",
         "end_cond": "P",
-        "scl_low_ticks": 2.0,
+        "scl_low_ticks": 10.0,
         "scl_waits": []
        },
        {
-        "s": 119248,
-        "e": 119293,
+        "s": 133108,
+        "e": 133288,
         "addr": 68,
         "rw": "read",
         "addr_ack": false,
@@ -259,12 +259,12 @@
         "acks": [],
         "start_cond": "S",
         "end_cond": "P",
-        "scl_low_ticks": 2.0,
+        "scl_low_ticks": 10.0,
         "scl_waits": []
        },
        {
-        "s": 120373,
-        "e": 120418,
+        "s": 134389,
+        "e": 134569,
         "addr": 68,
         "rw": "read",
         "addr_ack": false,
@@ -272,12 +272,12 @@
         "acks": [],
         "start_cond": "S",
         "end_cond": "P",
-        "scl_low_ticks": 3.0,
+        "scl_low_ticks": 10.0,
         "scl_waits": []
        },
        {
-        "s": 121497,
-        "e": 121542,
+        "s": 135668,
+        "e": 135848,
         "addr": 68,
         "rw": "read",
         "addr_ack": false,
@@ -285,12 +285,12 @@
         "acks": [],
         "start_cond": "S",
         "end_cond": "P",
-        "scl_low_ticks": 2.0,
+        "scl_low_ticks": 11.0,
         "scl_waits": []
        },
        {
-        "s": 122620,
-        "e": 122665,
+        "s": 136949,
+        "e": 137129,
         "addr": 68,
         "rw": "read",
         "addr_ack": false,
@@ -298,12 +298,12 @@
         "acks": [],
         "start_cond": "S",
         "end_cond": "P",
-        "scl_low_ticks": 2.0,
+        "scl_low_ticks": 10.0,
         "scl_waits": []
        },
        {
-        "s": 123746,
-        "e": 123791,
+        "s": 138229,
+        "e": 138409,
         "addr": 68,
         "rw": "read",
         "addr_ack": false,
@@ -311,12 +311,12 @@
         "acks": [],
         "start_cond": "S",
         "end_cond": "P",
-        "scl_low_ticks": 3.0,
+        "scl_low_ticks": 11.0,
         "scl_waits": []
        },
        {
-        "s": 124871,
-        "e": 124916,
+        "s": 139508,
+        "e": 139688,
         "addr": 68,
         "rw": "read",
         "addr_ack": false,
@@ -324,12 +324,12 @@
         "acks": [],
         "start_cond": "S",
         "end_cond": "P",
-        "scl_low_ticks": 3.0,
+        "scl_low_ticks": 10.0,
         "scl_waits": []
        },
        {
-        "s": 126025,
-        "e": 126070,
+        "s": 140790,
+        "e": 140970,
         "addr": 68,
         "rw": "read",
         "addr_ack": false,
@@ -337,12 +337,12 @@
         "acks": [],
         "start_cond": "S",
         "end_cond": "P",
-        "scl_low_ticks": 2.0,
+        "scl_low_ticks": 11.0,
         "scl_waits": []
        },
        {
-        "s": 127151,
-        "e": 127196,
+        "s": 142070,
+        "e": 142250,
         "addr": 68,
         "rw": "read",
         "addr_ack": false,
@@ -350,12 +350,12 @@
         "acks": [],
         "start_cond": "S",
         "end_cond": "P",
-        "scl_low_ticks": 3.0,
+        "scl_low_ticks": 10.0,
         "scl_waits": []
        },
        {
-        "s": 128275,
-        "e": 128320,
+        "s": 143348,
+        "e": 143528,
         "addr": 68,
         "rw": "read",
         "addr_ack": false,
@@ -363,55 +363,16 @@
         "acks": [],
         "start_cond": "S",
         "end_cond": "P",
-        "scl_low_ticks": 2.0,
+        "scl_low_ticks": 11.0,
         "scl_waits": []
        },
        {
-        "s": 129401,
-        "e": 129446,
-        "addr": 68,
-        "rw": "read",
-        "addr_ack": false,
-        "bytes": "",
-        "acks": [],
-        "start_cond": "S",
-        "end_cond": "P",
-        "scl_low_ticks": 3.0,
-        "scl_waits": []
-       },
-       {
-        "s": 130524,
-        "e": 130569,
-        "addr": 68,
-        "rw": "read",
-        "addr_ack": false,
-        "bytes": "",
-        "acks": [],
-        "start_cond": "S",
-        "end_cond": "P",
-        "scl_low_ticks": 3.0,
-        "scl_waits": []
-       },
-       {
-        "s": 131648,
-        "e": 131693,
-        "addr": 68,
-        "rw": "read",
-        "addr_ack": false,
-        "bytes": "",
-        "acks": [],
-        "start_cond": "S",
-        "end_cond": "P",
-        "scl_low_ticks": 3.0,
-        "scl_waits": []
-       },
-       {
-        "s": 132770,
-        "e": 133085,
+        "s": 144628,
+        "e": 145888,
         "addr": 68,
         "rw": "read",
         "addr_ack": true,
-        "bytes": "5e6809a36da4",
+        "bytes": "5e73a0a37812",
         "acks": [
          true,
          true,
@@ -422,12 +383,12 @@
         ],
         "start_cond": "S",
         "end_cond": "P",
-        "scl_low_ticks": 3.0,
+        "scl_low_ticks": 10.0,
         "scl_waits": []
        },
        {
-        "s": 142987,
-        "e": 143122,
+        "s": 155906,
+        "e": 156446,
         "addr": 68,
         "rw": "write",
         "addr_ack": true,
@@ -438,34 +399,45 @@
         ],
         "start_cond": "S",
         "end_cond": "P",
-        "scl_low_ticks": 2.0,
+        "scl_low_ticks": 10.0,
         "scl_waits": []
        },
        {
-        "s": 143201,
-        "e": 167769,
+        "s": 156551,
+        "e": 181207,
         "addr": 68,
         "rw": "read",
         "addr_ack": true,
-        "bytes": "5e",
-        "acks": [
-         false
-        ],
+        "bytes": "",
+        "acks": [],
         "start_cond": "S",
         "end_cond": "Sr",
-        "scl_low_ticks": 3.0,
+        "scl_low_ticks": 10.0,
         "scl_waits": [
          {
           "after_word": 0,
           "bit": 0,
-          "ticks": 24486,
-          "s": 143243
+          "ticks": 24331,
+          "s": 156721
          }
-        ]
+        ],
+        "complete": false,
+        "pending_bits": [
+         0,
+         1,
+         0,
+         1,
+         1,
+         1,
+         1,
+         0,
+         1
+        ],
+        "clock_lost": 156721
        },
        {
-        "s": 167810,
-        "e": 167945,
+        "s": 181263,
+        "e": 181803,
         "addr": 68,
         "rw": "write",
         "addr_ack": true,
@@ -476,12 +448,12 @@
         ],
         "start_cond": "Sr",
         "end_cond": "P",
-        "scl_low_ticks": 3.0,
+        "scl_low_ticks": 11.0,
         "scl_waits": []
        },
        {
-        "s": 168027,
-        "e": 168072,
+        "s": 181912,
+        "e": 182092,
         "addr": 68,
         "rw": "read",
         "addr_ack": false,
@@ -489,12 +461,12 @@
         "acks": [],
         "start_cond": "S",
         "end_cond": "P",
-        "scl_low_ticks": 3.0,
+        "scl_low_ticks": 11.0,
         "scl_waits": []
        },
        {
-        "s": 169152,
-        "e": 169197,
+        "s": 183192,
+        "e": 183372,
         "addr": 68,
         "rw": "read",
         "addr_ack": false,
@@ -502,12 +474,12 @@
         "acks": [],
         "start_cond": "S",
         "end_cond": "P",
-        "scl_low_ticks": 3.0,
+        "scl_low_ticks": 10.0,
         "scl_waits": []
        },
        {
-        "s": 170277,
-        "e": 170322,
+        "s": 184473,
+        "e": 184653,
         "addr": 68,
         "rw": "read",
         "addr_ack": false,
@@ -515,12 +487,12 @@
         "acks": [],
         "start_cond": "S",
         "end_cond": "P",
-        "scl_low_ticks": 3.0,
+        "scl_low_ticks": 10.0,
         "scl_waits": []
        },
        {
-        "s": 171404,
-        "e": 171449,
+        "s": 185752,
+        "e": 185932,
         "addr": 68,
         "rw": "read",
         "addr_ack": false,
@@ -528,12 +500,12 @@
         "acks": [],
         "start_cond": "S",
         "end_cond": "P",
-        "scl_low_ticks": 2.0,
+        "scl_low_ticks": 10.0,
         "scl_waits": []
        },
        {
-        "s": 172529,
-        "e": 172574,
+        "s": 187033,
+        "e": 187213,
         "addr": 68,
         "rw": "read",
         "addr_ack": false,
@@ -541,12 +513,12 @@
         "acks": [],
         "start_cond": "S",
         "end_cond": "P",
-        "scl_low_ticks": 3.0,
+        "scl_low_ticks": 10.0,
         "scl_waits": []
        },
        {
-        "s": 173652,
-        "e": 173697,
+        "s": 188314,
+        "e": 188494,
         "addr": 68,
         "rw": "read",
         "addr_ack": false,
@@ -554,12 +526,12 @@
         "acks": [],
         "start_cond": "S",
         "end_cond": "P",
-        "scl_low_ticks": 3.0,
+        "scl_low_ticks": 11.0,
         "scl_waits": []
        },
        {
-        "s": 174777,
-        "e": 174822,
+        "s": 189594,
+        "e": 189774,
         "addr": 68,
         "rw": "read",
         "addr_ack": false,
@@ -567,29 +539,16 @@
         "acks": [],
         "start_cond": "S",
         "end_cond": "P",
-        "scl_low_ticks": 3.0,
+        "scl_low_ticks": 10.0,
         "scl_waits": []
        },
        {
-        "s": 175901,
-        "e": 175946,
-        "addr": 68,
-        "rw": "read",
-        "addr_ack": false,
-        "bytes": "",
-        "acks": [],
-        "start_cond": "S",
-        "end_cond": "P",
-        "scl_low_ticks": 3.0,
-        "scl_waits": []
-       },
-       {
-        "s": 177026,
-        "e": 177341,
+        "s": 190874,
+        "e": 192134,
         "addr": 68,
         "rw": "read",
         "addr_ack": true,
-        "bytes": "5e784aa38bc3",
+        "bytes": "5e73a0a38bc3",
         "acks": [
          true,
          true,
@@ -600,12 +559,12 @@
         ],
         "start_cond": "S",
         "end_cond": "P",
-        "scl_low_ticks": 3.0,
+        "scl_low_ticks": 10.0,
         "scl_waits": []
        },
        {
-        "s": 186988,
-        "e": 187123,
+        "s": 201843,
+        "e": 202383,
         "addr": 68,
         "rw": "write",
         "addr_ack": true,
@@ -616,16 +575,16 @@
         ],
         "start_cond": "S",
         "end_cond": "P",
-        "scl_low_ticks": 2.0,
+        "scl_low_ticks": 10.0,
         "scl_waits": []
        },
        {
-        "s": 187202,
-        "e": 196103,
+        "s": 202489,
+        "e": 212160,
         "addr": 68,
         "rw": "read",
         "addr_ack": true,
-        "bytes": "5e784aa37f85",
+        "bytes": "5e784aa385dc",
         "acks": [
          true,
          true,
@@ -636,19 +595,19 @@
         ],
         "start_cond": "S",
         "end_cond": "P",
-        "scl_low_ticks": 2.0,
+        "scl_low_ticks": 11.0,
         "scl_waits": [
          {
           "after_word": 0,
           "bit": 0,
-          "ticks": 8590,
-          "s": 187244
+          "ticks": 8426,
+          "s": 202658
          }
         ]
        },
        {
-        "s": 205002,
-        "e": 205137,
+        "s": 221860,
+        "e": 222400,
         "addr": 68,
         "rw": "write",
         "addr_ack": true,
@@ -659,12 +618,12 @@
         ],
         "start_cond": "S",
         "end_cond": "P",
-        "scl_low_ticks": 3.0,
+        "scl_low_ticks": 10.0,
         "scl_waits": []
        },
        {
-        "s": 205217,
-        "e": 205262,
+        "s": 222507,
+        "e": 222687,
         "addr": 68,
         "rw": "read",
         "addr_ack": false,
@@ -672,12 +631,12 @@
         "acks": [],
         "start_cond": "S",
         "end_cond": "P",
-        "scl_low_ticks": 2.0,
+        "scl_low_ticks": 10.0,
         "scl_waits": []
        },
        {
-        "s": 206340,
-        "e": 206385,
+        "s": 223822,
+        "e": 224002,
         "addr": 68,
         "rw": "read",
         "addr_ack": false,
@@ -685,12 +644,12 @@
         "acks": [],
         "start_cond": "S",
         "end_cond": "P",
-        "scl_low_ticks": 3.0,
+        "scl_low_ticks": 11.0,
         "scl_waits": []
        },
        {
-        "s": 207464,
-        "e": 207509,
+        "s": 225102,
+        "e": 225282,
         "addr": 68,
         "rw": "read",
         "addr_ack": false,
@@ -698,12 +657,12 @@
         "acks": [],
         "start_cond": "S",
         "end_cond": "P",
-        "scl_low_ticks": 3.0,
+        "scl_low_ticks": 10.0,
         "scl_waits": []
        },
        {
-        "s": 208586,
-        "e": 208631,
+        "s": 226382,
+        "e": 226562,
         "addr": 68,
         "rw": "read",
         "addr_ack": false,
@@ -711,29 +670,16 @@
         "acks": [],
         "start_cond": "S",
         "end_cond": "P",
-        "scl_low_ticks": 3.0,
+        "scl_low_ticks": 10.0,
         "scl_waits": []
        },
        {
-        "s": 209710,
-        "e": 209755,
-        "addr": 68,
-        "rw": "read",
-        "addr_ack": false,
-        "bytes": "",
-        "acks": [],
-        "start_cond": "S",
-        "end_cond": "P",
-        "scl_low_ticks": 3.0,
-        "scl_waits": []
-       },
-       {
-        "s": 210882,
-        "e": 211197,
+        "s": 227663,
+        "e": 228923,
         "addr": 68,
         "rw": "read",
         "addr_ack": true,
-        "bytes": "5e784aa38bc3",
+        "bytes": "5e8d3da37812",
         "acks": [
          true,
          true,
@@ -744,12 +690,12 @@
         ],
         "start_cond": "S",
         "end_cond": "P",
-        "scl_low_ticks": 3.0,
+        "scl_low_ticks": 10.0,
         "scl_waits": []
        },
        {
-        "s": 221006,
-        "e": 221141,
+        "s": 237860,
+        "e": 238400,
         "addr": 68,
         "rw": "write",
         "addr_ack": true,
@@ -760,16 +706,16 @@
         ],
         "start_cond": "S",
         "end_cond": "P",
-        "scl_low_ticks": 3.0,
+        "scl_low_ticks": 10.0,
         "scl_waits": []
        },
        {
-        "s": 221219,
-        "e": 226408,
+        "s": 238507,
+        "e": 244464,
         "addr": 68,
         "rw": "read",
         "addr_ack": true,
-        "bytes": "5e5e6aa3b428",
+        "bytes": "5e7dbfa35894",
         "acks": [
          true,
          true,
@@ -780,13 +726,13 @@
         ],
         "start_cond": "S",
         "end_cond": "P",
-        "scl_low_ticks": 3.0,
+        "scl_low_ticks": 10.0,
         "scl_waits": [
          {
           "after_word": 0,
           "bit": 0,
-          "ticks": 4877,
-          "s": 221261
+          "ticks": 4713,
+          "s": 238676
          }
         ]
        }
@@ -805,93 +751,98 @@
        },
        "messages": [
         {
-         "s": 103024,
+         "s": 113364,
          "command": "soft reset"
         },
         {
-         "s": 107054,
+         "s": 117841,
          "command": "read status"
         },
         {
-         "s": 107303,
+         "s": 118516,
          "response_to": "read status",
          "bytes": "8010e1",
          "crc_ok": true
         },
         {
-         "s": 107728,
+         "s": 119510,
          "command": "single shot, high repeatability, polling"
         },
         {
-         "s": 132770,
+         "s": 144628,
          "response_to": "single shot, high repeatability, polling",
-         "bytes": "5e6809a36da4",
+         "bytes": "5e73a0a37812",
          "crc_ok": true
         },
         {
-         "s": 142987,
+         "s": 155906,
          "command": "single shot, high repeatability, clock stretching"
         },
         {
-         "s": 143201,
-         "response_to": "single shot, high repeatability, clock stretching",
-         "bytes": "5e",
-         "crc_ok": null
-        },
-        {
-         "s": 167810,
+         "s": 181263,
          "command": "single shot, medium repeatability, polling"
         },
         {
-         "s": 177026,
+         "s": 190874,
          "response_to": "single shot, medium repeatability, polling",
-         "bytes": "5e784aa38bc3",
+         "bytes": "5e73a0a38bc3",
          "crc_ok": true
         },
         {
-         "s": 186988,
+         "s": 201843,
          "command": "single shot, medium repeatability, clock stretching"
         },
         {
-         "s": 187202,
+         "s": 202489,
          "response_to": "single shot, medium repeatability, clock stretching",
-         "bytes": "5e784aa37f85",
+         "bytes": "5e784aa385dc",
          "crc_ok": true
         },
         {
-         "s": 205002,
+         "s": 221860,
          "command": "single shot, low repeatability, polling"
         },
         {
-         "s": 210882,
+         "s": 227663,
          "response_to": "single shot, low repeatability, polling",
-         "bytes": "5e784aa38bc3",
+         "bytes": "5e8d3da37812",
          "crc_ok": true
         },
         {
-         "s": 221006,
+         "s": 237860,
          "command": "single shot, low repeatability, clock stretching"
         },
         {
-         "s": 221219,
+         "s": 238507,
          "response_to": "single shot, low repeatability, clock stretching",
-         "bytes": "5e5e6aa3b428",
+         "bytes": "5e7dbfa35894",
          "crc_ok": true
         }
        ]
       }
      ],
      "uninterpreted": [],
-     "idle_ticks": 80,
+     "idle_ticks": 320,
      "reading": {
-      "frames": 50,
-      "ok": 50,
+      "frames": 45,
+      "ok": 45,
       "unanswered": 0,
       "restored": 0,
       "repaired": 0,
       "rate_ok": true,
       "unread": 0,
-      "unread_edges": 0
+      "unread_edges": 0,
+      "line_changes": {
+       "SDA": {
+        "changes": 634,
+        "last": 244479
+       },
+       "SCL": {
+        "changes": 1798,
+        "last": 244464
+       }
+      },
+      "same_sample": 101
      }
     }
    ],
