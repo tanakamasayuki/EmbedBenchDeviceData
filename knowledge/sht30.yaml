@@ -78,7 +78,9 @@ behaviours:
     evidence: [sht30-modes__i2c-100k__67ed272b0bdc35a6, sht30-modes__i2c-400k__b574cef8dd784e7b]
     notes: |
       When the controller gives up on a stretch and later clocks a bus clear through the part, the part sends its
-      result out on those clocks (one byte reaches the decode); the result counts as read.
+      result out on those clocks; the result counts as read. The controller's clock during the stretch never reaches
+      the line, so the decode leaves that read incomplete (complete: false) and keeps the bits seen after the
+      stretch as pending_bits, not as a byte.
 controllers:
   - key: stretch-limit
     controller: arduino-esp32 3.3.12 Wire, ESP32-P4
