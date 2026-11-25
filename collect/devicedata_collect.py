@@ -32,6 +32,7 @@ import yaml
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 COLLECT_ROOT = REPO_ROOT / "collect"
+FAILED_ROOT = COLLECT_ROOT / "failed"   # failed attempts (not in git)
 sys.path.insert(0, str(REPO_ROOT / "tools"))
 import run_id as run_id_tool  # noqa: E402
 
@@ -180,8 +181,10 @@ def collect_case(hst, case: dict, s: Settings, sketch: str, interface: str, prof
 
     speed = f"{s.hz // 1000}k"
     work = s.out / f"{case['key']}__{kind}-{speed}__pending"
-    if work.exists():
-        shutil.rmtree(work)
+    if work.exists():   # an earlier attempt that failed: kept outside runs/ so the failure can be looked at
+        kept = FAILED_ROOT / f"{work.name[:-len('__pending')]}__{datetime.datetime.now():%Y%m%dT%H%M%S}"
+        kept.parent.mkdir(parents=True, exist_ok=True)
+        shutil.move(str(work), str(kept))
     rec = Recorder(work, case=case["key"], probe=s.port, pins={role: s.lines[role] for role in roles})
     readings = [hst.clock_best()]
     result = {}

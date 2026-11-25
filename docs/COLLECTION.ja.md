@@ -49,6 +49,7 @@ uv run pytest m5stack/u001-c/u001-c.py --profile esp32p4x \
 5. provenance を書き、run の名前に改める。
 
 キャプチャか目印のログに欠けがあれば、そのケースは失敗にする。
+失敗した回の作業ディレクトリ（`runs/<case>__<bus>-<speed>__pending`）は、同じケースを録り直すときに `collect/failed/` へ時刻を付けて移す（git には入れない）。
 ケースの関数が 0 以外を返したときは、その値を run の notes に残す（失敗にはしない）。
 同じ転送の run がすでにあれば、新しいほうは捨てる。
 
