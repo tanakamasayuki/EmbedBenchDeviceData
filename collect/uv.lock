@@ -31,7 +31,7 @@ requires-dist = [
     { name = "oep-client-python", extras = ["usb-async"], specifier = "==0.0.58" },
     { name = "pytest-embedded-arduino-cli", specifier = "==1.12.0" },
     { name = "pyyaml", specifier = ">=6" },
-    { name = "wireskein", specifier = "==0.0.39" },
+    { name = "wireskein", specifier = "==0.1.1" },
 ]
 
 [[package]]
@@ -485,13 +485,17 @@ wheels = [
 
 [[package]]
 name = "wireskein"
-version = "0.0.39"
+version = "0.1.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "numpy", version = "2.4.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12'" },
     { name = "numpy", version = "2.5.5", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/57/9d/73471da199c85325708001d26c6124fea9bbfa0011f1a385a795e3b609fb/wireskein-0.0.39.tar.gz", hash = "sha256:c480c71e7f349ae73e47eae4449730b3938f26df9dccacea7959b71dcd33802d", size = 3509679, upload-time = "2026-11-25T05:22:31.122Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/00/12/3631afe090b519cc064f05a7faf1af3c40f339a11196b57c884f37d8533d/wireskein-0.1.1.tar.gz", hash = "sha256:573ed6072e291d762e30162bad909a414692dd8ce86dbe73dbc2bba77325d6e4", size = 1021970, upload-time = "2026-11-27T02:53:18.645Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/4e/94/c0f7fb7158d04347db5578b5d86be4414f608aa294d36383cb2eb57342ef/wireskein-0.0.39-py3-none-any.whl", hash = "sha256:e552d9d772ff382c5abbd779a734c3b5d125f8e314ace8c6a66e3fe3f574e21b", size = 496883, upload-time = "2026-11-25T05:22:29.772Z" },
+    { url = "https://files.pythonhosted.org/packages/b2/32/1d042c65e28220b8a05da6f01a8487f665f2506700a615a0f8d586decfbb/wireskein-0.1.1-cp311-abi3-macosx_10_12_x86_64.whl", hash = "sha256:0ab86ee0b484b49acd924cfc825f360e8e0d8d9fb2aa67e73182317e224a2b67", size = 4519865, upload-time = "2026-11-27T02:53:10.56Z" },
+    { url = "https://files.pythonhosted.org/packages/7c/63/af216a0467f7caf3b3d0d12391a3baf20ce80ca090d2caede2a246daf33e/wireskein-0.1.1-cp311-abi3-macosx_11_0_arm64.whl", hash = "sha256:90741b32e9b1f8f76f795ee5ae26a8ef145baf8927642ee61a3b82942a87811a", size = 4183198, upload-time = "2026-11-27T02:53:12.363Z" },
+    { url = "https://files.pythonhosted.org/packages/47/f3/751083386423844fc766be3f86551bba3f7493ddc15e2c5237ef80a22dda/wireskein-0.1.1-cp311-abi3-manylinux2014_aarch64.manylinux_2_17_aarch64.whl", hash = "sha256:91f829b252f9d2256fe3b722983ad4cd687a1984b549b843d7d2ea5f413d3c1c", size = 4292757, upload-time = "2026-11-27T02:53:13.888Z" },
+    { url = "https://files.pythonhosted.org/packages/c4/b0/3171222b7af2267c2d802c4019d006c607f6d5fcc4470840daa5214de682/wireskein-0.1.1-cp311-abi3-manylinux2014_x86_64.manylinux_2_17_x86_64.whl", hash = "sha256:f6a2223cfe6aaf542366d1fc3c480462786f0bf8ffa4d1565f55bb4b04df18c1", size = 4660315, upload-time = "2026-11-27T02:53:15.428Z" },
+    { url = "https://files.pythonhosted.org/packages/55/7d/f1cbf7a4cb4bdc635831597ab0cf325cb3a05c68a7289b635bb0596948f3/wireskein-0.1.1-cp311-abi3-win_amd64.whl", hash = "sha256:cff25ef74ba5cb0c9e61b3d385784f9d18917076f4cdcd7c5757bed3e8222b05", size = 4793144, upload-time = "2026-11-27T02:53:17.086Z" },
 ]

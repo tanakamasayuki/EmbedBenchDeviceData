@@ -79,7 +79,7 @@ timing:
     value_us: "2986 + 847 * (samples_t + samples_p)"
     windows:
       - {setting: "CTRL_MEAS=25 (T x1, P x1)", low_us: 4128, high_us: 4840, evidence: i2cdevicedb-pilot:qmp6988-p0-100k-nominal-0283eb57c7a7c010}
-      - {setting: "CTRL_MEAS=31 / 33 (T x1, P x8): forced, and the first normal sample from sleep", low_us: 10584, high_us: 10742, evidence: [qmp6988-modes__i2c-100k__5191405721467aa1, qmp6988-modes__i2c-400k__00cc50fc431b3ba6, qmp6988-standby-long-5ms__i2c-100k__f84dd88a20a69760, qmp6988-standby-long-50ms__i2c-100k__2d997e3f5a00ee54, qmp6988-standby-long-250ms__i2c-100k__07d1897d945ff8a1, qmp6988-standby__i2c-100k__10cc6d46cab87fd8], measured: [{where: {ctrl_meas: "0x31"}}, {timing: normal-period, where: {from: sleep}, of: first}]}
+      - {setting: "CTRL_MEAS=31 / 33 (T x1, P x8): forced, and the first normal sample from sleep", low_us: 10584, high_us: 10742, evidence: [qmp6988-modes__i2c-100k__5191405721467aa1, qmp6988-modes__i2c-400k__e81164abf479585e, qmp6988-standby-long-5ms__i2c-100k__f84dd88a20a69760, qmp6988-standby-long-50ms__i2c-100k__2d997e3f5a00ee54, qmp6988-standby-long-250ms__i2c-100k__07d1897d945ff8a1, qmp6988-standby__i2c-100k__10cc6d46cab87fd8], measured: [{where: {ctrl_meas: "0x31"}}, {timing: normal-period, where: {from: sleep}, of: first}]}
     evidence: [qmp6988-standby-long-50ms__i2c-100k__40d4f613590db8e7, qmp6988-standby-long-5ms__i2c-100k__aec4395e0424a89c]
     notes: |
       A line through the pilot's P x1 (4680 us) and the OEP runs' P x8 (10609 us); the slope is near the datasheet's
@@ -90,7 +90,7 @@ timing:
   - key: normal-period
     value_us: "conversion + standby(IO_SETUP bits 7:5)"
     windows:
-      - {setting: "CTRL_MEAS=33, IO_SETUP=00 (standby 1 ms), after a forced conversion", low_us: 10005, high_us: 11667, evidence: [qmp6988-modes__i2c-100k__5191405721467aa1, qmp6988-modes__i2c-400k__00cc50fc431b3ba6], measured: [{where: {from: forced}, of: period}]}
+      - {setting: "CTRL_MEAS=33, IO_SETUP=00 (standby 1 ms), after a forced conversion", low_us: 10005, high_us: 11667, evidence: [qmp6988-modes__i2c-100k__5191405721467aa1, qmp6988-modes__i2c-400k__e81164abf479585e], measured: [{where: {from: forced}, of: period}]}
       - {setting: "CTRL_MEAS=33, IO_SETUP=20 (standby 5 ms), from sleep", low_us: 16121, high_us: 16124, evidence: [qmp6988-standby-long-5ms__i2c-100k__f84dd88a20a69760, qmp6988-standby__i2c-100k__10cc6d46cab87fd8], measured: [{where: {from: sleep, io_setup: "0x20"}, of: period}]}
       - {setting: "CTRL_MEAS=33, IO_SETUP=40 (standby 50 ms), from sleep", low_us: 57083, high_us: 57115, evidence: [qmp6988-standby-long-50ms__i2c-100k__2d997e3f5a00ee54, qmp6988-standby__i2c-100k__10cc6d46cab87fd8], measured: [{where: {from: sleep, io_setup: "0x40"}, of: period}]}
       - {setting: "CTRL_MEAS=33, IO_SETUP=60 (standby 250 ms), from sleep", low_us: 234375, high_us: 235625, evidence: [qmp6988-standby-long-250ms__i2c-100k__07d1897d945ff8a1], measured: [{where: {from: sleep, io_setup: "0x60"}, of: period}]}
@@ -116,7 +116,7 @@ timing:
   - key: status-delay
     value_us: "215"
     windows:
-      - {setting: "after CTRL_MEAS=31, 400 kHz", low_us: 214, high_us: 234, evidence: [qmp6988-measure-bit__i2c-400k__ea307da668ef1127, qmp6988-modes__i2c-400k__00cc50fc431b3ba6], measured: [{where: {hz: "400000"}}]}
+      - {setting: "after CTRL_MEAS=31, 400 kHz", low_us: 214, high_us: 234, evidence: [qmp6988-measure-bit__i2c-400k__ea307da668ef1127, qmp6988-modes__i2c-400k__e81164abf479585e], measured: [{where: {hz: "400000"}}]}
     evidence: [qmp6988-measure-bit__i2c-100k__b5594dcb68fe03df]
     notes: |
       From the start of the CTRL_MEAS write to the start of the status read: 00 up to 214 us, 08 from 234 us (a sweep
